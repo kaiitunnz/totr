@@ -28,7 +28,7 @@ class BenchmarkResult:
                     return
 
         with open(pred_file, "w") as f:
-            json.dump(self.predictions, f)
+            json.dump(self.predictions, f, indent=2)
 
         with open(metrics_file, "w") as f:
-            json.dump(self.metrics, f)
+            json.dump(self.metrics, f, indent=2)

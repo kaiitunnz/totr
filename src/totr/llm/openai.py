@@ -6,6 +6,7 @@ from openai.types.chat import ChatCompletion
 from openai.types.completion import Completion
 
 from ..config.generation import GenerationConfig
+from ..config.llm import LLMConfig
 from .base import BaseLLM, Message
 from .registry import LLMRegistry
 
@@ -21,7 +22,9 @@ class OpenAILLM(BaseLLM):
         if config is None:
             config = self.config.generation
 
-        client = OpenAI(api_key=config.api_key, base_url=config.base_url)
+        client = OpenAI(
+            api_key=self.llm_config.api_key, base_url=self.llm_config.base_url
+        )
 
         response: Completion = client.completions.create(
             prompt=prompt, **config.openai_kwargs()
@@ -38,7 +41,9 @@ class OpenAILLM(BaseLLM):
         if config is None:
             config = self.config.generation
 
-        client = AsyncOpenAI(api_key=config.api_key, base_url=config.base_url)
+        client = AsyncOpenAI(
+            api_key=self.llm_config.api_key, base_url=self.llm_config.base_url
+        )
 
         response: Completion = await client.completions.create(
             prompt=prompt, **config.openai_kwargs()
@@ -55,7 +60,9 @@ class OpenAILLM(BaseLLM):
         if config is None:
             config = self.config.generation
 
-        client = OpenAI(api_key=config.api_key, base_url=config.base_url)
+        client = OpenAI(
+            api_key=self.llm_config.api_key, base_url=self.llm_config.base_url
+        )
 
         formated_messages = [message.as_dict() for message in messages]
         response: ChatCompletion = client.chat.completions.create(
@@ -81,7 +88,9 @@ class OpenAILLM(BaseLLM):
         if config is None:
             config = self.config.generation
 
-        client = AsyncOpenAI(api_key=config.api_key, base_url=config.base_url)
+        client = AsyncOpenAI(
+            api_key=self.llm_config.api_key, base_url=self.llm_config.base_url
+        )
 
         formated_messages = [message.as_dict() for message in messages]
         response: ChatCompletion = await client.chat.completions.create(
@@ -97,3 +106,7 @@ class OpenAILLM(BaseLLM):
             res_messages.append(Message(role=message.role, content=message.content))
 
         return res_messages
+
+    @property
+    def llm_config(self) -> LLMConfig:
+        return self.config.llm

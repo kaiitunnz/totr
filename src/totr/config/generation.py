@@ -4,9 +4,6 @@ from typing import Any, Dict, List, Optional, Union
 
 @dataclass
 class GenerationConfig:
-    api_key: Optional[str] = None
-    base_url: Optional[str] = None
-
     model: Optional[str] = None
     frequency_penalty: Optional[float] = None
     logit_bias: Optional[Dict[str, float]] = None
@@ -27,7 +24,6 @@ class GenerationConfig:
 
     def openai_kwargs(self) -> Dict[str, Any]:
         kwargs = self.as_dict()
-        kwargs.pop("api_key")
-        kwargs.pop("base_url")
+        kwargs.pop("do_sample")
         kwargs.pop("top_k")
         return kwargs
