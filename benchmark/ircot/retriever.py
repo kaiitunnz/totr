@@ -24,6 +24,7 @@ class IRCoTRetriever:
         self.model_name = config.llm.model
         self.llm = LLMRegistry.get(config.llm.engine, config)
         self.context_window_size = config.llm.context_window_size
+        self.max_tokens = config.generation.max_tokens or 200
         self.retriever = RetrieverRegistry.get(config.retriever.retriever_name, config)
         self.retrieval_count = config.retriever.hit_count_per_step
         self.corpus_name = config.retriever.corpus_name
@@ -65,7 +66,7 @@ class IRCoTRetriever:
             prompt=prompt,
             tokenizer_name=self.model_name,
             context_window=self.context_window_size,
-            estimated_generation_length=200,
+            estimated_generation_length=self.max_tokens,
             shuffle=False,
             last_is_test_example=True,
         )

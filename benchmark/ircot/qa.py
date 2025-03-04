@@ -16,6 +16,7 @@ class IRCoTQAModel:
         self.model_name = config.llm.model
         self.llm = LLMRegistry.get(config.llm.engine, config)
         self.context_window_size = config.llm.context_window_size
+        self.max_tokens = config.generation.max_tokens or 200
         self.max_para_word_count = config.retriever.max_para_word_count
         answer_regex = config.qa.answer_regex
         self.answer_regex = None if answer_regex is None else re.compile(answer_regex)
@@ -50,7 +51,7 @@ class IRCoTQAModel:
             prompt=prompt,
             tokenizer_name=self.model_name,
             context_window=self.context_window_size,
-            estimated_generation_length=200,
+            estimated_generation_length=self.max_tokens,
             shuffle=False,
             last_is_test_example=True,
         )
