@@ -1,8 +1,9 @@
+import asyncio
 import string
 import re
 from collections import Counter
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Awaitable, Dict, List, Tuple, Union
 
 import jsonlines
 import tqdm
@@ -81,17 +82,27 @@ def update_metrics(
 async def run_hotpotqa(
     qa_system: QAMixin, dataset_root_dir: Union[str, Path], verbose: bool = True
 ) -> BenchmarkResult:
+    async def answer_func(item: Dict[str, Any]) -> Tuple[Dict[str, Any], str]:
+        answer = await qa_system.answer(item["question_text"])
+        return item, answer
+
+    batch_size = 16
     bench_name = "hotpotqa"
     preds = {}
     metrics: Dict[str, float] = {"em": 0, "f1": 0, "prec": 0, "recall": 0}
     data = load_hotpotqa(Path(dataset_root_dir, bench_name, "test_subsampled.jsonl"))
-    for item in tqdm.tqdm(data, disable=not verbose):
-        qid = item["question_id"]
-        question = item["question_text"]
-        answer = await qa_system.answer(question)
-        preds[qid] = answer
-        ground_truth = item["answers_objects"][0]["spans"][0]
-        update_metrics(metrics, answer, ground_truth)
+
+    pbar = tqdm.tqdm(total=len(data), disable=not verbose)
+    task: Awaitable[Tuple[Dict[str, Any], str]]
+    for i in range(0, len(data), batch_size):
+        for task in asyncio.as_completed(
+            [answer_func(item) for item in data[i : i + batch_size]]
+        ):
+            item, answer = await task
+            preds[item["question_id"]] = answer
+            ground_truth = item["answers_objects"][0]["spans"][0]
+            update_metrics(metrics, answer, ground_truth)
+            pbar.update(1)
 
     n = len(data)
     for k in metrics.keys():
