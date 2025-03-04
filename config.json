@@ -1,14 +1,14 @@
 {
   "llm": {
-    "engine": "local",
+    "engine": "openai",
     "host": "localhost",
     "port": 8010,
     "api_key": "EMPTY",
-    "model": "google/flan-t5-large",
-    "overriding_context_window": 6000
+    "model": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "overriding_context_window": null
   },
   "generation": {
-    "max_tokens": 300
+    "max_tokens": 200
   },
   "retriever": {
     "elasticsearch_host": "localhost",
