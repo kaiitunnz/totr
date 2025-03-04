@@ -141,6 +141,7 @@ def fit_prompt_in_context_window(
     remove_method: Literal["first", "last", "random", "largest"] = "first",
     example_delimiter: str = "\n\n\n",
     last_is_test_example: bool = True,
+    buffer_token_count: int = 10,
 ) -> str:
     examples = [example.strip() for example in prompt.strip().split(example_delimiter)]
     examples = [example for example in examples if example]
@@ -155,7 +156,10 @@ def fit_prompt_in_context_window(
         test_example_length = example_lengths.pop(-1)
 
     updated_length = (
-        sum(example_lengths) + test_example_length + estimated_generation_length
+        sum(example_lengths)
+        + test_example_length
+        + estimated_generation_length
+        + buffer_token_count
     )
     while example_lengths and updated_length > context_window:
         if remove_method == "first":

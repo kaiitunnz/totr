@@ -32,7 +32,12 @@ class Config:
                 obj = json.load(f)
 
         llm_config = LLMConfig(**obj["llm"])
-        generation_config = GenerationConfig(**obj["generation"])
+
+        generation_kwargs: Dict[str, Any] = (
+            dict(model=llm_config.model) | obj["generation"]
+        )
+        generation_config = GenerationConfig(**generation_kwargs)
+
         retriever_config = RetrieverConfig(**obj["retriever"])
         prompt_config = PromptConfig(**obj["prompt"])
         qa_config = QAConfig(**obj["qa"])
