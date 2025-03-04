@@ -1,0 +1,41 @@
+{
+  "llm": {
+    "engine": "local",
+    "host": "localhost",
+    "port": 8010,
+    "api_key": "EMPTY",
+    "model": "google/flan-t5-large",
+    "overriding_context_window": 6000
+  },
+  "generation": {
+    "max_tokens": 300
+  },
+  "retriever": {
+    "elasticsearch_host": "localhost",
+    "elasticsearch_port": 9200,
+    "retriever_name": "elasticsearch",
+    "hit_count_per_step": 8,
+    "corpus_name": "hotpotqa",
+    "document_type": "title_paragraph_text",
+    "skip_long_paras": true,
+    "max_para_count": 15,
+    "max_gen_sent_count": 10,
+    "max_para_word_count": 350,
+    "disable_exit": true,
+    "answer_regex": ".* answer is:? (.*)\\.?"
+  },
+  "qa": {
+    "answer_mode": "direct",
+    "cot_question_prefix": "Answer the following question by reasoning step-by-step.\n",
+    "direct_question_prefix": "Answer the following question.\n",
+    "answer_regex": null,
+    "remove_full_stop": true
+  },
+  "prompt": {
+    "prompt_directory": "prompts",
+    "prompt_dataset": "hotpotqa",
+    "cot_prompt_filename": "gold_with_3_distractors_context_cot_qa_flan_t5.txt",
+    "direct_prompt_filename": "gold_with_3_distractors_context_direct_qa_flan_t5.txt",
+    "prompt_set": "1"
+  }
+}
