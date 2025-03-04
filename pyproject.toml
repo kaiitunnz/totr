@@ -30,13 +30,17 @@ codespell = "^2.4.1"
 isort = "^6.0.1"
 types-requests = "^2.32.0.20250301"
 
+
+[tool.poetry.group.vllm.dependencies]
+vllm = "0.6.6.post1"
+
 [tool.mypy]
 explicit_package_bases = true
 ignore_missing_imports = true
 files = ["src"]
 
 [tool.codespell]
-skip = ["./poetry.lock", "tmp*", "prompts"]
+skip = ["./poetry.lock", "tmp*", "prompts", "datasets"]
 
 
 [build-system]

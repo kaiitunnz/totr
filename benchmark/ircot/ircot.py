@@ -2,6 +2,7 @@ from typing import List, Tuple
 
 from ircot.qa import IRCoTQAModel
 from ircot.retriever import IRCoTRetriever
+
 from totr.config import Config
 
 

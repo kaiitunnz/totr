@@ -2,8 +2,10 @@
 
 set -e
 
-source .env
+model=meta-llama/Meta-Llama-3-8B-Instruct
+host=localhost
+port=8010
 
-vllm serve $LLM_MODEL \
-    --host=$LLM_SERVER_HOST \
-    --port=$LLM_SERVER_PORT
+vllm serve $model \
+    --host=$host \
+    --port=$port

@@ -1,13 +1,12 @@
 import asyncio
-import string
 import re
+import string
 from collections import Counter
 from pathlib import Path
 from typing import Any, Awaitable, Dict, List, Tuple, Union
 
 import jsonlines
 import tqdm
-
 from base import BenchmarkResult, QAMixin
 
 
