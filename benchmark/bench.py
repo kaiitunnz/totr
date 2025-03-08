@@ -1,7 +1,10 @@
 import asyncio
+import copy
 from argparse import ArgumentParser, Namespace
 from pathlib import Path
+from typing import Dict
 
+from base import QAMixin
 from bench_tasks.hotpotqa import run_hotpotqa
 from ircot import IRCoT
 from transformers.utils import logging
@@ -26,7 +29,19 @@ async def main(
     dataset_dir.mkdir(exist_ok=True)
     result_dir.mkdir(exist_ok=True)
 
-    systems_to_evaluate = {"ircot": IRCoT(Config.from_json())}
+    systems_to_evaluate: Dict[str, QAMixin] = {}
+    model_names = [
+        "google/flan-t5-large",
+        "meta-llama/Meta-Llama-3-8B-Instruct",
+        "meta-llama/Meta-Llama-3-8B",
+    ]
+
+    base_config = Config.from_json()
+    for model_name in model_names:
+        # 1. IRCoT
+        config = copy.deepcopy(base_config).with_model(model_name)
+        system_name = f"ircot_{config.identifier}"
+        systems_to_evaluate[system_name] = IRCoT(config)
 
     for system_name, system in systems_to_evaluate.items():
         result = await run_hotpotqa(system, dataset_dir, verbose)

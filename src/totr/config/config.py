@@ -49,3 +49,12 @@ class Config:
             prompt=prompt_config,
             qa=qa_config,
         )
+
+    def with_model(self, model: str) -> "Config":
+        self.llm.model = model
+        self.generation.model = model
+        return self
+
+    @property
+    def identifier(self) -> str:
+        return f"{self.llm.model.split('/')[-1]}_{self.qa.answer_mode}"

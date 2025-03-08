@@ -3,7 +3,7 @@ import re
 import string
 from collections import Counter
 from pathlib import Path
-from typing import Any, Awaitable, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union
 
 import jsonlines
 import tqdm
@@ -92,11 +92,11 @@ async def run_hotpotqa(
     data = load_hotpotqa(Path(dataset_root_dir, bench_name, "test_subsampled.jsonl"))
 
     pbar = tqdm.tqdm(total=len(data), disable=not verbose)
-    task: Awaitable[Tuple[Dict[str, Any], str]]
     for i in range(0, len(data), batch_size):
-        for task in asyncio.as_completed(
-            [answer_func(item) for item in data[i : i + batch_size]]
-        ):
+        tasks = [
+            asyncio.create_task(answer_func(item)) for item in data[i : i + batch_size]
+        ]
+        for task in tasks:
             item, answer = await task
             preds[item["question_id"]] = answer
             ground_truth = item["answers_objects"][0]["spans"][0]
