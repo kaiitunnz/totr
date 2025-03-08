@@ -18,6 +18,7 @@
    Note that `lint` is optional but strongly recommended for code linting and formatting. On the other hand, you can remove `vllm` if you do not plan to use vLLM as the LLM server.
 
 ## Project Structure
+
 - [`benchmark`](benchmark): Benchmarking tasks, utility code, and baselines' implementation.
 - [`configs`](configs): Configuration files for different models, datasets, and systems.
 - [`datasets`](datasets): Dataset-related files.
@@ -53,3 +54,13 @@
   ```sh
   bash scripts/serve_vllm.sh
   ```
+
+## Running benchmarks
+
+Run the following command:
+
+```sh
+python benchmark/bench.py --verbose
+```
+
+The benchmark results will be saved to the [`results`](results) directory.
