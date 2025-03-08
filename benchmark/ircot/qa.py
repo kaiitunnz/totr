@@ -79,5 +79,5 @@ class IRCoTQAModel:
         output = await self._generate(context, question)
         answer = self._extract_answer(output)
         if answer is None:
-            raise ValueError("No answer generated.")
+            return output
         return answer

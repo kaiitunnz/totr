@@ -22,7 +22,7 @@ class ElasticsearchRetriever(BaseRetriever):
 
     def __init__(self, config: Config) -> None:
         super().__init__(config=config)
-        self.client = AsyncElasticsearch(config.retriever.elasticsearch_url, timeout=30)
+        self.client = AsyncElasticsearch(config.retriever.elasticsearch_url, timeout=None)
 
     async def retrieve(
         self,

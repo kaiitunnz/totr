@@ -141,7 +141,7 @@ def fit_prompt_in_context_window(
     remove_method: Literal["first", "last", "random", "largest"] = "first",
     example_delimiter: str = "\n\n\n",
     last_is_test_example: bool = True,
-    buffer_token_count: int = 10,
+    buffer_token_count: int = 20,
 ) -> str:
     examples = [example.strip() for example in prompt.strip().split(example_delimiter)]
     examples = [example for example in examples if example]
