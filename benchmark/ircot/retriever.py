@@ -34,6 +34,7 @@ class IRCoTRetriever:
         self.max_para_count = config.retriever.max_para_count
         self.max_gen_sent_count = config.retriever.max_gen_sent_count
         self.max_para_word_count = config.retriever.max_para_word_count
+        self.disable_exit = config.retriever.disable_exit
         self.question_prefix = config.qa.cot_question_prefix
         answer_regex = config.retriever.answer_regex
         self.answer_regex = None if answer_regex is None else re.compile(answer_regex)
@@ -165,8 +166,8 @@ class IRCoTRetriever:
                 break
             generated_sentences.append(new_sentence)
 
-            # Extract answer if any
-            if self.answer_regex is not None:
+            if not (self.disable_exit or self.answer_regex is None):
+                # Extract answer if any
                 final_answer = self._extract_answer(new_sentence)
                 if final_answer is not None:
                     break
