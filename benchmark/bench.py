@@ -1,10 +1,7 @@
 import asyncio
-import copy
 from argparse import ArgumentParser, Namespace
 from pathlib import Path
-from typing import Dict
 
-from base import QAMixin
 from bench_tasks.hotpotqa import run_hotpotqa
 from ircot import IRCoT
 from transformers.utils import logging
@@ -21,6 +18,16 @@ def parse_args() -> Namespace:
     return parser.parse_args()
 
 
+async def evaluate_hotpotqa(
+    config: Config, dataset_dir: Path, result_dir: Path, verbose: bool, overwrite: bool
+) -> None:
+    # 1. IRCoT
+    system = IRCoT(config)
+    system_name = f"ircot_{config.identifier}"
+    result = await run_hotpotqa(system, dataset_dir, verbose)
+    result.save_to(result_dir, system_name, overwrite)
+
+
 async def main(
     dataset_dir: Path, result_dir: Path, verbose: bool, overwrite: bool
 ) -> None:
@@ -29,23 +36,19 @@ async def main(
     dataset_dir.mkdir(exist_ok=True)
     result_dir.mkdir(exist_ok=True)
 
-    systems_to_evaluate: Dict[str, QAMixin] = {}
     model_names = [
         "google/flan-t5-large",
         "meta-llama/Meta-Llama-3-8B-Instruct",
         "meta-llama/Meta-Llama-3-8B",
     ]
+    base_config_path = Path("configs").resolve()
 
-    base_config = Config.from_json()
     for model_name in model_names:
-        # 1. IRCoT
-        config = copy.deepcopy(base_config).with_model(model_name)
-        system_name = f"ircot_{config.identifier}"
-        systems_to_evaluate[system_name] = IRCoT(config)
-
-    for system_name, system in systems_to_evaluate.items():
-        result = await run_hotpotqa(system, dataset_dir, verbose)
-        result.save_to(result_dir, system_name, overwrite)
+        # 1. HotpotQA
+        config = Config.from_json(
+            base_config_path.joinpath("hotpotqa", model_name.split("/")[-1] + ".json")
+        )
+        await evaluate_hotpotqa(config, dataset_dir, result_dir, verbose, overwrite)
 
 
 if __name__ == "__main__":
