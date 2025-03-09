@@ -12,10 +12,17 @@
    ```
 
 3. Run the following command to install all the dependencies.
+
    ```sh
    poetry install --with lint,vllm
    ```
+
    Note that `lint` is optional but strongly recommended for code linting and formatting. On the other hand, you can remove `vllm` if you do not plan to use vLLM as the LLM server.
+
+4. Install SpaCy.
+   ```sh
+   python -m spacy download en_core_web_sm
+   ```
 
 ## Project Structure
 
