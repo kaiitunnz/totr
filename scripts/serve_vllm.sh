@@ -8,4 +8,5 @@ port=8010
 
 vllm serve $model \
     --host=$host \
-    --port=$port
+    --port=$port \
+    --enable-prefix-caching
