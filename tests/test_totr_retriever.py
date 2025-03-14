@@ -15,7 +15,9 @@ async def main():
     retriever = ToTRRetriever(config, seed=0)
     titles, paragraphs, answer = await retriever.retrieve(question)
     print("-" * 30 + "Context" + "-" * 30)
-    print(retrieved_to_context(titles, paragraphs, retriever.helper.max_para_word_count))
+    print(
+        retrieved_to_context(titles, paragraphs, retriever.helper.max_para_word_count)
+    )
     print("-" * 30 + "Answer" + "-" * 30)
     print(answer)
 

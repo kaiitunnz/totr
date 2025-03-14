@@ -5,7 +5,7 @@ sys.path.append(str(Path(__file__).parent.parent / "benchmark"))
 
 import asyncio
 
-from ircot import IRCoTRetriver
+from ircot import IRCoTRetriever
 
 from totr.config import Config
 from totr.utils.prompt import retrieved_to_context

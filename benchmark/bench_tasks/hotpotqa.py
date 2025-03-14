@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Tuple, Union
 
 import jsonlines
 import tqdm
-from base import ResultHandler, QAMixin
+from base import QAMixin, ResultHandler
 
 
 def load_hotpotqa(path: Union[str, Path]) -> List[Dict[str, Any]]:
