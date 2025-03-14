@@ -3,6 +3,8 @@ datasets/*
 !datasets/.gitkeep
 results/*
 !results/.gitkeep
+elasticsearch-7.10.2/*
+raw_data
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

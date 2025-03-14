@@ -1,17 +1,26 @@
 ## Installation
 
-1. Create and activate a Conda environment
+1. Clone this repository.
+
+   ```sh
+   git clone https://github.com/kaiitunnz/totr.git
+   cd totr
+   ```
+
+2. Create and activate a Conda environment
+
    ```sh
    conda create -n totr python=3.11 -y
    conda activate totr
    ```
-2. Install Poetry for dependency management.
+
+3. Install Poetry for dependency management.
 
    ```sh
    pip install poetry
    ```
 
-3. Run the following command to install all the dependencies.
+4. Run the following command to install all the dependencies.
 
    ```sh
    poetry install --with lint,vllm
@@ -19,9 +28,101 @@
 
    Note that `lint` is optional but strongly recommended for code linting and formatting. On the other hand, you can remove `vllm` if you do not plan to use vLLM as the LLM server.
 
-4. Install SpaCy.
+5. Install SpaCy.
+
    ```sh
    python -m spacy download en_core_web_sm
+   ```
+
+6. Download the datasets used in the experiments.
+
+   ```sh
+   bash scripts/download_processed_data.sh
+   ```
+
+7. Set up a RAG database following the [Preparing Database for RAG](#preparing-database-for-rag) section.
+
+## Preparing Database for RAG
+
+1. Install Elasticsearch 7.10 (source: [IRCoT](https://github.com/StonyBrookNLP/ircot)). See the following options:
+   <details>
+   <summary>MacOS (Homebrew)</summary>
+
+   ```sh
+   # source: https://www.elastic.co/guide/en/elasticsearch/reference/current/brew.html
+   brew tap elastic/tap
+   brew install elastic/tap/elasticsearch-full # if it doesn't work: try 'brew untap elastic/tap' first: untap>tap>install.
+   ```
+
+   To run the server,
+
+   ```sh
+   brew services start elastic/tap/elasticsearch-full # to start the server
+   brew services stop elastic/tap/elasticsearch-full # to stop the server
+   ```
+
+   </details>
+
+   <details>
+   <summary>MacOS (wget)</summary>
+
+   ```sh
+   # source: https://www.elastic.co/guide/en/elasticsearch/reference/current/targz.html
+   wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.10.2-darwin-x86_64.tar.gz
+   wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.10.2-darwin-x86_64.tar.gz.sha512
+   shasum -a 512 -c elasticsearch-7.10.2-darwin-x86_64.tar.gz.sha512
+   tar -xzf elasticsearch-7.10.2-darwin-x86_64.tar.gz
+   rm elasticsearch-7.10.2-linux-x86_64.tar.gz elasticsearch-7.10.2-linux-x86_64.tar.gz.sha512
+   ```
+
+   To run the server,
+
+   ```sh
+   cd elasticsearch-7.10.2/
+   ./bin/elasticsearch # start the server
+   pkill -f elasticsearch # to stop the server
+   ```
+
+   </details>
+
+   <details>
+   <summary>Linux (wget)</summary>
+
+   ```sh
+   # source: https://www.elastic.co/guide/en/elasticsearch/reference/8.1/targz.html
+   wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.10.2-linux-x86_64.tar.gz
+   wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.10.2-linux-x86_64.tar.gz.sha512
+   shasum -a 512 -c elasticsearch-7.10.2-linux-x86_64.tar.gz.sha512
+   tar -xzf elasticsearch-7.10.2-linux-x86_64.tar.gz
+   rm elasticsearch-7.10.2-linux-x86_64.tar.gz elasticsearch-7.10.2-linux-x86_64.tar.gz.sha512
+   ```
+
+   To run the server,
+
+   ```sh
+   cd elasticsearch-7.10.2/
+   ./bin/elasticsearch # start the server
+   pkill -f elasticsearch # to stop the server
+   ```
+
+   </details>
+
+2. Download the datasets using the following command. The downloaded files will be stored in the [raw_data](raw_data) directory.
+
+   ```sh
+   bash scripts/download_raw_data.sh
+   ```
+
+3. Build indices for the downloaded datasets in Elasticsearch. First, ensure that Elasticsearch is running in the background. Then, run the following command:
+
+   ```sh
+   python -m totr.retriever.build_es_index --all
+   ```
+
+   You can also choose to build indices for specific datasets. For example, using the following command:
+
+   ```sh
+   python -m totr.retriever.build_es_index --datasets hotpotqa 2wikimultihopqa
    ```
 
 ## Project Structure

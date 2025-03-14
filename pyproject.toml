@@ -20,6 +20,9 @@ spacy = "^3.8.4"
 jsonlines = "^4.0.0"
 treelib = "^1.7.1"
 scikit-learn = "^1.6.1"
+beautifulsoup4 = "^4.13.3"
+base58 = "^2.1.1"
+gdown = "^5.2.0"
 
 [tool.poetry.group.lint]
 optional = true
