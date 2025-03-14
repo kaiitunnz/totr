@@ -1,9 +1,13 @@
+import asyncio
 from collections import OrderedDict
-from typing import Any, Dict, List, Optional
+from threading import Thread
+from typing import Any, Dict, List, Optional, Tuple
 
 from elasticsearch import AsyncElasticsearch
 
 from ..config import Config
+from ..utils.pool import AsyncPool
+from ..utils.queue import TSQueue
 from .base import BaseRetriever
 from .registry import RetrieverRegistry
 
@@ -25,6 +29,26 @@ class ElasticsearchRetriever(BaseRetriever):
         self.client = AsyncElasticsearch(
             config.retriever.elasticsearch_url, timeout=None
         )
+        self._channel: TSQueue[Tuple[int, Optional[str], Dict[str, Any]]] = TSQueue()
+        self._result_pool: AsyncPool[int, Any] = AsyncPool()
+        self._counter: int = 0
+
+        self._worker_thread: Thread = Thread(
+            target=lambda: asyncio.run(self._worker_loop()), daemon=True
+        )
+        self._worker_thread.start()
+
+    async def _worker_loop(self) -> None:
+        while True:
+            task_id, corpus_name, query = await self._channel.get()
+            result: Any = await self.client.search(index=corpus_name, body=query)
+            await self._result_pool.put(task_id, result)
+
+    async def _client_search(self, index: Optional[str], body: Dict[str, Any]) -> Any:
+        self._counter += 1
+        task_id = self._counter
+        await self._channel.put((task_id, index, body))
+        return await self._result_pool.get(task_id)
 
     async def retrieve(
         self,
@@ -151,7 +175,7 @@ class ElasticsearchRetriever(BaseRetriever):
         if not query["query"]["bool"]["should"]:
             query["query"]["bool"].pop("should")
 
-        result: Any = await self.client.search(index=corpus_name, body=query)
+        result: Any = await self._client_search(index=corpus_name, body=query)
 
         retrieval = []
         if result.get("hits") is not None and result["hits"].get("hits") is not None:
@@ -214,7 +238,7 @@ class ElasticsearchRetriever(BaseRetriever):
             },
         }
 
-        result: Any = await self.client.search(index=corpus_name, body=query)
+        result: Any = await self._client_search(index=corpus_name, body=query)
 
         retrieval = []
         if result.get("hits") is not None and result["hits"].get("hits") is not None:
