@@ -2,7 +2,7 @@
 
 1. Create and activate a Conda environment
    ```sh
-   conda create totr python=3.11 -y
+   conda create -n totr python=3.11 -y
    conda activate totr
    ```
 2. Install Poetry for dependency management.
