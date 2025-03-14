@@ -1,34 +1,91 @@
 import json
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Protocol
+from typing import Any, Dict, List, Optional, Protocol
+
+import jsonlines
 
 
 class QAMixin(Protocol):
     async def answer(self, question: str) -> str: ...
 
 
-@dataclass
-class BenchmarkResult:
-    bench_name: str
-    predictions: Any
-    metrics: Dict[str, Any]
+class ResultHandler:
+    def __init__(
+        self,
+        system_name: str,
+        result_dir: Optional[Path] = None,
+        save_results: bool = True,
+        overwrite: bool = False,
+    ) -> None:
+        if save_results and result_dir is None:
+            raise ValueError("result_dir must not be None if save_results is True")
 
-    def save_to(self, path: Path, system_name: str, overwrite: bool) -> None:
-        bench_dir = path / self.bench_name
+        self.system_name = system_name
+        self.save_results = save_results
+        self.overwrite = overwrite
+
+        self._result_dir = result_dir
+        self._bench_name: Optional[str] = None
+        self._predictions: List[Any] = []
+        self._metrics: Optional[Dict[str, Any]] = None
+
+    @property
+    def bench_name(self) -> str:
+        if self._bench_name is None:
+            raise ValueError("Bench name has not been set")
+        return self._bench_name
+
+    @property
+    def predictions(self) -> List[Any]:
+        return self._predictions
+
+    @property
+    def metrics(self) -> Dict[str, Any]:
+        if self._metrics is None:
+            raise ValueError("Metrics has not been set")
+        return self._metrics
+
+    @property
+    def result_dir(self) -> Path:
+        if self._result_dir is None:
+            raise ValueError("Result directory has not been set")
+        return self._result_dir
+
+    @property
+    def bench_result_dir(self) -> Path:
+        return self.result_dir / self.bench_name
+
+    def set_bench_name(self, bench_name: str) -> None:
+        self._bench_name = bench_name
+
+    def add_prediction(self, pred: Any) -> None:
+        self._predictions.append(pred)
+        if not self.save_results:
+            return
+
+        bench_dir = self.bench_result_dir
         bench_dir.mkdir(exist_ok=True)
 
-        pred_file = bench_dir / f"{system_name}_preds.json"
-        metrics_file = bench_dir / f"{system_name}_metrics.json"
+        pred_file = bench_dir / f"{self.system_name}_preds.jsonl"
 
-        if not overwrite:
-            if pred_file.exists() or metrics_file.exists():
+        with jsonlines.open(pred_file, "a") as f:
+            f.write(pred)
+
+    def set_metrics(self, metrics: Dict[str, Any]) -> None:
+        self._metrics = metrics
+        if not self.save_results:
+            return
+
+        bench_dir = self.bench_result_dir
+        bench_dir.mkdir(exist_ok=True)
+
+        metrics_file = bench_dir / f"{self.system_name}_metrics.json"
+
+        if not self.overwrite:
+            if metrics_file.exists():
                 user_inp = input("File exists. Do you wish to overwrite? ([y], n)")
                 if user_inp and user_inp.lower() != "y":
                     return
 
-        with open(pred_file, "w") as f:
-            json.dump(self.predictions, f, indent=2)
-
         with open(metrics_file, "w") as f:
-            json.dump(self.metrics, f, indent=2)
+            json.dump(metrics, f, indent=2)

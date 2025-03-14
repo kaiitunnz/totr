@@ -1,11 +1,14 @@
 import asyncio
 from argparse import ArgumentParser, Namespace
 from pathlib import Path
+from typing import Iterable, Tuple
 
+from base import QAMixin, ResultHandler
 from bench_tasks.hotpotqa import run_hotpotqa
 from ircot import IRCoT
 from transformers.utils import logging
 
+from totr import SCR, ToTR
 from totr.config import Config
 
 
@@ -21,11 +24,25 @@ def parse_args() -> Namespace:
 async def evaluate_hotpotqa(
     config: Config, dataset_dir: Path, result_dir: Path, verbose: bool, overwrite: bool
 ) -> None:
-    # 1. IRCoT
-    system = IRCoT(config)
-    system_name = f"ircot_{config.identifier}"
-    result = await run_hotpotqa(system, dataset_dir, verbose)
-    result.save_to(result_dir, system_name, overwrite)
+    def systems() -> Iterable[Tuple[str, QAMixin]]:
+        # 1. IRCoT
+        yield f"ircot_{config.identifier}", IRCoT(config)
+        # 2. ToTR
+        yield f"totr_{config.identifier}", ToTR(config, seed=0)
+        # 3. SCR
+        yield f"scr_{config.identifier}", SCR(config, seed=0)
+
+    batch_sizes = {IRCoT: 16, ToTR: 1, SCR: 4}
+
+    print("Evaluating systems on HotpotQA...")
+    for system_name, system in systems():
+        print(f">> Evaluating {system_name}...")
+        batch_size = batch_sizes[type(system)]
+        result_handler = ResultHandler(
+            system_name, result_dir, save_results=True, overwrite=overwrite
+        )
+        await run_hotpotqa(system, dataset_dir, result_handler, batch_size, verbose)
+        print(f">> Results: {result_handler.metrics}")
 
 
 async def main(
@@ -37,9 +54,10 @@ async def main(
     result_dir.mkdir(exist_ok=True)
 
     model_names = [
-        "google/flan-t5-large",
-        "meta-llama/Meta-Llama-3-8B-Instruct",
-        "meta-llama/Meta-Llama-3-8B",
+        # "google/flan-t5-large",
+        # "meta-llama/Meta-Llama-3-8B-Instruct",
+        # "meta-llama/Meta-Llama-3-8B",
+        "meta-llama/Llama-3.1-8B-Instruct",
     ]
     base_config_path = Path("configs").resolve()
 

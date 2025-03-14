@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Tuple, Union
 
 import jsonlines
 import tqdm
-from base import BenchmarkResult, QAMixin
+from base import ResultHandler, QAMixin
 
 
 def load_hotpotqa(path: Union[str, Path]) -> List[Dict[str, Any]]:
@@ -79,14 +79,19 @@ def update_metrics(
 
 
 async def run_hotpotqa(
-    qa_system: QAMixin, dataset_root_dir: Union[str, Path], verbose: bool = True
-) -> BenchmarkResult:
+    qa_system: QAMixin,
+    dataset_root_dir: Union[str, Path],
+    result_handler: ResultHandler,
+    batch_size: int = 1,
+    verbose: bool = True,
+) -> None:
     async def answer_func(item: Dict[str, Any]) -> Tuple[Dict[str, Any], str]:
         answer = await qa_system.answer(item["question_text"])
         return item, answer
 
-    batch_size = 16
     bench_name = "hotpotqa"
+    result_handler.set_bench_name(bench_name)
+
     preds = {}
     metrics: Dict[str, float] = {"em": 0, "f1": 0, "prec": 0, "recall": 0}
     data = load_hotpotqa(Path(dataset_root_dir, bench_name, "test_subsampled.jsonl"))
@@ -102,10 +107,16 @@ async def run_hotpotqa(
             ground_truth = item["answers_objects"][0]["spans"][0]
             update_metrics(metrics, answer, ground_truth)
             pbar.update(1)
+            result_handler.add_prediction(
+                {
+                    "question_id": item["question_id"],
+                    "prediction": answer,
+                    "ground_truth": ground_truth,
+                }
+            )
 
     n = len(data)
     for k in metrics.keys():
         metrics[k] /= n
 
-    result = BenchmarkResult(bench_name, preds, metrics)
-    return result
+    result_handler.set_metrics(metrics)
