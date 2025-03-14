@@ -5,9 +5,10 @@
     "port": 8010,
     "api_key": "EMPTY",
     "model": "google/flan-t5-large",
-    "overriding_context_window": null
+    "overriding_context_window": 6000
   },
   "generation": {
+    "temperature": 0,
     "max_tokens": 200
   },
   "retriever": {
@@ -21,7 +22,6 @@
     "max_para_count": 15,
     "max_gen_sent_count": 10,
     "max_para_word_count": 350,
-    "disable_exit": true,
     "answer_regex": ".* answer is:? (.*)\\.?"
   },
   "qa": {
@@ -37,5 +37,19 @@
     "cot_prompt_filename": "gold_with_3_distractors_context_cot_qa_flan_t5.txt",
     "direct_prompt_filename": "gold_with_3_distractors_context_direct_qa_flan_t5.txt",
     "prompt_set": "1"
+  },
+  "totr": {
+    "retriever_gen_config_dict": {
+      "max_tokens": 200,
+      "temperature": 0.5,
+      "do_sample": true
+    }
+  },
+  "scr": {
+    "retriever_gen_config_dict": {
+      "max_tokens": 200,
+      "temperature": 0.5,
+      "do_sample": true
+    }
   }
 }

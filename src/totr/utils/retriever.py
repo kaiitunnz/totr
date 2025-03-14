@@ -1,7 +1,10 @@
 import re
 from typing import List
 
+import numpy as np
 from rapidfuzz import fuzz
+from scipy.sparse import spmatrix
+from sklearn.feature_extraction.text import CountVectorizer
 
 
 def remove_wh_words(text: str) -> str:
@@ -51,3 +54,35 @@ def is_reasoning_sentence(sentence: str) -> bool:
 
 def remove_reasoning_sentences(sentences: List[str]) -> List[str]:
     return [sentence for sentence in sentences if not is_reasoning_sentence(sentence)]
+
+
+def rerank_answers(
+    answers: List[str], retrieved_counts: List[int], threshold_factor: float
+) -> List[int]:
+    if len(answers) == 0:
+        return []
+    if len(answers) == 1:
+        return [0]
+
+    vectorizer = CountVectorizer(binary=True, token_pattern=r"(?u)\b\w+\b")
+    X = vectorizer.fit_transform(answers)
+    similarities_ = (X @ X.T) / X.shape[-1]  # type: ignore
+    similarities: np.ndarray
+    if isinstance(similarities_, spmatrix):
+        similarities = np.array(similarities_.todense())
+    else:
+        similarities = similarities_
+    similarities = similarities - np.eye(similarities.shape[0])
+    similarities = similarities.sum(axis=0) / (similarities.shape[0] - 1)
+
+    # Sort by similarity in desc and the number of retrieved documents in asc
+    similarity_threshold = similarities.max() * threshold_factor
+    filtered = [
+        (sim, -retrieved_count, i)
+        for i, (sim, retrieved_count) in enumerate(zip(similarities, retrieved_counts))
+        if sim > similarity_threshold
+    ]
+    filtered.sort(reverse=True)
+
+    ranks = [i for _, _, i in filtered]
+    return ranks

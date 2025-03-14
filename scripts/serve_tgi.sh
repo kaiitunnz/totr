@@ -2,7 +2,7 @@
 
 set -e
 
-model=meta-llama/Meta-Llama-3-8B-Instruct
+model=meta-llama/Llama-3.1-8B-Instruct
 volume=$HF_HOME # share a volume with the Docker container to avoid downloading weights every run
 port=8010
 

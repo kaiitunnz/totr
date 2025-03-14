@@ -2,7 +2,7 @@
 
 set -e
 
-model=meta-llama/Meta-Llama-3-8B-Instruct
+model=meta-llama/Llama-3.1-8B-Instruct
 host=localhost
 port=8010
 

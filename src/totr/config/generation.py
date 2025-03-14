@@ -26,4 +26,5 @@ class GenerationConfig:
         kwargs = self.as_dict()
         kwargs.pop("do_sample")
         kwargs.pop("top_k")
+        # kwargs["timeout"] = None
         return kwargs

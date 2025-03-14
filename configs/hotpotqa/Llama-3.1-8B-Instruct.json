@@ -1,11 +1,11 @@
 {
   "llm": {
-    "engine": "local",
+    "engine": "openai",
     "host": "localhost",
     "port": 8010,
     "api_key": "EMPTY",
-    "model": "google/flan-t5-large",
-    "overriding_context_window": 6000
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "overriding_context_window": null
   },
   "generation": {
     "temperature": 0,
@@ -15,7 +15,7 @@
     "elasticsearch_host": "localhost",
     "elasticsearch_port": 9200,
     "retriever_name": "elasticsearch",
-    "hit_count_per_step": 8,
+    "hit_count_per_step": 6,
     "corpus_name": "hotpotqa",
     "document_type": "title_paragraph_text",
     "skip_long_paras": true,
@@ -25,10 +25,11 @@
     "answer_regex": ".* answer is:? (.*)\\.?"
   },
   "qa": {
-    "answer_mode": "direct",
-    "cot_question_prefix": "Answer the following question by reasoning step-by-step.\n",
-    "direct_question_prefix": "Answer the following question.\n",
-    "cot_answer_regex": null,
+    "answer_mode": "cot",
+    "cot_question_prefix": "Answer the following question by reasoning step-by-step. At the end, state ONLY your final answer by prefacing with \"So the answer is:\".\n",
+    "direct_question_prefix": "Answer the following question. Provide only your final answer without elaboration.\n",
+    "cot_answer_regex": ".* answer is:? (.*)\\.?",
+    "direct_answer_regex": "^(.*?)\n",
     "remove_full_stop": true
   },
   "prompt": {

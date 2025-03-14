@@ -8,6 +8,8 @@ from .llm import LLMConfig
 from .prompt import PromptConfig
 from .qa import QAConfig
 from .retriever import RetrieverConfig
+from .scr import SCRConfig
+from .totr import ToTRConfig
 
 
 @dataclass
@@ -17,6 +19,8 @@ class Config:
     retriever: RetrieverConfig
     prompt: PromptConfig
     qa: QAConfig
+    totr: ToTRConfig
+    scr: SCRConfig
 
     @classmethod
     def from_json(
@@ -42,12 +46,26 @@ class Config:
         prompt_config = PromptConfig(**obj["prompt"])
         qa_config = QAConfig(**obj["qa"])
 
+        totr_retriever_generation_dict: Dict[str, Any] = (
+            dict(model=llm_config.model) | obj["totr"]["retriever_gen_config_dict"]
+        )
+        obj["totr"]["retriever_gen_config_dict"] = totr_retriever_generation_dict
+        totr_config = ToTRConfig(**obj["totr"])
+
+        scr_retriever_generation_dict: Dict[str, Any] = (
+            dict(model=llm_config.model) | obj["scr"]["retriever_gen_config_dict"]
+        )
+        obj["scr"]["retriever_gen_config_dict"] = scr_retriever_generation_dict
+        scr_config = SCRConfig(**obj["scr"])
+
         return cls(
             llm=llm_config,
             generation=generation_config,
             retriever=retriever_config,
             prompt=prompt_config,
             qa=qa_config,
+            totr=totr_config,
+            scr=scr_config,
         )
 
     def with_model(self, model: str) -> "Config":

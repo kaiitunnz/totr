@@ -18,7 +18,6 @@ class RetrieverConfig:
     max_para_count: int
     max_gen_sent_count: int
     max_para_word_count: int
-    disable_exit: bool
     answer_regex: Optional[str] = ".* answer is:? (.*)\\.?"
 
     @property

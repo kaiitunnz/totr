@@ -18,6 +18,8 @@ aiohttp = "^3.11.13"
 rapidfuzz = "^3.12.2"
 spacy = "^3.8.4"
 jsonlines = "^4.0.0"
+treelib = "^1.7.1"
+scikit-learn = "^1.6.1"
 
 [tool.poetry.group.lint]
 optional = true
