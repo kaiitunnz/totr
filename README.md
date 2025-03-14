@@ -163,6 +163,44 @@
   bash scripts/serve_vllm.sh
   ```
 
+- [`scripts/sbatch_vllm.sh`](scripts/sbatch_vllm.sh): Script for serving the vLLM server on Slurm cluster. See this [section](#running-llm-server-on-slurm-cluster) for example usage.
+
+## Running LLM server on Slurm cluster
+
+1. Log in to your Slurm login node.
+
+2. Submit a batch job using the following command. You may need to set appropriate arguments for sbatch in [`scripts/sbatch_vllm.sh`](scripts/sbatch_vllm.sh).
+
+   ```sh
+   sbatch scripts/sbatch_vllm.sh
+   ```
+
+3. Check your allocated node with the following command:
+
+   ```sh
+   squeue -u $USER
+   ```
+
+4. Log out from the Slurm login node and start ssh tunneling with the following command:
+
+   ```sh
+   ssh -L 8010:<gpu-node>:8010 <user>@<login-node-address>
+   ```
+
+   or in the background with the following command (in this case, you need to kill the process by yourself):
+
+   ```sh
+   ssh -fN -L 8010:<gpu-node>:8010 <user>@<login-node-address>
+   ```
+
+5. Now you can run benchmarking scripts or connect to the LLM server from your local host at the following address: `http://localhost:8010`.
+
+6. To stop the LLM server before it is timed out, run the following command with the appropriate `job-id` obtained from the `squeue` command.
+
+   ```sh
+   scancel <job-id>
+   ```
+
 ## Running benchmarks
 
 Run the following command:
