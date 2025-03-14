@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 import backoff
-from openai import AsyncOpenAI, OpenAI, RateLimitError
+from openai import APITimeoutError, AsyncOpenAI, OpenAI, RateLimitError
 from openai.types.chat import ChatCompletion
 from openai.types.completion import Completion
 
@@ -14,7 +14,7 @@ from .registry import LLMRegistry
 @LLMRegistry.register("openai")
 class OpenAILLM(BaseLLM):
     @backoff.on_exception(
-        backoff.expo, exception=RateLimitError, max_tries=10, max_time=60
+        backoff.expo, exception=(RateLimitError, APITimeoutError), max_tries=10
     )
     def complete(
         self, prompt: str, config: Optional[GenerationConfig] = None
@@ -33,7 +33,7 @@ class OpenAILLM(BaseLLM):
         return res_messages
 
     @backoff.on_exception(
-        backoff.expo, exception=RateLimitError, max_tries=10, max_time=60
+        backoff.expo, exception=(RateLimitError, APITimeoutError), max_tries=10
     )
     async def complete_async(
         self, prompt: str, config: Optional[GenerationConfig] = None
@@ -52,7 +52,7 @@ class OpenAILLM(BaseLLM):
         return res_messages
 
     @backoff.on_exception(
-        backoff.expo, exception=RateLimitError, max_tries=10, max_time=60
+        backoff.expo, exception=(RateLimitError, APITimeoutError), max_tries=10
     )
     def chat(
         self, messages: List[Message], config: Optional[GenerationConfig] = None
@@ -80,7 +80,7 @@ class OpenAILLM(BaseLLM):
         return res_messages
 
     @backoff.on_exception(
-        backoff.expo, exception=RateLimitError, max_tries=10, max_time=60
+        backoff.expo, exception=(RateLimitError, APITimeoutError), max_tries=10
     )
     async def chat_async(
         self, messages: List[Message], config: Optional[GenerationConfig] = None
