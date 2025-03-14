@@ -1,13 +1,8 @@
-import sys
+import asyncio
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).parent.parent / "benchmark"))
-
-import asyncio
-
-from ircot import IRCoTRetriver
-
 from totr.config import Config
+from totr.scr import SCRRetriever
 from totr.utils.prompt import retrieved_to_context
 
 
@@ -16,11 +11,13 @@ async def main():
         "What is the nationality of the foreign born victim of Singapore's "
         "caning punishment before Oliver Fricker experienced the same?"
     )
-    config = Config.from_json(Path("configs/hotpotqa/flan-t5-large.json"))
-    retriever = IRCoTRetriever(config)
+    config = Config.from_json(Path("configs/hotpotqa/Llama-3.1-8B-Instruct.json"))
+    retriever = SCRRetriever(config, seed=0)
     titles, paragraphs, answer = await retriever.retrieve(question)
     print("-" * 30 + "Context" + "-" * 30)
-    print(retrieved_to_context(titles, paragraphs, retriever.max_para_word_count))
+    print(
+        retrieved_to_context(titles, paragraphs, retriever.helper.max_para_word_count)
+    )
     print("-" * 30 + "Answer" + "-" * 30)
     print(answer)
 
