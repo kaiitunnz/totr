@@ -47,7 +47,7 @@ ignore_missing_imports = true
 files = ["src"]
 
 [tool.codespell]
-skip = ["./poetry.lock", "tmp*", "prompts", "datasets", "results"]
+skip = ["./poetry.lock", "tmp*", "prompts", "datasets", "results", "raw_data", "elasticsearch-7.10.2"]
 
 
 [build-system]
