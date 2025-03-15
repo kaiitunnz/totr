@@ -39,9 +39,17 @@ async def evaluate_hotpotqa(
     for system_name, system in systems():
         print(f">> Evaluating {system_name}...")
         batch_size = batch_sizes[type(system)]
-        result_handler = ResultHandler(
-            system_name, bench_name, result_dir, save_results=True, overwrite=overwrite
-        )
+        try:
+            result_handler = ResultHandler(
+                system_name,
+                bench_name,
+                result_dir,
+                save_results=True,
+                overwrite=overwrite,
+            )
+        except FileExistsError:
+            print(">> Results already exist. Skipped.")
+            continue
         await run_hotpotqa(system, dataset_dir, result_handler, batch_size, verbose)
         print(f">> Results: {result_handler.metrics}")
 

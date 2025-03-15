@@ -75,9 +75,9 @@ class ResultHandler:
             return
 
         if self.save_results and self.metric_file_path.exists():
-            user_inp = input("Result file exists. Do you wish to overwrite? ([y], n)")
+            user_inp = input("Result file exists. Do you wish to overwrite? ([y], n): ")
             if user_inp and user_inp.lower() != "y":
-                return
+                raise FileExistsError()
 
         if self.pred_file_path.exists():
             with jsonlines.open(self.pred_file_path, "r") as reader:

@@ -91,6 +91,7 @@ async def run_hotpotqa(
 
     metrics: Dict[str, float] = {"em": 0, "f1": 0, "prec": 0, "recall": 0}
     data = load_hotpotqa(Path(dataset_root_dir, "hotpotqa", "test_subsampled.jsonl"))
+    n = len(data)
 
     # Check existing predictions
     data_dict = {d["question_id"]: d for d in data}
@@ -117,7 +118,6 @@ async def run_hotpotqa(
                 }
             )
 
-    n = len(data)
     for k in metrics.keys():
         metrics[k] /= n
 
