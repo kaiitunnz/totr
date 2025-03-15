@@ -20,7 +20,6 @@ from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 from tqdm import tqdm
 
-
 REGISTERED_DATASETS = ("hotpotqa", "iirc", "2wikimultihopqa", "musique")
 
 

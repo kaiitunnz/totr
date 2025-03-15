@@ -13,6 +13,7 @@ class ResultHandler:
     def __init__(
         self,
         system_name: str,
+        bench_name: str,
         result_dir: Optional[Path] = None,
         save_results: bool = True,
         overwrite: bool = False,
@@ -21,19 +22,15 @@ class ResultHandler:
             raise ValueError("result_dir must not be None if save_results is True")
 
         self.system_name = system_name
+        self.bench_name = bench_name
         self.save_results = save_results
         self.overwrite = overwrite
 
         self._result_dir = result_dir
-        self._bench_name: Optional[str] = None
         self._predictions: List[Any] = []
         self._metrics: Optional[Dict[str, Any]] = None
 
-    @property
-    def bench_name(self) -> str:
-        if self._bench_name is None:
-            raise ValueError("Bench name has not been set")
-        return self._bench_name
+        self._check_result_dir()
 
     @property
     def predictions(self) -> List[Any]:
@@ -55,37 +52,53 @@ class ResultHandler:
     def bench_result_dir(self) -> Path:
         return self.result_dir / self.bench_name
 
-    def set_bench_name(self, bench_name: str) -> None:
-        self._bench_name = bench_name
+    @property
+    def metric_file_path(self) -> Path:
+        return self.bench_result_dir / f"{self.system_name}_metrics.json"
+
+    @property
+    def pred_file_path(self) -> Path:
+        return self.bench_result_dir / f"{self.system_name}_preds.jsonl"
+
+    def _check_result_dir(self) -> None:
+        if len(self.predictions) > 0:
+            raise ValueError(
+                "Predictions have already been updated. "
+                "Please ensure to call this function only once during initialization."
+            )
+
+        self.bench_result_dir.mkdir(exist_ok=True)
+
+        if self.overwrite:
+            if self.save_results and self.pred_file_path.exists():
+                self.pred_file_path.unlink()
+            return
+
+        if self.save_results and self.metric_file_path.exists():
+            user_inp = input("Result file exists. Do you wish to overwrite? ([y], n)")
+            if user_inp and user_inp.lower() != "y":
+                return
+
+        if self.pred_file_path.exists():
+            with jsonlines.open(self.pred_file_path, "r") as reader:
+                self._predictions.extend(reader)
+            print(
+                f"Prediction file exists. {len(self._predictions)} predictions found. "
+                "Continue with the remaining samples."
+            )
 
     def add_prediction(self, pred: Any) -> None:
         self._predictions.append(pred)
         if not self.save_results:
             return
 
-        bench_dir = self.bench_result_dir
-        bench_dir.mkdir(exist_ok=True)
-
-        pred_file = bench_dir / f"{self.system_name}_preds.jsonl"
-
-        with jsonlines.open(pred_file, "a") as f:
-            f.write(pred)
+        with jsonlines.open(self.pred_file_path, "a") as writer:
+            writer.write(pred)
 
     def set_metrics(self, metrics: Dict[str, Any]) -> None:
         self._metrics = metrics
         if not self.save_results:
             return
 
-        bench_dir = self.bench_result_dir
-        bench_dir.mkdir(exist_ok=True)
-
-        metrics_file = bench_dir / f"{self.system_name}_metrics.json"
-
-        if not self.overwrite:
-            if metrics_file.exists():
-                user_inp = input("File exists. Do you wish to overwrite? ([y], n)")
-                if user_inp and user_inp.lower() != "y":
-                    return
-
-        with open(metrics_file, "w") as f:
+        with open(self.metric_file_path, "w") as f:
             json.dump(metrics, f, indent=2)

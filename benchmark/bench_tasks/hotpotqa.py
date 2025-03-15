@@ -89,12 +89,15 @@ async def run_hotpotqa(
         answer = await qa_system.answer(item["question_text"])
         return item, answer
 
-    bench_name = "hotpotqa"
-    result_handler.set_bench_name(bench_name)
-
-    preds = {}
     metrics: Dict[str, float] = {"em": 0, "f1": 0, "prec": 0, "recall": 0}
-    data = load_hotpotqa(Path(dataset_root_dir, bench_name, "test_subsampled.jsonl"))
+    data = load_hotpotqa(Path(dataset_root_dir, "hotpotqa", "test_subsampled.jsonl"))
+
+    # Check existing predictions
+    data_dict = {d["question_id"]: d for d in data}
+    for pred in result_handler.predictions:
+        del data_dict[pred["question_id"]]
+        update_metrics(metrics, pred["prediction"], pred["ground_truth"])
+    data = list(data_dict.values())
 
     pbar = tqdm.tqdm(total=len(data), disable=not verbose)
     for i in range(0, len(data), batch_size):
@@ -103,7 +106,6 @@ async def run_hotpotqa(
         ]
         for task in tasks:
             item, answer = await task
-            preds[item["question_id"]] = answer
             ground_truth = item["answers_objects"][0]["spans"][0]
             update_metrics(metrics, answer, ground_truth)
             pbar.update(1)

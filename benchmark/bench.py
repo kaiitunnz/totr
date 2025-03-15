@@ -32,6 +32,7 @@ async def evaluate_hotpotqa(
         # 3. SCR
         yield f"scr_{config.identifier}", SCR(config, seed=0)
 
+    bench_name = "hotpotqa"
     batch_sizes = {IRCoT: 16, ToTR: 1, SCR: 4}
 
     print("Evaluating systems on HotpotQA...")
@@ -39,7 +40,7 @@ async def evaluate_hotpotqa(
         print(f">> Evaluating {system_name}...")
         batch_size = batch_sizes[type(system)]
         result_handler = ResultHandler(
-            system_name, result_dir, save_results=True, overwrite=overwrite
+            system_name, bench_name, result_dir, save_results=True, overwrite=overwrite
         )
         await run_hotpotqa(system, dataset_dir, result_handler, batch_size, verbose)
         print(f">> Results: {result_handler.metrics}")
