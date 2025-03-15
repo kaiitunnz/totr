@@ -1,11 +1,13 @@
 import os
 import random
+from functools import lru_cache
 
 import numpy as np
 import torch
 from transformers import AutoTokenizer
 
 
+@lru_cache()
 def get_tokenizer(model_name: str):
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     return AutoTokenizer.from_pretrained(model_name)
