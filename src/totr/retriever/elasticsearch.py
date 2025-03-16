@@ -1,7 +1,7 @@
 import asyncio
 from collections import OrderedDict
 from threading import Thread
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Union
 
 from elasticsearch import AsyncElasticsearch
 
@@ -13,10 +13,24 @@ from .registry import RetrieverRegistry
 
 
 class _RetrieverHelper:
+    class RetrieverData:
+        __slots__ = "task_id", "client", "corpus_name", "query"
+
+        def __init__(
+            self,
+            task_id: int,
+            client: AsyncElasticsearch,
+            corpus_name: Optional[str],
+            query: Dict[str, Any],
+        ) -> None:
+            self.task_id = task_id
+            self.client = client
+            self.corpus_name = corpus_name
+            self.query = query
+
     def __init__(self) -> None:
-        # (task_id, client, corpus_name, query)
         self._channel: TSQueue[
-            Tuple[int, AsyncElasticsearch, Optional[str], Dict[str, Any]]
+            Union[AsyncElasticsearch, _RetrieverHelper.RetrieverData]
         ] = TSQueue()
         self._result_pool: AsyncPool[int, Any] = AsyncPool()
         self._counter: int = 0
@@ -28,20 +42,28 @@ class _RetrieverHelper:
 
     async def _worker_loop(self) -> None:
         while True:
-            task_id, client, corpus_name, query = await self._channel.get()
-            result: Any = await client.search(index=corpus_name, body=query)
-            await self._result_pool.put(task_id, result)
+            job = await self._channel.get()
+            if isinstance(job, AsyncElasticsearch):
+                await job.close()
+                continue
+
+            result: Any = await job.client.search(index=job.corpus_name, body=job.query)
+            await self._result_pool.put(job.task_id, result)
 
     async def search(
         self, client: AsyncElasticsearch, index: Optional[str], body: Dict[str, Any]
     ) -> Any:
         self._counter += 1
         task_id = self._counter
-        await self._channel.put((task_id, client, index, body))
+        await self._channel.put(self.RetrieverData(task_id, client, index, body))
         return await self._result_pool.get(task_id)
 
+    def close(self, client: AsyncElasticsearch):
+        self._channel.put_nowait(client)
 
-_retriever_helper = _RetrieverHelper()
+    def __del__(self):
+        self._channel.close()
+        self._worker_thread.join()
 
 
 @RetrieverRegistry.register("elasticsearch")
@@ -56,11 +78,16 @@ class ElasticsearchRetriever(BaseRetriever):
     # bool/filter acts as binary filter w/o score (unlike must and should).
     """
 
+    _helper = _RetrieverHelper()
+
     def __init__(self, config: Config) -> None:
         super().__init__(config=config)
         self.client = AsyncElasticsearch(
             config.retriever.elasticsearch_url, timeout=None
         )
+
+    def __del__(self) -> None:
+        self._helper.close(self.client)
 
     async def retrieve(
         self,
@@ -187,7 +214,7 @@ class ElasticsearchRetriever(BaseRetriever):
         if not query["query"]["bool"]["should"]:
             query["query"]["bool"].pop("should")
 
-        result: Any = await _retriever_helper.search(
+        result: Any = await self._helper.search(
             self.client, index=corpus_name, body=query
         )
 
@@ -252,7 +279,7 @@ class ElasticsearchRetriever(BaseRetriever):
             },
         }
 
-        result: Any = await _retriever_helper.search(
+        result: Any = await self._helper.search(
             self.client, index=corpus_name, body=query
         )
 
