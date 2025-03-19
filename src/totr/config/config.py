@@ -1,7 +1,7 @@
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Union
+from typing import Any, Dict, List, Union
 
 from .generation import GenerationConfig
 from .llm import LLMConfig
@@ -75,4 +75,7 @@ class Config:
 
     @property
     def identifier(self) -> str:
-        return f"{self.llm.model.split('/')[-1]}_{self.qa.answer_mode}"
+        config: List[str] = [self.llm.model.split("/")[-1], self.qa.answer_mode]
+        if self.qa.use_retriever_answer:
+            config.append("retr-ans")
+        return "_".join(config)

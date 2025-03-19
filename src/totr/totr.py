@@ -211,13 +211,18 @@ class ToTR:
     def __init__(self, config: Config, seed: Optional[int] = None) -> None:
         self.retriever = ToTRRetriever(config, seed)
         self.qa = QAModel(config)
+        self.use_retriever_answer = config.qa.use_retriever_answer
 
     async def retrieve(self, question: str) -> Tuple[List[str], List[str]]:
         titles, paras, _ = await self.retriever.retrieve(question)
         return titles, paras
 
-    async def answer(self, question: str, use_retriever_answer: bool = False) -> str:
+    async def answer(
+        self, question: str, use_retriever_answer: Optional[bool] = None
+    ) -> str:
         titles, paras, answer = await self.retriever.retrieve(question)
+        if use_retriever_answer is None:
+            use_retriever_answer = self.use_retriever_answer
         if use_retriever_answer and answer is not None:
             return answer
         answer = await self.qa.answer(question, titles, paras)

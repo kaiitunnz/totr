@@ -30,7 +30,8 @@
     "direct_question_prefix": "Answer the following question. Provide only your final answer without elaboration.\n",
     "cot_answer_regex": ".* answer is:? (.*)\\.?",
     "direct_answer_regex": "^(.*?)\n",
-    "remove_full_stop": true
+    "remove_full_stop": true,
+    "use_retriever_answer": false
   },
   "prompt": {
     "prompt_directory": "prompts",

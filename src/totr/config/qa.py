@@ -12,6 +12,7 @@ class QAConfig:
     cot_answer_regex: Optional[str] = None
     direct_answer_regex: Optional[str] = None
     remove_full_stop: bool = True
+    use_retriever_answer: bool = False
 
     @property
     def answer_regex(self) -> Optional[str]:
