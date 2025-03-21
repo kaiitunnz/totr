@@ -24,7 +24,11 @@ class GenerationConfig:
 
     def openai_kwargs(self) -> Dict[str, Any]:
         kwargs = self.as_dict()
-        kwargs.pop("do_sample")
+        do_sample = kwargs.pop("do_sample")
         kwargs.pop("top_k")
         # kwargs["timeout"] = None
+
+        if not do_sample:
+            kwargs["temperature"] = 0
+
         return kwargs
