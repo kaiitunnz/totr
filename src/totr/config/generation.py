@@ -14,21 +14,19 @@ class GenerationConfig:
     seed: Optional[int] = None
     stop: Optional[Union[str, List[str]]] = None
     stream_options: Optional[Any] = None
-    do_sample: bool = False
     temperature: Optional[float] = None
     top_p: Optional[float] = None
     top_k: Optional[int] = None
+
+    @property
+    def do_sample(self) -> bool:
+        return self.temperature is not None and self.temperature > 0
 
     def as_dict(self) -> Dict[str, Any]:
         return asdict(self)
 
     def openai_kwargs(self) -> Dict[str, Any]:
         kwargs = self.as_dict()
-        do_sample = kwargs.pop("do_sample")
         kwargs.pop("top_k")
         # kwargs["timeout"] = None
-
-        if not do_sample:
-            kwargs["temperature"] = 0
-
         return kwargs

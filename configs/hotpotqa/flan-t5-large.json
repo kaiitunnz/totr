@@ -42,15 +42,13 @@
   "totr": {
     "retriever_gen_config_dict": {
       "max_tokens": 200,
-      "temperature": 0.5,
-      "do_sample": true
+      "temperature": 0.2
     }
   },
   "scr": {
     "retriever_gen_config_dict": {
       "max_tokens": 200,
-      "temperature": 0.5,
-      "do_sample": true
+      "temperature": 0.5
     }
   }
 }

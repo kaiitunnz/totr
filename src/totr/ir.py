@@ -109,9 +109,7 @@ class IRHelper:
         gen_config: Optional[GenerationConfig]
         if is_main_branch and self.retriever_gen_config is not None:
             # Use greedy decoding on main branch
-            gen_config = replace(
-                self.retriever_gen_config, temperature=None, do_sample=False
-            )
+            gen_config = replace(self.retriever_gen_config, temperature=0)
         else:
             gen_config = self.retriever_gen_config
         outputs = await self.llm.complete_async(prompt, gen_config)
