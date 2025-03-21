@@ -28,5 +28,6 @@ class GenerationConfig:
     def openai_kwargs(self) -> Dict[str, Any]:
         kwargs = self.as_dict()
         kwargs.pop("top_k")
+        kwargs = {k: v for k, v in kwargs.items() if v is not None}
         # kwargs["timeout"] = None
         return kwargs
