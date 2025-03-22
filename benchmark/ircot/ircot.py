@@ -11,7 +11,8 @@ class IRCoTRetriever:
     async def retrieve(
         self, question: str
     ) -> Tuple[List[str], List[str], Optional[str]]:
-        retrieved_titles, retrieved_paras = [], []
+        retrieved_titles: List[str] = []
+        retrieved_paras: List[str] = []
 
         query = question
         generated_sentences: List[str] = []
@@ -61,4 +62,5 @@ class IRCoT:
         if use_retriever_answer and answer is not None:
             return answer
         answer = await self.qa.answer(question, titles, paras)
+        assert answer is not None
         return answer

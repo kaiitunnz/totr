@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, Literal, Optional
+from typing import Dict, Optional
 
 from .generation import GenerationConfig
 

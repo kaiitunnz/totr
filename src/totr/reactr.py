@@ -8,17 +8,10 @@ from .config import Config
 from .config.generation import GenerationConfig
 from .llm import LLMRegistry
 from .retriever import RetrieverRegistry
-from .utils.prompt import (
-    fit_prompt_in_context_window,
-    read_prompt_file,
-    retrieved_to_context,
-)
-from .utils.retriever import (
-    is_para_closely_matching,
-    remove_reasoning_sentences,
-    remove_wh_words,
-)
+from .utils.prompt import read_prompt_file, retrieved_to_context
+from .utils.retriever import is_para_closely_matching, remove_wh_words
 from .utils.transformers import seed_everything
+
 
 def create_prompt(
     example_prompt: str,
@@ -29,11 +22,18 @@ def create_prompt(
     question_prefix: Optional[str] = None,
 ) -> str:
     answer = f"\n{partial_answer}" if partial_answer else ""
-    test_example_str = f"Question: {question}" + answer + f"\nObservation {step}:\n{observation}" + "\n" + f"Thought {step}:"
+    test_example_str = (
+        f"Question: {question}"
+        + answer
+        + f"\nObservation {step}:\n{observation}"
+        + "\n"
+        + f"Thought {step}:"
+    )
     prompt = "\n\n\n".join([example_prompt, test_example_str]).strip()
     if question_prefix is not None:
         prompt = question_prefix + prompt
     return prompt
+
 
 class REACTRHelper:
     def __init__(
@@ -62,7 +62,7 @@ class REACTRHelper:
 
         # Retrieval
         self.question_prefix = config.qa.react_question_prefix
-        self.retriever_gen_config = retriever_gen_config
+        self.retriever_gen_config = retriever_gen_config or config.generation
         self.max_step = config.react.max_step
 
         # Answer extraction
@@ -73,7 +73,7 @@ class REACTRHelper:
         # Full prompt
         # self.example_prompt = ""
         self.example_prompt = read_prompt_file(
-            fpath=config.prompt.react_prompt_file, #! Need to change to point to the correct prompt
+            fpath=config.prompt.react_prompt_file,  #! Need to change to point to the correct prompt
             # filter_by_key_values={"qid": config.prompt.prompt_example_ids},
             # order_by_key=True,
             shuffle=False,
@@ -131,11 +131,11 @@ class REACTRHelper:
 
         try:
             thought, action = outputs[0].strip().split(f"\nAction {step}: ")
-        except:
-            print('No actions returned', outputs)
+        except Exception:
+            print("No actions returned", outputs)
             # n_badcalls += 1
             # n_calls += 1
-            thought = outputs[0].strip().split('\n')[0]
+            thought = outputs[0].strip().split("\n")[0]
             action = await self.generate_action(prompt, thought, step)
 
         query, done, isvalid = self.get_action(action)
@@ -145,8 +145,11 @@ class REACTRHelper:
             # raise Exception(f"Invalid action: {action}")
             print(f"Invalid action: {action}")
             return partial_answer, "", True
-        
-        partial_answer = partial_answer.strip() + f"\nObservation {step}:\n{observation}\nThought {step}: {thought}\nAction {step}: {action}\n"
+
+        partial_answer = (
+            partial_answer.strip()
+            + f"\nObservation {step}:\n{observation}\nThought {step}: {thought}\nAction {step}: {action}\n"
+        )
         # print(f"Partial answer: {partial_answer}")
         return partial_answer, query, done
 
@@ -206,20 +209,23 @@ class REACTRHelper:
         search = re.compile(r"search\[.*?\]", re.IGNORECASE)
         finish = re.compile(r"finish\[.*?\]", re.IGNORECASE)
 
-        if finish.search(action):
-            query = finish.search(action).group(0)[7:-1]
+        matched_finish = finish.search(action)
+        if matched_finish:
+            query = matched_finish.group(0)[7:-1]
             done = True
-        elif search.search(action):
-            query = search.search(action).group(0)[7:-1]
         else:
-            isvalid = False
+            matched_search = search.search(action)
+            if matched_search:
+                query = matched_search.group(0)[7:-1]
+            else:
+                isvalid = False
         return query, done, isvalid
-    
+
     async def generate_action(self, prompt: str, thought: str, step: int) -> str:
-        gen_config = replace(
-                self.retriever_gen_config, stop=[f"\n"]
-            )
-        output = await self.llm.complete_async(prompt + f"\nThought {step}: {thought}\nAction {step}:", gen_config)
+        gen_config = replace(self.retriever_gen_config, stop=["\n"])
+        output = await self.llm.complete_async(
+            prompt + f"\nThought {step}: {thought}\nAction {step}:", gen_config
+        )
         action = output[0].strip()
         return action
 
@@ -244,21 +250,20 @@ class REACTRHelper:
                 continue
             break
         return merged_titles, merged_paras
-    
+
+
 class ReAct:
     def __init__(self, config: Config) -> None:
         self.helper = REACTRHelper(config, config.react.retriever_gen_config)
 
-    async def answer(
-        self, question: str
-    ) -> Tuple[Optional[str], bool]:
-        
-
+    async def answer(self, question: str) -> str:
         query = question
         partial_answer = ""
         step = 1
         done = False
         final_answer = None
+        retrieved_titles: List[str]
+        retrieved_paras: List[str]
         while not done and step <= self.helper.max_step:
             # 1. Retrieve relevant paragraphs
             retrieved_titles, retrieved_paras = [], []

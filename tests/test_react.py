@@ -10,9 +10,7 @@ from totr.config import Config
 
 
 async def main() -> None:
-    question = (
-        "What is the gross leasable area of the shopping mall served by the Merrick Boulevard buses?"
-    )
+    question = "What is the gross leasable area of the shopping mall served by the Merrick Boulevard buses?"
     config = Config.from_json("configs/hotpotqa/Meta-Llama-3.1-8B-Instruct.json")
     react = ReAct(config)
     answer = await react.answer(question)
