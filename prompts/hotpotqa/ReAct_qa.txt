@@ -1,0 +1,112 @@
+# METADATA: {"qid": "5ae12a4b55429920d52342df"}
+Question: Baraki Barak District is situated in the western part of a province whose capital is what?
+Observation 1: 
+Wikipedia Title: Baraki Barak District
+Baraki Barak District is situated in the western part of Logar Province, Afghanistan. It borders Wardak Province to the west and northwest, Pul-i-Alam District to the north and east and Kharwar and Charkh districts to the south. The population is 101,000(2006). The district center is the town of Baraki Barak - the former provincial capital, located in the northern part of the district in the valley of the Logar River. Baraki Rajan is another important town of this district which lies 4 km away from district center.
+
+Wikipedia Title: Baraki Barak
+Baraki Barak is a town and the center of Baraki Barak District, Logar Province, Afghanistan. It was also the former capital of Logar Province. The town is in a mountainous area in the valley of the Logar River. The main road Ghazni-Kabul passes about 20 km to the West of the town.
+
+Wikipedia Title: Baraki Rajan
+Baraki Rajan (Dari/Pashtun: برکی راجان) is a town within the Baraki Barak District of Logar Province, Afghanistan. Baraki Rajan lies approximately 3 km south of the town of Baraki Barak, the capital of the Baraki Barak District. Baraki Rajan is the location of the largest bazaar in the Baraki Barak District, with over 1,200 shops and businesses, with a 50+ bed hospital near the town center, making Baraki Rajan an important center for commerce within the District.
+
+Wikipedia Title: Baraki Barak airstrike
+The Baraki Barak airstrike was a coalition airstrike that occurred on August 26, 2011 in Eastern Afghanistan. Six Afghan civilians from the same family were killed in the air strike in the Baraki Barak district of Logar province, Afghanistan. Four insurgents and three Afghan army members were also killed.
+
+Wikipedia Title: Baraki District
+Baraki is a district in Algiers Province, Algeria. It was named after its capital, Baraki.
+Thought 1: Based on the observation, we know that Baraki Barak District is situated in Logar Province, Afghanistan, so the province whose capital is being referred to is Logar Province, Afghanistan. The question should be to find the capital of Logar Province.
+Action 1: Search[Capital of Logar Province, Afghanistan]
+Observation 2: 
+Wikipedia Title: Logar Province
+Logar (Pashto: لوګر‎ ; Dari: لوگَر‎ ‎ ) is one of the 34 provinces of Afghanistan, located in the eastern section of the country. It is divided into seven districts and contains hundreds of villages. Puli Alam is the capital of the province.
+
+Wikipedia Title: 2011 Logar province bombing
+The 25 June 2011 Logar province bombing was a suicide car bombing that occurred on 25 June 2011 in Azra District, Logar Province, Afghanistan targeting a hospital, killing at least 15, possibly as many as 35.
+
+Wikipedia Title: List of governors of Logar
+This is a list of the governors of the province of Logar, Afghanistan.
+
+Wikipedia Title: Logar River
+Logar River (also Lowgar) is a river of Afghanistan. It gives the name to the Logar Valley and Logar Province. In Maidan Wardak Province where the river originates, it is called Chak River. The Chaki Wardak Dam is built on the river in Chaki Wardak District, Maidan Wardak Province.
+
+Wikipedia Title: Provincial Reconstruction Team Logar
+PRT Logar (Czech: "Provinční rekonstrukční tým Logar") is Provincial Reconstruction Team and is part of the International Security Assistance Force - an international military force in Afghanistan. PRT Logar is subordinated to ISAF Regional Command East which is responsible for the eastern provinces of Afghanistan. Regional Command East with its HQ in Bagram is a U.S.-run Operational Command containing units from several other NATO and non-NATO countries. The task of PRT Logar is to help Afghan government rebuild and further develop Logar province.
+Thought 2: From the search result, Puli Alam is the capital of the Logar Province, Afghanistan.
+Action 2: Finish[Puli Alam]
+
+# METADATA: {"qid": "5ab29486554299545a2cf9a4"}
+Question: Which has more members, Dada or Alt-J?
+Observation 1:
+Wikipedia Title: Alt-J
+Alt-J, stylised as alt-J, are an English indie rock band formed in 2007 in Leeds, by Gwil Sainsbury (guitar/bass), Joe Newman (guitar/lead vocals), Thom Sonny Green (drums) and Gus Unger-Hamilton (keyboards/vocals).
+
+Wikipedia Title: Alt-J discography
+British indie rock band alt-J has released three studio albums, one live album, three extended plays, fourteen singles and thirteen music videos.
+
+Wikipedia Title: Ronnie Alting
+Ronald J. Alting (born in Lafayette, Indiana) is a Republican member of the Indiana State Senate representing the 22nd district.
+
+Wikipedia Title: Dada (Dada album)
+Dada is the self-titled, fourth full-length studio album by alternative rock group dada, and their debut album for MCA Records. In the U.S., it was released on September 8, 1998. "dada" charted at number 32 on the Billboard Heatseeker Albums chart.
+
+Wikipedia Title: Alt.* hierarchy
+The "alt. *" hierarchy is a major class of newsgroups in Usenet, containing all newsgroups whose name begins with ""alt."" , organized hierarchically. The "alt. *" hierarchy is not confined to newsgroups of any specific subject or type, although in practice more formally organized groups tend not to occur in "alt. *". The "alt. *" hierarchy was created by John Gilmore and Brian Reid.
+Thought 1: The question is about comparing the number of members in Dada and Alt-J. The information provided about Dada is about a music album, not a band. I need to find information about Dada as a band.
+Action 1: Search[Dada band members]
+Observation 2:
+Wikipedia Title: Dada (band)
+Dada is a three piece rock band from California (United States). The band is made up of Michael Gurley (guitar/co-lead vocals), Joie Calio (bass/co-lead vocals) and Phil Leavitt (drums).
+
+Wikipedia Title: The New Dada
+The New Dada was an Italian 1960s beat music band.
+
+Wikipedia Title: Sonia Dada
+Sonia Dada is an American rock/soul/rhythm and blues band, which tours with between six and eight members. The Chicago-based band formed in 1990, when founding member Daniel Pritzker enlisted Michael Scott, Paris Delane, and Sam Hogan after hearing them sing in a subway station. Sonia Dada has become a mainstay of the Chicago musical scene in the years since, incorporating elements of rock, soul, gospel, and funk.
+
+Wikipedia Title: Dada (Dada album)
+Dada is the self-titled, fourth full-length studio album by alternative rock group dada, and their debut album for MCA Records. In the U.S., it was released on September 8, 1998. "dada" charted at number 32 on the Billboard Heatseeker Albums chart.
+
+Wikipedia Title: Dada (song)
+"Dada" is a Japanese-language song by Japanese rock band Radwimps, released on January 12, 2011 as the first of two singles leading up to the band's sixth album, "Zettai Zetsumei".
+Thought 2: I found the information on Dada as a band. They have three members: Michael Gurley, Joie Calio, and Phil Leavitt. From Observation 1, I know that Alt-J have four members: Gwil Sainsbury, Joe Newman, Thom Sonny Green and Gus Unger-Hamilton. So to answer the question, Alt-J have more members.
+Action 2: Finish[Alt-J]
+
+
+# METADATA: {"qid": "5ae4bc7955429913cc2044e9"}
+Question: To which competition did the University at Albany, SUNY send a Puerto Rican hurdler and sprinter?
+Observation 1:
+Wikipedia Title: University at Albany, SUNY
+The State University of New York at Albany, also known as University at Albany, SUNY Albany or UAlbany, is a public research university with campuses in Albany, Guilderland, and Rensselaer, New York, United States. Founded in 1844, it carries out undergraduate and graduate education, research, and service. It is a part of the State University of New York (SUNY) system.
+
+Wikipedia Title: Grace Claxton
+Grace Claxton (born August 19, 1993) is a Puerto Rican hurdler and sprinter who competes for Albany Great Danes. She represented Puerto Rico at the 2016 World Indoor Championships.
+
+Wikipedia Title: Puerto Rican citizenship
+Puerto Rican citizenship was first legislated by the United States Congress in Article 7 of the Foraker Act of 1900 and later recognized in the Constitution of Puerto Rico. Puerto Rican citizenship existed before the U.S. takeover of the islands of Puerto Rico and continued afterwards. Its affirmative standing was also recognized before and after the creation of the Commonwealth of Puerto Rico in 1952. Puerto Rican citizenship was recognized by the United States Congress in the early twentieth century and continues unchanged after the creation of the Commonwealth of Puerto Rico. The United States government also continues to recognize a Puerto Rican nationality. Puerto Rican citizenship is also recognized by the Spanish Government, which recognizes Puerto Ricans as a people with Puerto Rican, and not "American" citizenship. It also grants Spanish citizenship to Puerto Ricans on the basis of their Puerto Rican, not American, citizenship.
+
+Wikipedia Title: Puerto Rican nesophontes
+The Puerto Rican nesophontes ("Nesophontes edithae"), or Puerto Rican shrew, is an extinct soricomorph endemic to Puerto Rico.
+
+Wikipedia Title: Puerto Rican parakeet
+The Puerto Rican parakeet or Puerto Rican conure ("Psittacara maugei") was a species of parrot found on Mona Island and possibly in Puerto Rico.
+Thought 1: Based on the information provided, Grace Claxton is a Puerto Rican hurdler and sprinter who competes for Albany Great Danes. It is possible that Albany Great Danes is related to University of Albany, SUNY. We need more information on Albany Great Danes.
+Action 1: Search[University at Albany, SUNY Albany Great Danes]
+Observation 2:
+Wikipedia Title: University at Albany, SUNY
+The State University of New York at Albany, also known as University at Albany, SUNY Albany or UAlbany, is a public research university with campuses in Albany, Guilderland, and Rensselaer, New York, United States. Founded in 1844, it carries out undergraduate and graduate education, research, and service. It is a part of the State University of New York (SUNY) system.
+
+Wikipedia Title: Grace Claxton
+Grace Claxton (born August 19, 1993) is a Puerto Rican hurdler and sprinter who competes for Albany Great Danes. She represented Puerto Rico at the 2016 World Indoor Championships.
+
+Wikipedia Title: SUNY Polytechnic Institute
+The State University of New York Polytechnic Institute, commonly referred to as SUNY Polytechnic Institute or SUNY Poly, is a public research university with campuses in the town of Marcy in the Utica-Rome metropolitan area and Albany, New York. Founded in 1966 using classrooms at a primary school, SUNY Poly is New York's public polytechnic college. The Marcy campus, formerly the SUNY Institute of Technology, has a Utica, New York mailing address and was established in 1987. The Albany campus was formerly a component of the University at Albany, established in January 2003.
+
+Wikipedia Title: Albany Great Danes men's soccer
+The Albany Great Danes men's soccer team represents the University at Albany, SUNY in NCAA Division I men's soccer competitions. The Great Danes compete in the America East Conference.
+
+Wikipedia Title: University Art Museum at University at Albany
+The University Art Museum at University at Albany is located on the Uptown campus of the University at Albany, SUNY in Albany, New York. The building was designed by architect Edward Durell Stone and its interior is an iconic example of late 20th Century modernism. Its three galleries provide over 9000 sqft of exhibition space for six to eight changing exhibitions per year, with a focus on contemporary art.
+Thought 2: From the search result, we know that Albany Great Danes is a soccer team representing the University at Albany, SUNY. Since Grace Claxton plays for the Albany Great Danes, she represented University at Albany, SUNY for soccer.
+Action 2: Finish[Soccer]
+
