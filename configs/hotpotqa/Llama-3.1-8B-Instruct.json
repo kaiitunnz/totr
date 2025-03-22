@@ -22,13 +22,13 @@
     "max_para_count": 15,
     "max_gen_sent_count": 10,
     "max_para_word_count": 350,
-    "answer_regex": ".* answer is:? (.*)\\.?"
+    "answer_regex": ".* answer is:? (.*?)(?:$|(?:  )|\n)"
   },
   "qa": {
     "answer_mode": "cot",
     "cot_question_prefix": "Answer the following question by reasoning step-by-step. At the end, state ONLY your final answer by prefacing with \"So the answer is:\".\n",
     "direct_question_prefix": "Answer the following question. Provide only your final answer without elaboration.\n",
-    "cot_answer_regex": ".* answer is:? (.*)\\.?",
+    "cot_answer_regex": ".* answer is:? (.*?)(?:$|(?:  )|\n)",
     "direct_answer_regex": "^(.*?)\n",
     "remove_full_stop": true,
     "use_retriever_answer": false
@@ -43,7 +43,7 @@
   "totr": {
     "retriever_gen_config_dict": {
       "max_tokens": 200,
-      "temperature": 0.2
+      "temperature": 0.5
     }
   },
   "scr": {
