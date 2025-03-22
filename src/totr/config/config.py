@@ -7,6 +7,7 @@ from .generation import GenerationConfig
 from .llm import LLMConfig
 from .prompt import PromptConfig
 from .qa import QAConfig
+from .react import ReActConfig
 from .retriever import RetrieverConfig
 from .scr import SCRConfig
 from .totr import ToTRConfig
@@ -21,6 +22,7 @@ class Config:
     qa: QAConfig
     totr: ToTRConfig
     scr: SCRConfig
+    react: ReActConfig
 
     @classmethod
     def from_json(
@@ -58,6 +60,12 @@ class Config:
         obj["scr"]["retriever_gen_config_dict"] = scr_retriever_generation_dict
         scr_config = SCRConfig(**obj["scr"])
 
+        react_retriever_generation_dict: Dict[str, Any] = (
+            dict(model=llm_config.model) | obj["react"]["retriever_gen_config_dict"]
+        )
+        obj["react"]["retriever_gen_config_dict"] = react_retriever_generation_dict
+        react_config = ReActConfig(**obj["react"])
+
         return cls(
             llm=llm_config,
             generation=generation_config,
@@ -66,6 +74,7 @@ class Config:
             qa=qa_config,
             totr=totr_config,
             scr=scr_config,
+            react=react_config,
         )
 
     def with_model(self, model: str) -> "Config":

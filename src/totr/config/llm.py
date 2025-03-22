@@ -10,6 +10,7 @@ CONTEXT_WINDOW_SIZE_MAP: Dict[str, int] = {
     "meta-llama/Meta-Llama-3-8B": 8192,
     "meta-llama/Meta-Llama-3-8B-Instruct": 8192,
     "meta-llama/Llama-3.1-8B": 131072,
+    "meta-llama/Meta-Llama-3.1-8B-Instruct": 131072,
     "meta-llama/Llama-3.1-8B-Instruct": 131072,
     "meta-llama/Llama-3.2-3B": 131072,
     "meta-llama/Llama-3.2-3B-Instruct": 131072,
@@ -23,19 +24,18 @@ CONTEXT_WINDOW_SIZE_MAP: Dict[str, int] = {
 @dataclass
 class LLMConfig:
     engine: str
-    host: Optional[str]
-    port: Optional[int]
+    base_url: str
     api_key: str
     model: str
     overriding_context_window: Optional[int] = None
 
-    @property
-    def base_url(self) -> str:
-        if self.host is None or self.port is None:
-            raise ValueError(
-                f"None host or port found: host={self.host}, port={self.port}"
-            )
-        return f"http://{self.host}:{self.port}/v1"
+    # @property
+    # def base_url(self) -> str:
+    #     if self.host is None or self.port is None:
+    #         raise ValueError(
+    #             f"None host or port found: host={self.host}, port={self.port}"
+    #         )
+    #     return f"http://{self.host}:{self.port}/v1"
 
     @property
     def context_window_size(self) -> int:

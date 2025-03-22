@@ -8,7 +8,7 @@ from bench_tasks.hotpotqa import run_hotpotqa
 from ircot import IRCoT
 from transformers.utils import logging
 
-from totr import SCR, ToTR
+from totr import SCR, ReAct, ToTR
 from totr.config import Config
 
 
@@ -31,9 +31,11 @@ async def evaluate_hotpotqa(
         yield f"totr_{config.identifier}", ToTR(config, seed=0)
         # 3. SCR
         yield f"scr_{config.identifier}", SCR(config, seed=0)
+        # 4. ReAct
+        yield f"ReAct_{config.identifier}", ReAct(config)
 
     bench_name = "hotpotqa"
-    batch_sizes = {IRCoT: 16, ToTR: 1, SCR: 4}
+    batch_sizes = {IRCoT: 16, ToTR: 1, SCR: 4, ReAct: 1}
 
     print("Evaluating systems on HotpotQA...")
     for system_name, system in systems():
@@ -66,7 +68,7 @@ async def main(
         # "google/flan-t5-large",
         # "meta-llama/Meta-Llama-3-8B-Instruct",
         # "meta-llama/Meta-Llama-3-8B",
-        "meta-llama/Llama-3.1-8B-Instruct",
+        "meta-llama/Meta-Llama-3.1-8B-Instruct",
     ]
     base_config_path = Path("configs").resolve()
 
