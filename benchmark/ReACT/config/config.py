@@ -3,24 +3,20 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Union
 
-from .generation import GenerationConfig
-from .llm import LLMConfig
-from .prompt import PromptConfig
-from .qa import QAConfig
-from .retriever import RetrieverConfig
-from .scr import SCRConfig
-from .totr import ToTRConfig
+from totr.config.generation import GenerationConfig
+from totr.config.llm import LLMConfig
+from totr.config.prompt import PromptConfig
+from .react import ReActConfig
+from totr.config.retriever import RetrieverConfig
 
 
 @dataclass
-class Config:
+class ReActFullConfig:
     llm: LLMConfig
     generation: GenerationConfig
     retriever: RetrieverConfig
-    prompt: PromptConfig
-    qa: QAConfig
-    totr: ToTRConfig
-    scr: SCRConfig
+    prompt_config: PromptConfig
+    react: ReActConfig
 
     @classmethod
     def from_json(
@@ -44,28 +40,19 @@ class Config:
 
         retriever_config = RetrieverConfig(**obj["retriever"])
         prompt_config = PromptConfig(**obj["prompt"])
-        qa_config = QAConfig(**obj["qa"])
 
-        totr_retriever_generation_dict: Dict[str, Any] = (
-            dict(model=llm_config.model) | obj["totr"]["retriever_gen_config_dict"]
+        react_retriever_generation_dict: Dict[str, Any] = (
+            dict(model=llm_config.model) | obj["react"]["retriever_gen_config_dict"]
         )
-        obj["totr"]["retriever_gen_config_dict"] = totr_retriever_generation_dict
-        totr_config = ToTRConfig(**obj["totr"])
-
-        scr_retriever_generation_dict: Dict[str, Any] = (
-            dict(model=llm_config.model) | obj["scr"]["retriever_gen_config_dict"]
-        )
-        obj["scr"]["retriever_gen_config_dict"] = scr_retriever_generation_dict
-        scr_config = SCRConfig(**obj["scr"])
+        obj["react"]["retriever_gen_config_dict"] = react_retriever_generation_dict
+        react_config = ReActConfig(**obj["react"])
 
         return cls(
             llm=llm_config,
             generation=generation_config,
             retriever=retriever_config,
-            prompt=prompt_config,
-            qa=qa_config,
-            totr=totr_config,
-            scr=scr_config,
+            prompt_config=prompt_config,
+            react=react_config,
         )
 
     def with_model(self, model: str) -> "Config":
@@ -75,7 +62,5 @@ class Config:
 
     @property
     def identifier(self) -> str:
-        config: List[str] = [self.llm.model.split("/")[-1], self.qa.answer_mode]
-        if self.qa.use_retriever_answer:
-            config.append("retr-ans")
+        config: List[str] = [self.llm.model.split("/")[-1]]
         return "_".join(config)

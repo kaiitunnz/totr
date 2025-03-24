@@ -223,7 +223,6 @@ dataset_prompt_examples: Dict[str, Dict[str, List[str]]] = {
 class PromptConfig:
     prompt_directory: str
     prompt_dataset: str
-    react_prompt_filename: str
     cot_prompt_filename: str
     direct_prompt_filename: str
     prompt_set: str
@@ -236,12 +235,6 @@ class PromptConfig:
     def cot_prompt_file(self) -> Path:
         return Path(
             self.prompt_directory, self.prompt_dataset, self.cot_prompt_filename
-        ).resolve()
-
-    @property
-    def react_prompt_file(self) -> Path:
-        return Path(
-            self.prompt_directory, self.prompt_dataset, self.react_prompt_filename
         ).resolve()
 
     @property
