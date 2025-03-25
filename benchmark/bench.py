@@ -6,8 +6,8 @@ from typing import Iterable, Tuple
 from base import QAMixin, ResultHandler
 from bench_tasks.hotpotqa import run_hotpotqa
 from ircot import IRCoT
-from ReACT.reactr import ReAct
-from ReACT.config import ReActFullConfig
+from react.react import ReAct
+from react.config import ReActFullConfig
 from transformers.utils import logging
 
 from totr import SCR, ToTR
