@@ -1,12 +1,16 @@
 from dataclasses import dataclass, field
 from typing import Dict, Optional
 
-from .generation import GenerationConfig
+from totr.config.generation import GenerationConfig
 
 
 @dataclass
 class ReActConfig:
+    react_prompt_filename: str
     max_step: int = 5
+    react_question_prefix: str = (
+        "Solve a question answering task with interleaving Thought, Action, Observation steps. Thought can reason about the current situation, and Action can be two types: \n(1) Search[query], which searches the database with the query.\n(2) Finish[answer], which returns the answer and finishes the task.\nHere are some examples.\n"
+    )
     retriever_gen_config_dict: Optional[Dict] = None
     retriever_gen_config: GenerationConfig = field(init=False)
 
