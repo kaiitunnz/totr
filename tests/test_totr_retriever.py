@@ -11,7 +11,7 @@ async def main():
         "What is the nationality of the foreign born victim of Singapore's "
         "caning punishment before Oliver Fricker experienced the same?"
     )
-    config = Config.from_json(Path("configs/hotpotqa/flan-t5-large.json"))
+    config = Config.from_json(Path("configs/hotpotqa/Llama-3.1-8B-Instruct_chat.json"))
     retriever = ToTRRetriever(config, seed=0)
     titles, paragraphs, answer = await retriever.retrieve(question)
     print("-" * 30 + "Context" + "-" * 30)

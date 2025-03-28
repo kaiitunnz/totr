@@ -6,8 +6,8 @@ from typing import Iterable, Tuple
 from base import QAMixin, ResultHandler
 from bench_tasks.hotpotqa import run_hotpotqa
 from ircot import IRCoT
-from react.react import ReAct
 from react.config import ReActFullConfig
+from react.react import ReAct
 from transformers.utils import logging
 
 from totr import SCR, ToTR
@@ -39,9 +39,9 @@ async def evaluate_hotpotqa(
         yield f"scr_{config.identifier}", SCR(config, seed=0)
         # 4. ReAct
         config = ReActFullConfig.from_json(
-            base_config_path.joinpath("hotpotqa", model_name.split("/")[-1] + "_react.json")
+            base_config_path.joinpath("hotpotqa", model_name.split("/")[-1] + ".json")
         )
-        yield f"ReAct_{config.identifier}", ReAct(config)
+        yield f"react_{config.identifier}", ReAct(config)
 
     bench_name = "hotpotqa"
     batch_sizes = {IRCoT: 16, ToTR: 1, SCR: 4, ReAct: 1}
@@ -77,7 +77,8 @@ async def main(
         # "google/flan-t5-large",
         # "meta-llama/Meta-Llama-3-8B-Instruct",
         # "meta-llama/Meta-Llama-3-8B",
-        "meta-llama/Meta-Llama-3.1-8B-Instruct",
+        "meta-llama/Llama-3.1-8B-Instruct",
+        # "meta-llama/Meta-Llama-3.1-8B-Instruct",
     ]
 
     for model_name in model_names:

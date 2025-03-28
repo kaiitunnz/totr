@@ -5,13 +5,13 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 import asyncio
 
-from benchmark.ReACT.react import ReAct
-from totr.config import Config
+from benchmark.react.config import ReActFullConfig
+from benchmark.react.react import ReAct
 
 
 async def main() -> None:
     question = "What is the gross leasable area of the shopping mall served by the Merrick Boulevard buses?"
-    config = Config.from_json("configs/hotpotqa/Meta-Llama-3.1-8B-Instruct.json")
+    config = ReActFullConfig.from_json("configs/hotpotqa/Llama-3.1-8B-Instruct.json")
     react = ReAct(config)
     answer = await react.answer(question)
     print(answer)

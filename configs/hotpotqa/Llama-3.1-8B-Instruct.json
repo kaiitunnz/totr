@@ -1,11 +1,11 @@
 {
   "llm": {
     "engine": "openai",
-    "host": "localhost",
-    "port": 8010,
+    "base_url": "http://localhost:8010/v1",
     "api_key": "EMPTY",
     "model": "meta-llama/Llama-3.1-8B-Instruct",
-    "overriding_context_window": null
+    "overriding_context_window": null,
+    "is_chat": true
   },
   "generation": {
     "temperature": 0,
@@ -26,8 +26,8 @@
   },
   "qa": {
     "answer_mode": "cot",
-    "cot_question_prefix": "Answer the following question by reasoning step-by-step. At the end, state ONLY your final answer by prefacing with \"So the answer is:\".\n",
-    "direct_question_prefix": "Answer the following question. Provide only your final answer without elaboration.\n",
+    "cot_question_prefix": "Answer the following question by reasoning step-by-step.\n",
+    "direct_question_prefix": "Answer the following question.\n",
     "cot_answer_regex": ".* answer is:? (.*?)(?:$|(?:  )|\n)",
     "direct_answer_regex": "^(.*?)\n",
     "remove_full_stop": true,
@@ -51,6 +51,15 @@
     "retriever_gen_config_dict": {
       "max_tokens": 200,
       "temperature": 0.5
+    }
+  },
+  "react": {
+    "react_prompt_filename": "ReAct_qa.txt",
+    "react_question_prefix": "Solve a question answering task with interleaving Thought, Action, Observation steps. Thought can reason about the current situation, and Action can be two types: \n(1) Search[query], which searches the database with the query.\n(2) Finish[answer], which returns the answer and finishes the task.\nHere are some examples.\n",
+    "retriever_gen_config_dict": {
+      "max_tokens": 200,
+      "temperature": 0.5,
+      "stop": "\nObservation "
     }
   }
 }

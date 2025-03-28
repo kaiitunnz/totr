@@ -28,14 +28,7 @@ class LLMConfig:
     api_key: str
     model: str
     overriding_context_window: Optional[int] = None
-
-    # @property
-    # def base_url(self) -> str:
-    #     if self.host is None or self.port is None:
-    #         raise ValueError(
-    #             f"None host or port found: host={self.host}, port={self.port}"
-    #         )
-    #     return f"http://{self.host}:{self.port}/v1"
+    is_chat: bool = False
 
     @property
     def context_window_size(self) -> int:

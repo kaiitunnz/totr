@@ -7,6 +7,8 @@ import random
 from pathlib import Path
 from typing import Dict, Hashable, List, Literal, Optional, Tuple
 
+from transformers.tokenization_utils_base import PreTrainedTokenizerBase
+
 from .transformers import get_tokenizer
 
 
@@ -21,8 +23,7 @@ def read_prompt_file(
     test_to_train_length_scale: int = 1,
     estimated_generation_length: int = 500,
     removal_method: Literal["last", "longest"] = "last",
-    example_delimiter: str = "\n\n\n",
-) -> str:
+) -> List[str]:
     def get_next_key(
         filter_key_values: Optional[Tuple[str, List[str]]],
         current_key: Hashable,
@@ -86,8 +87,7 @@ def read_prompt_file(
     if (filter_key_values is None or not order_by_key) and shuffle:
         random.shuffle(prompt_examples_texts)
 
-    prompt = example_delimiter.join([example for example in prompt_examples_texts])
-    return prompt
+    return prompt_examples_texts
 
 
 def fit_examples_in_context_window(
@@ -221,15 +221,140 @@ def retrieved_to_context(
 
 
 def create_prompt(
-    example_prompt: str,
+    examples: List[str],
     context: str,
     question: str,
     partial_answer: Optional[str] = None,
     question_prefix: Optional[str] = None,
+    example_delimiter: str = "\n\n\n",
 ) -> str:
     if question_prefix is not None:
         question = question_prefix + question
+    example_prompt = example_delimiter.join(examples).strip()
     answer = f"A: {partial_answer}" if partial_answer is not None else "A:"
     test_example_str = context + "\n\n" + f"Q: {question}" + "\n" + answer
-    prompt = "\n\n\n".join([example_prompt, test_example_str]).strip()
+    prompt = example_delimiter.join([example_prompt, test_example_str]).strip()
     return prompt
+
+
+def apply_chat_template(
+    tokenizer: PreTrainedTokenizerBase,
+    examples: List[str],
+    context: str,
+    question: str,
+    partial_answer: Optional[str],
+    question_prefix: Optional[str],
+    example_delimiter: str,
+) -> str:
+    if question_prefix is not None:
+        question = question_prefix + question
+    question_prompt = context + "\n\n" + f"Q: {question}"
+    user_prompt = example_delimiter.join(examples + [question_prompt])
+    assistant_prompt = f"A: {partial_answer}" if partial_answer is not None else "A:"
+
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are a question answerer. You answer the given question "
+                'and always end your response with "So the answer is:" followed by '
+                "your final answer without additional explanation."
+            ),
+        },
+        {"role": "user", "content": user_prompt},
+        {"role": "assistant", "content": assistant_prompt},
+    ]
+    formatted_prompt = tokenizer.apply_chat_template(
+        messages, tokenize=False, continue_final_message=True
+    )
+    assert isinstance(formatted_prompt, str)
+    return formatted_prompt
+
+
+def create_and_fit_prompt(
+    tokenizer_name: str,
+    is_chat: bool,
+    examples: List[str],
+    context: str,
+    question: str,
+    partial_answer: Optional[str],
+    question_prefix: Optional[str],
+    context_window: int,
+    estimated_generation_length: int,
+    shuffle: bool = False,
+    remove_method: Literal["first", "last", "random", "largest"] = "first",
+    example_delimiter: str = "\n\n\n",
+    buffer_token_count: int = 20,
+) -> str:
+    if not is_chat:
+        prompt = create_prompt(
+            examples,
+            context,
+            question,
+            partial_answer,
+            question_prefix,
+            example_delimiter,
+        )
+        prompt = fit_prompt_in_context_window(
+            prompt,
+            tokenizer_name,
+            context_window,
+            estimated_generation_length,
+            shuffle,
+            remove_method,
+            example_delimiter,
+            last_is_test_example=True,
+            buffer_token_count=buffer_token_count,
+        )
+        return prompt
+
+    examples = examples.copy()
+    tokenizer = get_tokenizer(tokenizer_name)
+    formatted_prompt = apply_chat_template(
+        tokenizer,
+        examples,
+        context,
+        question,
+        partial_answer,
+        question_prefix,
+        example_delimiter,
+    )
+
+    total_length = (
+        len(tokenizer.tokenize(formatted_prompt))
+        + estimated_generation_length
+        + buffer_token_count
+    )
+    example_lengths = [len(tokenizer.tokenize(example)) for example in examples]
+    while example_lengths and total_length > context_window:
+        if remove_method == "first":
+            remove_index = 0
+        elif remove_method == "last":
+            remove_index = -1
+        elif remove_method == "random":
+            remove_index = random.randint(0, len(examples) - 1)
+        elif remove_method == "largest":
+            remove_index = example_lengths.index(max(example_lengths))
+        else:
+            raise Exception(f"Unexpected remove_method: {remove_method}.")
+
+        examples.pop(remove_index)
+        popped_length = example_lengths.pop(remove_index)
+        total_length -= popped_length
+
+    if shuffle:
+        random.shuffle(examples)
+
+    if total_length > context_window:
+        raise ValueError("Cannot truncate the prompt to fit in the context window.")
+
+    formatted_prompt = apply_chat_template(
+        tokenizer,
+        examples,
+        context,
+        question,
+        partial_answer,
+        question_prefix,
+        example_delimiter,
+    )
+    return formatted_prompt

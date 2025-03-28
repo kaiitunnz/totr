@@ -1,11 +1,11 @@
 {
   "llm": {
     "engine": "openai",
-    "host": "localhost",
-    "port": 8010,
+    "base_url": "http://localhost:8010/v1",
     "api_key": "EMPTY",
     "model": "meta-llama/Meta-Llama-3-8B-Instruct",
-    "overriding_context_window": null
+    "overriding_context_window": null,
+    "is_chat": true
   },
   "generation": {
     "temperature": 0,
@@ -50,6 +50,15 @@
     "retriever_gen_config_dict": {
       "max_tokens": 200,
       "temperature": 0.5
+    }
+  },
+  "react": {
+    "react_prompt_filename": "ReAct_qa.txt",
+    "react_question_prefix": "Solve a question answering task with interleaving Thought, Action, Observation steps. Thought can reason about the current situation, and Action can be two types: \n(1) Search[query], which searches the database with the query.\n(2) Finish[answer], which returns the answer and finishes the task.\nHere are some examples.\n",
+    "retriever_gen_config_dict": {
+      "max_tokens": 200,
+      "temperature": 0.5,
+      "stop": "\nObservation "
     }
   }
 }

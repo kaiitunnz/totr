@@ -1,5 +1,4 @@
-from .reactr import ReAct
 from .scr import SCR, SCRRetriever
 from .totr import ToTR, ToTRRetriever
 
-__all__ = ["ToTR", "ToTRRetriever", "SCR", "SCRRetriever", "ReAct"]
+__all__ = ["ToTR", "ToTRRetriever", "SCR", "SCRRetriever"]

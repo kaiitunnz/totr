@@ -8,12 +8,7 @@ from .config import Config
 from .config.generation import GenerationConfig
 from .llm import LLMRegistry
 from .retriever import RetrieverRegistry
-from .utils.prompt import (
-    create_prompt,
-    fit_prompt_in_context_window,
-    read_prompt_file,
-    retrieved_to_context,
-)
+from .utils.prompt import create_and_fit_prompt, read_prompt_file, retrieved_to_context
 from .utils.retriever import (
     is_para_closely_matching,
     remove_reasoning_sentences,
@@ -33,6 +28,7 @@ class IRHelper:
         self.model_name = config.llm.model
         self.llm = LLMRegistry.get(config.llm.engine, config)
         self.context_window_size = config.llm.context_window_size
+        self.is_chat = config.llm.is_chat
         self.max_tokens = config.generation.max_tokens or 200
 
         # Retriever
@@ -57,7 +53,7 @@ class IRHelper:
         self.remove_full_stop = config.qa.remove_full_stop
 
         # Full prompt
-        self.example_prompt = read_prompt_file(
+        self.examples = read_prompt_file(
             fpath=config.prompt.cot_prompt_file,
             filter_by_key_values={"qid": config.prompt.prompt_example_ids},
             order_by_key=True,
@@ -90,21 +86,17 @@ class IRHelper:
             retrieved_titles, retrieved_paras, self.max_para_word_count
         )
         generated_answer = " ".join(generated_sentences)
-        prompt = create_prompt(
-            self.example_prompt,
-            context,
-            question,
-            generated_answer,
-            self.question_prefix,
-        )
-        prompt = prompt.rstrip()
-        prompt = fit_prompt_in_context_window(
-            prompt=prompt,
+        prompt = create_and_fit_prompt(
             tokenizer_name=self.model_name,
+            is_chat=self.is_chat,
+            examples=self.examples,
+            context=context,
+            question=question,
+            partial_answer=generated_answer,
+            question_prefix=self.question_prefix,
             context_window=self.context_window_size,
             estimated_generation_length=self.max_tokens,
             shuffle=False,
-            last_is_test_example=True,
         )
         gen_config: Optional[GenerationConfig]
         if is_main_branch and self.retriever_gen_config is not None:
@@ -215,6 +207,7 @@ class QAModel:
         self.model_name = config.llm.model
         self.llm = LLMRegistry.get(config.llm.engine, config)
         self.context_window_size = config.llm.context_window_size
+        self.is_chat = config.llm.is_chat
         self.max_tokens = config.generation.max_tokens or 200
         self.max_para_word_count = config.retriever.max_para_word_count
 
@@ -232,7 +225,7 @@ class QAModel:
         self.remove_full_stop = config.qa.remove_full_stop
 
         # Full prompt
-        self.example_prompt = read_prompt_file(
+        self.examples = read_prompt_file(
             fpath=prompt_file,
             filter_by_key_values={"qid": config.prompt.prompt_example_ids},
             order_by_key=True,
@@ -247,24 +240,22 @@ class QAModel:
         question: str,
         retrieved_titles: List[str],
         retrieved_paras: List[str],
+        partial_answer: Optional[str] = None,
     ) -> str:
         context = retrieved_to_context(
             retrieved_titles, retrieved_paras, self.max_para_word_count
         )
-        prompt = create_prompt(
-            self.example_prompt,
-            context,
-            question,
-            question_prefix=self.question_prefix,
-        )
-        prompt = prompt.rstrip()
-        prompt = fit_prompt_in_context_window(
-            prompt=prompt,
+        prompt = create_and_fit_prompt(
             tokenizer_name=self.model_name,
+            is_chat=self.is_chat,
+            examples=self.examples,
+            context=context,
+            question=question,
+            partial_answer=partial_answer,
+            question_prefix=self.question_prefix,
             context_window=self.context_window_size,
             estimated_generation_length=self.max_tokens,
             shuffle=False,
-            last_is_test_example=True,
         )
         outputs = await self.llm.complete_async(prompt)
         return outputs[0]
@@ -275,8 +266,11 @@ class QAModel:
         matched = self.answer_regex.match(sentence)
         if not matched:
             return None
-        answer = matched.group(1).strip()
-        assert answer is not None
+        answer = matched.group(1)
+        return self._post_process_answer(answer)
+
+    def _post_process_answer(self, answer: str) -> str:
+        answer = answer.strip()
         if self.remove_full_stop and answer.endswith("."):
             answer = answer[:-1]
         return answer
@@ -287,5 +281,11 @@ class QAModel:
         output = await self._generate(question, retrieved_titles, retrieved_paras)
         answer = self._extract_answer(output)
         if answer is None:
-            return output
+            output = await self._generate(
+                question,
+                retrieved_titles,
+                retrieved_paras,
+                output.rstrip() + " So the answer is:",
+            )
+            answer = self._post_process_answer(output)
         return answer

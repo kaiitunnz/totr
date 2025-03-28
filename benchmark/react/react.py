@@ -1,17 +1,18 @@
 import re
 from dataclasses import replace
-from typing import List, Optional, Tuple
 from pathlib import Path
+from typing import List, Optional, Tuple
 
 import spacy
 
-from .config import ReActFullConfig
 from totr.config.generation import GenerationConfig
 from totr.llm import LLMRegistry
 from totr.retriever import RetrieverRegistry
 from totr.utils.prompt import read_prompt_file, retrieved_to_context
 from totr.utils.retriever import is_para_closely_matching, remove_wh_words
 from totr.utils.transformers import seed_everything
+
+from .config import ReActFullConfig
 
 
 def create_prompt(
@@ -72,14 +73,18 @@ class REACTRHelper:
 
         # Full prompt
         # self.example_prompt = ""
-        self.example_prompt = read_prompt_file(
-            fpath=Path(
-                config.prompt_config.prompt_directory, config.prompt_config.prompt_dataset, config.react.react_prompt_filename
-            ).resolve(),  
-            shuffle=False,
-            tokenizer_name=self.model_name,
-            context_window_size=None,
-            estimated_generation_length=0,
+        self.example_prompt = "\n\n\n".join(
+            read_prompt_file(
+                fpath=Path(
+                    config.prompt.prompt_directory,
+                    config.prompt.prompt_dataset,
+                    config.react.react_prompt_filename,
+                ).resolve(),
+                shuffle=False,
+                tokenizer_name=self.model_name,
+                context_window_size=None,
+                estimated_generation_length=0,
+            )
         )
 
         if seed is not None:
@@ -277,7 +282,7 @@ class ReAct:
             )
             # print(query)
             step += 1
-        print(partial_answer)
+        # print(partial_answer)
         final_answer = query
 
         return final_answer
