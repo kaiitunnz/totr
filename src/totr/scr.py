@@ -15,7 +15,7 @@ class SCRRetriever:
 
     async def _retrieve_one_chain(
         self, question: str, is_main_chain: bool
-    ) -> Tuple[List[str], List[str], Optional[str]]:
+    ) -> Tuple[List[str], List[str], List[str], Optional[str]]:
         retrieved_titles: List[str] = []
         retrieved_paras: List[str] = []
 
@@ -49,7 +49,7 @@ class SCRRetriever:
             # Update query
             query = self.helper.get_next_query(question, generated_sentences)
 
-        return retrieved_titles, retrieved_paras, final_answer
+        return retrieved_titles, retrieved_paras, generated_sentences, final_answer
 
     async def retrieve(
         self, question: str
@@ -60,38 +60,36 @@ class SCRRetriever:
             for i in range(self.num_chains)
         ]
         results = await asyncio.gather(*retrieval_tasks)
-        main_chain_result = results[0]
 
         # 1. Extract chains with answers
         titles_chains: List[List[str]] = []
         paras_chains: List[List[str]] = []
         retrieved_counts: List[int] = []
         answers_chains: List[str] = []
-        for titles, paras, answer in results:
-            if answer is not None:
-                titles_chains.append(titles)
-                paras_chains.append(paras)
-                retrieved_counts.append(len(titles))
-                answers_chains.append(answer)
+        for titles, paras, generated_sentences, answer in results:
+            titles_chains.append(titles)
+            paras_chains.append(paras)
+            retrieved_counts.append(len(titles))
+            if answer is None:
+                answer = await self.helper.get_answer(
+                    question, generated_sentences, titles, paras
+                )
+            answers_chains.append(answer)
 
         # 2. Sort chains by answers
         chain_ranks = rerank_answers(
             answers_chains, retrieved_counts, self.similarity_threshold
         )
 
-        if len(chain_ranks) == 0:
-            # No chain has an answer
-            retrieved_titles, retrieved_paras, final_answer = main_chain_result
-        else:
-            retrieved_titles_list: List[List[str]] = []
-            retrieved_paras_list: List[List[str]] = []
-            for i in chain_ranks:
-                retrieved_titles_list.append(titles_chains[i])
-                retrieved_paras_list.append(paras_chains[i])
-            retrieved_titles, retrieved_paras = self.helper.select_retrieved(
-                retrieved_titles_list, retrieved_paras_list
-            )
-            final_answer = answers_chains[chain_ranks[0]]
+        retrieved_titles_list: List[List[str]] = []
+        retrieved_paras_list: List[List[str]] = []
+        for i in chain_ranks:
+            retrieved_titles_list.append(titles_chains[i])
+            retrieved_paras_list.append(paras_chains[i])
+        retrieved_titles, retrieved_paras = self.helper.select_retrieved(
+            retrieved_titles_list, retrieved_paras_list
+        )
+        final_answer = answers_chains[chain_ranks[0]]
 
         return retrieved_titles, retrieved_paras, final_answer
 
