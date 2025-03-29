@@ -76,11 +76,12 @@ def rerank_answers(
     similarities = similarities.sum(axis=0) / (similarities.shape[0] - 1)
 
     # Sort by similarity in desc and the number of retrieved documents in asc
-    similarity_threshold = similarities.max() * threshold_factor
+    max_similarity = similarities.max()
+    similarity_threshold = max_similarity * threshold_factor
     filtered = [
         (sim, -retrieved_count, i)
         for i, (sim, retrieved_count) in enumerate(zip(similarities, retrieved_counts))
-        if sim > similarity_threshold
+        if sim > similarity_threshold or sim == max_similarity
     ]
     filtered.sort(reverse=True)
 
