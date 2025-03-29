@@ -50,6 +50,7 @@ class IRHelper:
         # Answer extraction
         answer_regex = config.retriever.answer_regex
         self.answer_regex = None if answer_regex is None else re.compile(answer_regex)
+        self.answer_split_regex = re.compile(config.retriever.answer_split_regex)
         self.remove_full_stop = config.qa.remove_full_stop
 
         # Full prompt
@@ -85,7 +86,7 @@ class IRHelper:
         context = retrieved_to_context(
             retrieved_titles, retrieved_paras, self.max_para_word_count
         )
-        generated_answer = " ".join(generated_sentences)
+        generated_answer = " ".join([sent.strip() for sent in generated_sentences])
         prompt = create_and_fit_prompt(
             tokenizer_name=self.model_name,
             is_chat=self.is_chat,
@@ -118,7 +119,7 @@ class IRHelper:
         context = retrieved_to_context(
             retrieved_titles, retrieved_paras, self.max_para_word_count
         )
-        generated_answer = " ".join(generated_sentences)
+        generated_answer = " ".join([sent.strip() for sent in generated_sentences])
         prompt = create_and_fit_prompt(
             tokenizer_name=self.model_name,
             is_chat=self.is_chat,
@@ -148,12 +149,14 @@ class IRHelper:
         retrieved_titles: List[str],
         retrieved_paras: List[str],
     ) -> float:
-        generated_answer = " ".join(generated_sentences + [new_generation.lstrip()])
-        if self.answer_regex is not None:
-            generated_answer = re.split(
-                r"(?:So )?the answer is", generated_answer, maxsplit=1
-            )[0]
-        generated_answer = generated_answer.rstrip() + " So the answer is:"
+        generated_answer = " ".join(
+            [sent.strip() for sent in [*generated_sentences, new_generation]]
+        )
+        generated_answer = self.answer_split_regex.split(
+            generated_answer,
+            maxsplit=1,
+        )[0]
+        generated_answer = generated_answer + " So the answer is:"
         _, logprobs = await self.generate_with_logprobs(
             question,
             [generated_answer],
@@ -176,8 +179,8 @@ class IRHelper:
         retrieved_titles: List[str],
         retrieved_paras: List[str],
     ) -> str:
-        generated_answer = " ".join(generated_sentences)
-        generated_answer = generated_answer.rstrip() + " So the answer is:"
+        generated_answer = " ".join([sent.strip() for sent in generated_sentences])
+        generated_answer = generated_answer + " So the answer is:"
         output = await self.generate(
             question,
             [generated_answer],
