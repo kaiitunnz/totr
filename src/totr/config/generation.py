@@ -7,7 +7,6 @@ class GenerationConfig:
     model: Optional[str] = None
     frequency_penalty: Optional[float] = None
     logit_bias: Optional[Dict[str, float]] = None
-    logprobs: Optional[int] = None
     max_tokens: Optional[int] = None
     n: Optional[int] = 1
     presence_penalty: Optional[float] = None

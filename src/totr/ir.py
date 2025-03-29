@@ -107,6 +107,87 @@ class IRHelper:
         outputs = await self.llm.complete_async(prompt, gen_config)
         return outputs[0]
 
+    async def generate_with_logprobs(
+        self,
+        question: str,
+        generated_sentences: List[str],
+        retrieved_titles: List[str],
+        retrieved_paras: List[str],
+        is_main_branch: bool = True,
+    ) -> Tuple[str, List[float]]:
+        context = retrieved_to_context(
+            retrieved_titles, retrieved_paras, self.max_para_word_count
+        )
+        generated_answer = " ".join(generated_sentences)
+        prompt = create_and_fit_prompt(
+            tokenizer_name=self.model_name,
+            is_chat=self.is_chat,
+            examples=self.examples,
+            context=context,
+            question=question,
+            partial_answer=generated_answer,
+            question_prefix=self.question_prefix,
+            context_window=self.context_window_size,
+            estimated_generation_length=self.max_tokens,
+            shuffle=False,
+        )
+        gen_config: Optional[GenerationConfig]
+        if is_main_branch and self.retriever_gen_config is not None:
+            # Use greedy decoding on main branch
+            gen_config = replace(self.retriever_gen_config, temperature=0)
+        else:
+            gen_config = self.retriever_gen_config
+        outputs = await self.llm.complete_async_with_logprobs(prompt, gen_config)
+        return outputs[0]
+
+    async def evaluate_answer_confidence(
+        self,
+        question: str,
+        generated_sentences: List[str],
+        new_generation: str,
+        retrieved_titles: List[str],
+        retrieved_paras: List[str],
+    ) -> float:
+        generated_answer = " ".join(generated_sentences + [new_generation.lstrip()])
+        if self.answer_regex is not None:
+            generated_answer = re.split(
+                r"(?:So )?the answer is", generated_answer, maxsplit=1
+            )[0]
+        generated_answer = generated_answer.rstrip() + " So the answer is:"
+        _, logprobs = await self.generate_with_logprobs(
+            question,
+            [generated_answer],
+            retrieved_titles,
+            retrieved_paras,
+            is_main_branch=True,
+        )
+        return sum(logprobs) / len(logprobs)  # Normalize log probabilities
+
+    def _post_process_answer(self, answer: str) -> str:
+        answer = answer.strip()
+        if self.remove_full_stop and answer.endswith("."):
+            answer = answer[:-1]
+        return answer
+
+    async def get_answer(
+        self,
+        question: str,
+        generated_sentences: List[str],
+        retrieved_titles: List[str],
+        retrieved_paras: List[str],
+    ) -> str:
+        generated_answer = " ".join(generated_sentences)
+        generated_answer = generated_answer.rstrip() + " So the answer is:"
+        output = await self.generate(
+            question,
+            [generated_answer],
+            retrieved_titles,
+            retrieved_paras,
+            is_main_branch=True,
+        )
+        answer = self._post_process_answer(output)
+        return answer
+
     async def retrieve_one_step(
         self, query: str, retrieved_titles: List[str], retrieved_paras: List[str]
     ) -> None:
@@ -166,10 +247,8 @@ class IRHelper:
         matched = self.answer_regex.match(sentence)
         if not matched:
             return None
-        answer = matched.group(1).strip()
-        assert answer is not None
-        if self.remove_full_stop and answer.endswith("."):
-            answer = answer[:-1]
+        answer = matched.group(1)
+        answer = self._post_process_answer(answer)
         return answer
 
     def get_next_query(self, question: str, generated_sentences: List[str]) -> str:

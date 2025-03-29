@@ -19,6 +19,7 @@ class RetrieverConfig:
     max_gen_sent_count: int
     max_para_word_count: int
     answer_regex: Optional[str] = ".* answer is:? (.*)\\.?"
+    answer_split_regex: str = "(?:So )?the answer is"
 
     @property
     def elasticsearch_url(self) -> str:

@@ -1,4 +1,4 @@
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Tuple
 
 import torch
 from transformers import AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoTokenizer
@@ -47,10 +47,20 @@ class LocalLLM(BaseLLM):
         decoded = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
         return decoded
 
+    def complete_with_logprobs(
+        self, prompt: str, config: Optional[GenerationConfig] = None
+    ) -> List[Tuple[str, List[float]]]:
+        raise NotImplementedError("TODO")
+
     async def complete_async(
         self, prompt: str, config: Optional[GenerationConfig] = None
     ) -> List[str]:
         return self.complete(prompt, config)
+
+    async def complete_async_with_logprobs(
+        self, prompt: str, config: Optional[GenerationConfig] = None
+    ) -> List[Tuple[str, List[float]]]:
+        raise NotImplementedError("TODO")
 
     def chat(
         self, messages: List[Message], config: Optional[GenerationConfig] = None
@@ -72,10 +82,20 @@ class LocalLLM(BaseLLM):
         decoded = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
         return [Message(role=self.chat_role, content=content) for content in decoded]
 
+    def chat_with_logprobs(
+        self, messages: List[Message], config: Optional[GenerationConfig] = None
+    ) -> List[Tuple[Message, List[float]]]:
+        raise NotImplementedError("TODO")
+
     async def chat_async(
         self, messages: List[Message], config: Optional[GenerationConfig] = None
     ) -> List[Message]:
         return self.chat(messages, config)
+
+    async def chat_async_with_logprobs(
+        self, messages: List[Message], config: Optional[GenerationConfig] = None
+    ) -> List[Tuple[Message, List[float]]]:
+        raise NotImplementedError("TODO")
 
     def _get_hf_generation_config(
         self, config: Optional[GenerationConfig]

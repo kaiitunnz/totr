@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from ..config import Config
 from ..config.generation import GenerationConfig
@@ -30,9 +30,21 @@ class BaseLLM(ABC):
         pass
 
     @abstractmethod
+    def complete_with_logprobs(
+        self, prompt: str, config: Optional[GenerationConfig] = None
+    ) -> List[Tuple[str, List[float]]]:
+        pass
+
+    @abstractmethod
     async def complete_async(
         self, prompt: str, config: Optional[GenerationConfig] = None
     ) -> List[str]:
+        pass
+
+    @abstractmethod
+    async def complete_async_with_logprobs(
+        self, prompt: str, config: Optional[GenerationConfig] = None
+    ) -> List[Tuple[str, List[float]]]:
         pass
 
     @abstractmethod
@@ -42,7 +54,19 @@ class BaseLLM(ABC):
         pass
 
     @abstractmethod
+    def chat_with_logprobs(
+        self, messages: List[Message], config: Optional[GenerationConfig] = None
+    ) -> List[Tuple[Message, List[float]]]:
+        pass
+
+    @abstractmethod
     async def chat_async(
         self, messages: List[Message], config: Optional[GenerationConfig] = None
     ) -> List[Message]:
+        pass
+
+    @abstractmethod
+    async def chat_async_with_logprobs(
+        self, messages: List[Message], config: Optional[GenerationConfig] = None
+    ) -> List[Tuple[Message, List[float]]]:
         pass
