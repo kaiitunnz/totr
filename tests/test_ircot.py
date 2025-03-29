@@ -14,7 +14,7 @@ async def main() -> None:
         "What is the nationality of the foreign born victim of Singapore's "
         "caning punishment before Oliver Fricker experienced the same?"
     )
-    config = Config.from_json("configs/hotpotqa/Llama-3.1-8B-Instruct_chat.json")
+    config = Config.from_json("configs/hotpotqa/Llama-3.1-8B-Instruct.json")
     ircot = IRCoT(config)
     answer = await ircot.answer(question)
     print(answer)
