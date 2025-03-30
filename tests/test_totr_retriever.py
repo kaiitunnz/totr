@@ -16,7 +16,12 @@ async def main():
     titles, paragraphs, answer = await retriever.retrieve(question)
     print("-" * 30 + "Context" + "-" * 30)
     print(
-        retrieved_to_context(titles, paragraphs, retriever.helper.max_para_word_count)
+        retrieved_to_context(
+            titles,
+            paragraphs,
+            retriever.helper.max_para_word_count,
+            retriever.helper.document_prefix,
+        )
     )
     print("-" * 30 + "Answer" + "-" * 30)
     print(answer)

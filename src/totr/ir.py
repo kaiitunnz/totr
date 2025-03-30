@@ -41,6 +41,7 @@ class IRHelper:
         self.skip_long_paras = config.retriever.skip_long_paras
         self.max_para_word_count = config.retriever.max_para_word_count
         self.max_gen_sent_count = config.retriever.max_gen_sent_count
+        self.document_prefix = config.retriever.document_prefix
         self.spacy = spacy.load("en_core_web_sm")
 
         # Retrieval
@@ -56,8 +57,6 @@ class IRHelper:
         # Full prompt
         self.examples = read_prompt_file(
             fpath=config.prompt.cot_prompt_file,
-            filter_by_key_values={"qid": config.prompt.prompt_example_ids},
-            order_by_key=True,
             shuffle=False,
             tokenizer_name=self.model_name,
             context_window_size=None,
@@ -84,7 +83,10 @@ class IRHelper:
         is_main_branch: bool = True,
     ) -> str:
         context = retrieved_to_context(
-            retrieved_titles, retrieved_paras, self.max_para_word_count
+            retrieved_titles,
+            retrieved_paras,
+            self.max_para_word_count,
+            self.document_prefix,
         )
         generated_answer = " ".join([sent.strip() for sent in generated_sentences])
         prompt = create_and_fit_prompt(
@@ -117,7 +119,10 @@ class IRHelper:
         is_main_branch: bool = True,
     ) -> Tuple[str, List[float]]:
         context = retrieved_to_context(
-            retrieved_titles, retrieved_paras, self.max_para_word_count
+            retrieved_titles,
+            retrieved_paras,
+            self.max_para_word_count,
+            self.document_prefix,
         )
         generated_answer = " ".join([sent.strip() for sent in generated_sentences])
         prompt = create_and_fit_prompt(
@@ -293,6 +298,9 @@ class QAModel:
         self.max_tokens = config.generation.max_tokens or 200
         self.max_para_word_count = config.retriever.max_para_word_count
 
+        # Document prefix
+        self.document_prefix = config.retriever.document_prefix
+
         # Question prefix
         if config.qa.answer_mode == "direct":
             prompt_file = config.prompt.direct_prompt_file
@@ -309,8 +317,6 @@ class QAModel:
         # Full prompt
         self.examples = read_prompt_file(
             fpath=prompt_file,
-            filter_by_key_values={"qid": config.prompt.prompt_example_ids},
-            order_by_key=True,
             shuffle=False,
             tokenizer_name=self.model_name,
             context_window_size=None,
@@ -325,7 +331,10 @@ class QAModel:
         partial_answer: Optional[str] = None,
     ) -> str:
         context = retrieved_to_context(
-            retrieved_titles, retrieved_paras, self.max_para_word_count
+            retrieved_titles,
+            retrieved_paras,
+            self.max_para_word_count,
+            self.document_prefix,
         )
         prompt = create_and_fit_prompt(
             tokenizer_name=self.model_name,

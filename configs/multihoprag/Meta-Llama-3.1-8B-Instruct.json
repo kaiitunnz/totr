@@ -21,7 +21,7 @@
     "max_para_count": 15,
     "max_gen_sent_count": 10,
     "max_para_word_count": 350,
-    "document_prefix": "Wikipedia Title:",
+    "document_prefix": "Article Title:",
     "answer_regex": ".* answer is:? (.*?)(?:$|(?:  )|\n)",
     "answer_split_regex": "(?:So )?the answer is"
   },

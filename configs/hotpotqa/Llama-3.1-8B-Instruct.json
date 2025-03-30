@@ -22,6 +22,7 @@
     "max_para_count": 15,
     "max_gen_sent_count": 10,
     "max_para_word_count": 350,
+    "document_prefix": "Wikipedia Title:",
     "answer_regex": ".* answer is:? (.*?)(?:$|(?:  )|\n)",
     "answer_split_regex": "(?:So )?the answer is"
   },
@@ -37,9 +38,8 @@
   "prompt": {
     "prompt_directory": "prompts",
     "prompt_dataset": "hotpotqa",
-    "cot_prompt_filename": "gold_with_3_distractors_context_cot_qa_flan_t5.txt",
-    "direct_prompt_filename": "gold_with_3_distractors_context_direct_qa_flan_t5.txt",
-    "prompt_set": "1"
+    "cot_prompt_filename": "cot_qa_llama.txt",
+    "direct_prompt_filename": "direct_qa_llama.txt"
   },
   "totr": {
     "retriever_gen_config_dict": {
@@ -55,7 +55,7 @@
     }
   },
   "react": {
-    "react_prompt_filename": "ReAct_qa.txt",
+    "react_prompt_filename": "react_qa_llama.txt",
     "react_question_prefix": "Solve a question answering task with interleaving Thought, Action, Observation steps. Thought can reason about the current situation, and Action can be two types: \n(1) Search[query], which searches the database with the query.\n(2) Finish[answer], which returns the answer and finishes the task.\nHere are some examples.\n",
     "retriever_gen_config_dict": {
       "max_tokens": 200,

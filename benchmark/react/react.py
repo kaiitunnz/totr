@@ -60,6 +60,7 @@ class REACTRHelper:
         self.skip_long_paras = config.retriever.skip_long_paras
         self.max_para_word_count = config.retriever.max_para_word_count
         self.max_gen_sent_count = config.retriever.max_gen_sent_count
+        self.document_prefix = config.retriever.document_prefix
         self.spacy = spacy.load("en_core_web_sm")
 
         # Retrieval
@@ -100,7 +101,10 @@ class REACTRHelper:
         is_main_branch: bool = True,
     ) -> Tuple[str, str, bool]:
         observation = retrieved_to_context(
-            retrieved_titles, retrieved_paras, self.max_para_word_count
+            retrieved_titles,
+            retrieved_paras,
+            self.max_para_word_count,
+            self.document_prefix,
         )
 
         prompt = create_prompt(

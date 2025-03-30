@@ -1,4 +1,3 @@
-# METADATA: {"qid": "5ae12a4b55429920d52342df"}
 Question: Baraki Barak District is situated in the western part of a province whose capital is what?
 Observation 1: 
 Wikipedia Title: Baraki Barak District
@@ -35,7 +34,7 @@ PRT Logar (Czech: "Provinční rekonstrukční tým Logar") is Provincial Recons
 Thought 2: From the search result, Puli Alam is the capital of the Logar Province, Afghanistan.
 Action 2: Finish[Puli Alam]
 
-# METADATA: {"qid": "5ab29486554299545a2cf9a4"}
+
 Question: Which has more members, Dada or Alt-J?
 Observation 1:
 Wikipedia Title: Alt-J
@@ -73,7 +72,6 @@ Thought 2: I found the information on Dada as a band. They have three members: M
 Action 2: Finish[Alt-J]
 
 
-# METADATA: {"qid": "5ae4bc7955429913cc2044e9"}
 Question: To which competition did the University at Albany, SUNY send a Puerto Rican hurdler and sprinter?
 Observation 1:
 Wikipedia Title: University at Albany, SUNY
@@ -109,4 +107,3 @@ Wikipedia Title: University Art Museum at University at Albany
 The University Art Museum at University at Albany is located on the Uptown campus of the University at Albany, SUNY in Albany, New York. The building was designed by architect Edward Durell Stone and its interior is an iconic example of late 20th Century modernism. Its three galleries provide over 9000 sqft of exhibition space for six to eight changing exhibitions per year, with a focus on contemporary art.
 Thought 2: From the search result, we know that Albany Great Danes is a soccer team representing the University at Albany, SUNY. Since Grace Claxton plays for the Albany Great Danes, she represented University at Albany, SUNY for soccer.
 Action 2: Finish[Soccer]
-

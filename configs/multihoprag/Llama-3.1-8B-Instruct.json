@@ -1,10 +1,11 @@
 {
   "llm": {
     "engine": "openai",
-    "base_url": "https://api.deepinfra.com/v1/openai",
-    "api_key": "",
-    "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-    "overriding_context_window": null
+    "base_url": "http://localhost:8010/v1",
+    "api_key": "EMPTY",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "overriding_context_window": null,
+    "is_chat": true
   },
   "generation": {
     "temperature": 0,
@@ -21,14 +22,14 @@
     "max_para_count": 15,
     "max_gen_sent_count": 10,
     "max_para_word_count": 350,
-    "document_prefix": "Wikipedia Title:",
+    "document_prefix": "Article Title:",
     "answer_regex": ".* answer is:? (.*?)(?:$|(?:  )|\n)",
     "answer_split_regex": "(?:So )?the answer is"
   },
   "qa": {
     "answer_mode": "cot",
-    "cot_question_prefix": "Answer the following question by reasoning step-by-step. At the end, state ONLY your final answer by prefacing with \"So the answer is:\".\n",
-    "direct_question_prefix": "Answer the following question. Provide only your final answer without elaboration.\n",
+    "cot_question_prefix": "Answer the following question by reasoning step-by-step.\n",
+    "direct_question_prefix": "Answer the following question.\n",
     "cot_answer_regex": ".* answer is:? (.*?)(?:$|(?:  )|\n)",
     "direct_answer_regex": "^(.*?)\n",
     "remove_full_stop": true,

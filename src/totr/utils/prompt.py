@@ -2,10 +2,9 @@
 Adapted from https://github.com/StonyBrookNLP/ircot/blob/3c1820f698eea5eeddb4fba3c56b64c961e063e4/commaqa/inference/prompt_reader.py
 """
 
-import json
 import random
 from pathlib import Path
-from typing import Dict, Hashable, List, Literal, Optional, Tuple
+from typing import List, Literal, Optional
 
 from transformers.tokenization_utils_base import PreTrainedTokenizerBase
 
@@ -14,68 +13,24 @@ from .transformers import get_tokenizer
 
 def read_prompt_file(
     fpath: Path,
-    metadata_prefix: str = "# METADATA: ",
-    filter_by_key_values: Optional[Dict[str, List[str]]] = None,
-    order_by_key: bool = True,
     shuffle: bool = False,
     tokenizer_name: Optional[str] = None,
     context_window_size: Optional[int] = None,
     test_to_train_length_scale: int = 1,
     estimated_generation_length: int = 500,
     removal_method: Literal["last", "longest"] = "last",
+    example_delimiter: str = "\n\n\n",
 ) -> List[str]:
-    def get_next_key(
-        filter_key_values: Optional[Tuple[str, List[str]]],
-        current_key: Hashable,
-        metadata_line: str,
-    ) -> Hashable:
-        if filter_key_values is None:
-            if current_key is None:
-                return 0
-            assert isinstance(current_key, int)
-            return current_key + 1
-        metadata_str = metadata_line.replace(metadata_prefix, "", 1)
-        metadata = json.loads(metadata_str)
-        next_key = metadata[filter_key_values[0]]
-        return next_key
-
-    if filter_by_key_values is not None:
-        if len(filter_by_key_values) > 1:
-            raise ValueError("Only one key can be used for filtering")
-        filter_key_values = next(iter(filter_by_key_values.items()))
-    else:
-        filter_key_values = None
-
     with fpath.open() as f:
-        all_prompt_lines = [line + "\n" for line in f.read().strip().split("\n")]
+        prompt_str = f.read().strip()
 
     # Extract examples
-    example_dict: Dict[Hashable, List[str]] = {}
-    current_key: Hashable = None
-    for line in all_prompt_lines:
-        stripped = line.strip()
-        if stripped.startswith(metadata_prefix):
-            current_key = get_next_key(filter_key_values, current_key, stripped)
-            example_dict[current_key] = []
-        else:
-            example_dict[current_key].append(line)
-
-    # Filter examples
-    if filter_key_values is not None:
-        valid_values = filter_key_values[1]
-        if order_by_key:
-            examples = [example_dict[v] for v in valid_values]
-        else:
-            examples = [v for k, v in example_dict.items() if k in valid_values]
-    else:
-        examples = list(example_dict.values())
-
-    prompt_examples_texts = ["".join(example).strip() for example in examples]
+    examples = [example.strip() for example in prompt_str.split(example_delimiter)]
 
     # Fit the examples in the context window.
     if tokenizer_name is not None and context_window_size is not None:
-        prompt_examples_texts = fit_examples_in_context_window(
-            prompt_examples_texts,
+        examples = fit_examples_in_context_window(
+            examples,
             tokenizer_name,
             context_window_size,
             estimated_generation_length=estimated_generation_length,
@@ -84,10 +39,10 @@ def read_prompt_file(
         )
 
     # Shuffle the examples if needed.
-    if (filter_key_values is None or not order_by_key) and shuffle:
-        random.shuffle(prompt_examples_texts)
+    if shuffle:
+        random.shuffle(examples)
 
-    return prompt_examples_texts
+    return examples
 
 
 def fit_examples_in_context_window(
@@ -197,24 +152,27 @@ def fit_prompt_in_context_window(
     return updated_prompt
 
 
-def para_to_text(title: str, para: str, max_num_words: int) -> str:
+def para_to_text(
+    title: str, para: str, max_num_words: int, document_prefix: str
+) -> str:
     # Note: the split and join must happen before the attaching title+para.
     # also don't split() because that disrupts the new lines.
     para = " ".join(para.split(" ")[:max_num_words]).strip()
+    document_prefix = document_prefix.rstrip() + " "
     para = (
         para
-        if para.startswith("Wikipedia Title: ")
-        else "Wikipedia Title: " + title + "\n" + para
+        if para.startswith(document_prefix)
+        else document_prefix + title + "\n" + para
     )
     return para
 
 
 def retrieved_to_context(
-    titles: List[str], paras: List[str], max_para_word_count: int
+    titles: List[str], paras: List[str], max_para_word_count: int, document_prefix: str
 ) -> str:
     return "\n\n".join(
         [
-            para_to_text(title, para, max_para_word_count)
+            para_to_text(title, para, max_para_word_count, document_prefix)
             for title, para in zip(titles, paras)
         ]
     )
