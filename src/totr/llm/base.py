@@ -32,7 +32,7 @@ class BaseLLM(ABC):
     @abstractmethod
     def complete_with_logprobs(
         self, prompt: str, config: Optional[GenerationConfig] = None
-    ) -> List[Tuple[str, List[float]]]:
+    ) -> List[Tuple[List[str], List[float]]]:
         pass
 
     @abstractmethod
@@ -44,7 +44,7 @@ class BaseLLM(ABC):
     @abstractmethod
     async def complete_async_with_logprobs(
         self, prompt: str, config: Optional[GenerationConfig] = None
-    ) -> List[Tuple[str, List[float]]]:
+    ) -> List[Tuple[List[str], List[float]]]:
         pass
 
     @abstractmethod
@@ -56,7 +56,7 @@ class BaseLLM(ABC):
     @abstractmethod
     def chat_with_logprobs(
         self, messages: List[Message], config: Optional[GenerationConfig] = None
-    ) -> List[Tuple[Message, List[float]]]:
+    ) -> List[Tuple[List[str], List[float]]]:
         pass
 
     @abstractmethod
@@ -68,5 +68,5 @@ class BaseLLM(ABC):
     @abstractmethod
     async def chat_async_with_logprobs(
         self, messages: List[Message], config: Optional[GenerationConfig] = None
-    ) -> List[Tuple[Message, List[float]]]:
+    ) -> List[Tuple[List[str], List[float]]]:
         pass

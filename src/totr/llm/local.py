@@ -49,7 +49,7 @@ class LocalLLM(BaseLLM):
 
     def complete_with_logprobs(
         self, prompt: str, config: Optional[GenerationConfig] = None
-    ) -> List[Tuple[str, List[float]]]:
+    ) -> List[Tuple[List[str], List[float]]]:
         raise NotImplementedError("TODO")
 
     async def complete_async(
@@ -59,7 +59,7 @@ class LocalLLM(BaseLLM):
 
     async def complete_async_with_logprobs(
         self, prompt: str, config: Optional[GenerationConfig] = None
-    ) -> List[Tuple[str, List[float]]]:
+    ) -> List[Tuple[List[str], List[float]]]:
         raise NotImplementedError("TODO")
 
     def chat(
@@ -84,7 +84,7 @@ class LocalLLM(BaseLLM):
 
     def chat_with_logprobs(
         self, messages: List[Message], config: Optional[GenerationConfig] = None
-    ) -> List[Tuple[Message, List[float]]]:
+    ) -> List[Tuple[List[str], List[float]]]:
         raise NotImplementedError("TODO")
 
     async def chat_async(
@@ -94,7 +94,7 @@ class LocalLLM(BaseLLM):
 
     async def chat_async_with_logprobs(
         self, messages: List[Message], config: Optional[GenerationConfig] = None
-    ) -> List[Tuple[Message, List[float]]]:
+    ) -> List[Tuple[List[str], List[float]]]:
         raise NotImplementedError("TODO")
 
     def _get_hf_generation_config(

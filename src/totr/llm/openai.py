@@ -43,14 +43,15 @@ class OpenAILLM(BaseLLM):
 
     def complete_with_logprobs(
         self, prompt: str, config: Optional[GenerationConfig] = None
-    ) -> List[Tuple[str, List[float]]]:
+    ) -> List[Tuple[List[str], List[float]]]:
         response = self._complete(prompt, config, logprobs=1)
-        res_messages = []
+        res_messages: List[Tuple[List[str], List[float]]] = []
         for choice in response.choices:
             logprobs = choice.logprobs
             assert logprobs is not None
             assert logprobs.token_logprobs is not None
-            res_messages.append((choice.text, logprobs.token_logprobs))
+            assert logprobs.tokens is not None
+            res_messages.append((logprobs.tokens, logprobs.token_logprobs))
         return res_messages
 
     @backoff.on_exception(
@@ -83,14 +84,15 @@ class OpenAILLM(BaseLLM):
 
     async def complete_async_with_logprobs(
         self, prompt: str, config: Optional[GenerationConfig] = None
-    ) -> List[Tuple[str, List[float]]]:
+    ) -> List[Tuple[List[str], List[float]]]:
         response = await self._complete_async(prompt, config, logprobs=1)
         res_messages = []
         for choice in response.choices:
             logprobs = choice.logprobs
             assert logprobs is not None
             assert logprobs.token_logprobs is not None
-            res_messages.append((choice.text, logprobs.token_logprobs))
+            assert logprobs.tokens is not None
+            res_messages.append((logprobs.tokens, logprobs.token_logprobs))
         return res_messages
 
     @backoff.on_exception(
@@ -131,9 +133,9 @@ class OpenAILLM(BaseLLM):
 
     def chat_with_logprobs(
         self, messages: List[Message], config: Optional[GenerationConfig] = None
-    ) -> List[Tuple[Message, List[float]]]:
+    ) -> List[Tuple[List[str], List[float]]]:
         response = self._chat(messages, config, logprobs=True)
-        res_messages: List[Tuple[Message, List[float]]] = []
+        res_messages: List[Tuple[List[str], List[float]]] = []
         for choice in response.choices:
             message = choice.message
             if message.content is None:
@@ -141,10 +143,11 @@ class OpenAILLM(BaseLLM):
             logprobs = choice.logprobs
             assert logprobs is not None
             assert logprobs.content is not None
-            token_logprobs = [token.logprob for token in logprobs.content]
-            res_messages.append(
-                (Message(role=message.role, content=message.content), token_logprobs)
-            )
+            tokens, token_logprobs = [], []
+            for token in logprobs.content:
+                tokens.append(token.token)
+                token_logprobs.append(token.logprob)
+            res_messages.append((tokens, token_logprobs))
         return res_messages
 
     @backoff.on_exception(
@@ -185,9 +188,9 @@ class OpenAILLM(BaseLLM):
 
     async def chat_async_with_logprobs(
         self, messages: List[Message], config: Optional[GenerationConfig] = None
-    ) -> List[Tuple[Message, List[float]]]:
+    ) -> List[Tuple[List[str], List[float]]]:
         response = await self._chat_async(messages, config, logprobs=True)
-        res_messages: List[Tuple[Message, List[float]]] = []
+        res_messages: List[Tuple[List[str], List[float]]] = []
         for choice in response.choices:
             message = choice.message
             if message.content is None:
@@ -195,10 +198,11 @@ class OpenAILLM(BaseLLM):
             logprobs = choice.logprobs
             assert logprobs is not None
             assert logprobs.content is not None
-            token_logprobs = [token.logprob for token in logprobs.content]
-            res_messages.append(
-                (Message(role=message.role, content=message.content), token_logprobs)
-            )
+            tokens, token_logprobs = [], []
+            for token in logprobs.content:
+                tokens.append(token.token)
+                token_logprobs.append(token.logprob)
+            res_messages.append((tokens, token_logprobs))
         return res_messages
 
     @property

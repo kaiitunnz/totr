@@ -117,7 +117,7 @@ class IRHelper:
         retrieved_titles: List[str],
         retrieved_paras: List[str],
         is_main_branch: bool = True,
-    ) -> Tuple[str, List[float]]:
+    ) -> Tuple[List[str], List[float]]:
         context = retrieved_to_context(
             retrieved_titles,
             retrieved_paras,
@@ -173,6 +173,9 @@ class IRHelper:
 
     def _post_process_answer(self, answer: str) -> str:
         answer = answer.strip()
+        matched = re.match(r"(.*?)(?:$|(?:  )|\n)", answer)
+        if matched is not None:
+            answer = matched.group(0)
         if self.remove_full_stop and answer.endswith("."):
             answer = answer[:-1]
         return answer
@@ -362,6 +365,9 @@ class QAModel:
 
     def _post_process_answer(self, answer: str) -> str:
         answer = answer.strip()
+        matched = re.match(r"(.*?)(?:$|(?:  )|\n)", answer)
+        if matched is not None:
+            answer = matched.group(0).strip()
         if self.remove_full_stop and answer.endswith("."):
             answer = answer[:-1]
         return answer
