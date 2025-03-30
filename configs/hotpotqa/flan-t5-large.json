@@ -37,7 +37,9 @@
     "prompt_directory": "prompts",
     "prompt_dataset": "hotpotqa",
     "cot_prompt_filename": "cot_qa_llama.txt",
-    "direct_prompt_filename": "direct_qa_llama.txt"
+    "direct_prompt_filename": "direct_qa_llama.txt",
+    "no_context_cot_prompt_filename": "no_context_cot_qa_llama.txt",
+    "no_context_direct_prompt_filename": "no_context_direct_qa_llama.txt"
   },
   "totr": {
     "retriever_gen_config_dict": {

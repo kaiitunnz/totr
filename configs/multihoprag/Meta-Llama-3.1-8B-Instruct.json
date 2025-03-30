@@ -15,7 +15,7 @@
     "elasticsearch_port": 9200,
     "retriever_name": "elasticsearch",
     "hit_count_per_step": 6,
-    "corpus_name": "hotpotqa",
+    "corpus_name": "multihoprag",
     "document_type": "title_paragraph_text",
     "skip_long_paras": true,
     "max_para_count": 15,
@@ -36,9 +36,11 @@
   },
   "prompt": {
     "prompt_directory": "prompts",
-    "prompt_dataset": "hotpotqa",
+    "prompt_dataset": "multihoprag",
     "cot_prompt_filename": "cot_qa_llama.txt",
-    "direct_prompt_filename": "direct_qa_llama.txt"
+    "direct_prompt_filename": "direct_qa_llama.txt",
+    "no_context_cot_prompt_filename": "no_context_cot_qa_llama.txt",
+    "no_context_direct_prompt_filename": "no_context_direct_qa_llama.txt"
   },
   "totr": {
     "retriever_gen_config_dict": {
