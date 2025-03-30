@@ -122,7 +122,7 @@
    You can also choose to build indices for specific datasets. For example, using the following command:
 
    ```sh
-   python -m totr.retriever.build_es_index --datasets hotpotqa 2wikimultihopqa
+   python -m totr.retriever.build_es_index --datasets hotpotqa multihoprag
    ```
 
 ## Project Structure

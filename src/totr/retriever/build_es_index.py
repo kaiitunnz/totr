@@ -11,7 +11,7 @@ import json
 import os
 import random
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional
+from typing import Any, Dict, Iterable, List, Optional
 
 import base58
 import dill
@@ -20,7 +20,7 @@ from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 from tqdm import tqdm
 
-REGISTERED_DATASETS = ("hotpotqa", "iirc", "2wikimultihopqa", "musique")
+REGISTERED_DATASETS = ("hotpotqa", "iirc", "2wikimultihopqa", "musique", "multihoprag")
 
 
 def hash_object(o: Any) -> str:
@@ -229,6 +229,49 @@ def make_musique_documents(
                     metadata["idx"] += 1
 
 
+def make_multihoprag_documents(
+    raw_data_dir: Path, elasticsearch_index: str, metadata: Optional[Dict] = None
+) -> Iterable[Dict[str, Any]]:
+    metadata = metadata or {"idx": 1}
+    assert "idx" in metadata
+
+    corpus_file = raw_data_dir.joinpath("MultihopRAG", "corpus.json")
+    used_full_ids = set()
+
+    with open(corpus_file, "r") as f:
+        corpus: List[Dict[str, Any]] = json.load(f)
+        for article in corpus:
+            title: str = article["title"]
+            body: str = article["body"]
+            url: str = article["url"]
+            paragraphs = body.strip().split("\n\n")
+
+            for i, paragraph in enumerate(paragraphs):
+                full_id = hash_object(" ".join([title, paragraph]))
+                if full_id in used_full_ids:
+                    continue
+
+                used_full_ids.add(full_id)
+                id_ = full_id[:32]
+
+                es_paragraph = {
+                    "id": id_,
+                    "title": title,
+                    "paragraph_index": i,
+                    "paragraph_text": paragraph,
+                    "url": url,
+                    "is_abstract": False,
+                }
+                document = {
+                    "_op_type": "create",
+                    "_index": elasticsearch_index,
+                    "_id": metadata["idx"],
+                    "_source": es_paragraph,
+                }
+                yield (document)
+                metadata["idx"] += 1
+
+
 def build_index(
     es: Elasticsearch, raw_data_dir: Path, dataset: str, force: bool
 ) -> None:
@@ -282,6 +325,8 @@ def build_index(
         make_documents = make_2wikimultihopqa_documents
     elif dataset == "musique":
         make_documents = make_musique_documents
+    elif dataset == "multihoprag":
+        make_documents = make_multihoprag_documents
     else:
         raise Exception(f"Unknown dataset_name {dataset}")
 
