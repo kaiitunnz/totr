@@ -8,6 +8,7 @@ from bench_tasks.hotpotqa import run_hotpotqa
 from ircot import IRCoT
 from react.config import ReActFullConfig
 from react.react import ReAct
+from baseline.baseline import Base
 from transformers.utils import logging
 
 from totr import SCR, ToTR
@@ -48,9 +49,19 @@ async def evaluate_hotpotqa(
             base_config_path.joinpath("hotpotqa", model_name.split("/")[-1] + ".json")
         )
         yield f"react_{config.identifier}", ReAct(config)
+        # 5. Baseline (No retriever)
+        config = Config.from_json(
+            base_config_path.joinpath("hotpotqa", model_name.split("/")[-1] + "_no_context.json")
+        )
+        yield f"baseline_no_retrieval_CoT_{config.identifier}", Base(config)
+        # 6. Baseline (One retrieval)
+        config = Config.from_json(
+            base_config_path.joinpath("hotpotqa", model_name.split("/")[-1] + ".json")
+        )
+        yield f"baseline_single_retrieval_CoT_{config.identifier}", Base(config, with_retrieval=True)
 
     bench_name = "hotpotqa"
-    batch_sizes = {IRCoT: 8, ToTR: 1, SCR: 4, ReAct: 1}
+    batch_sizes = {IRCoT: 8, ToTR: 1, SCR: 4, ReAct: 1, Base: 1}
 
     print("Evaluating systems on HotpotQA...")
     for system_name, system in systems(model_name):
