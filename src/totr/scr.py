@@ -8,7 +8,7 @@ from .utils.retriever import rerank_answers
 
 class SCRRetriever:
     def __init__(self, config: Config, seed: Optional[int] = None) -> None:
-        self.helper = IRHelper(config, config.scr.retriever_gen_config, seed)
+        self.helper = IRHelper(config, config.scr.retriever_gen_config, seed=seed)
 
         self.num_chains = config.scr.num_chains
         self.similarity_threshold = config.scr.similarity_threshold

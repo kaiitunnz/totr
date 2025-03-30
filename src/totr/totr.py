@@ -44,7 +44,7 @@ class NodeData:
 
 class ToTRRetriever:
     def __init__(self, config: Config, seed: Optional[int] = None) -> None:
-        self.helper = IRHelper(config, config.totr.retriever_gen_config, seed)
+        self.helper = IRHelper(config, config.totr.retriever_gen_config, seed=seed)
 
         self.search_method = config.totr.search_method
         self.branch_method = config.totr.branch_method

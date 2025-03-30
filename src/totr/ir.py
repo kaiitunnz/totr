@@ -22,6 +22,7 @@ class IRHelper:
         self,
         config: Config,
         retriever_gen_config: Optional[GenerationConfig] = None,
+        with_retrieval: bool = True,
         seed: Optional[int] = None,
     ):
         # LLM
@@ -47,6 +48,7 @@ class IRHelper:
         # Retrieval
         self.question_prefix = config.qa.cot_question_prefix
         self.retriever_gen_config = retriever_gen_config
+        self.with_retrieval = with_retrieval
 
         # Answer extraction
         answer_regex = config.retriever.answer_regex
@@ -55,8 +57,13 @@ class IRHelper:
         self.remove_full_stop = config.qa.remove_full_stop
 
         # Full prompt
+        prompt_file = (
+            config.prompt.cot_prompt_file
+            if self.with_retrieval
+            else config.prompt.no_context_cot_prompt_file
+        )
         self.examples = read_prompt_file(
-            fpath=config.prompt.cot_prompt_file,
+            fpath=prompt_file,
             shuffle=False,
             tokenizer_name=self.model_name,
             context_window_size=None,
@@ -292,7 +299,7 @@ class IRHelper:
 
 
 class QAModel:
-    def __init__(self, config: Config) -> None:
+    def __init__(self, config: Config, with_retrieval: bool = True) -> None:
         # LLM
         self.model_name = config.llm.model
         self.llm = LLMRegistry.get(config.llm.engine, config)
@@ -305,11 +312,20 @@ class QAModel:
         self.document_prefix = config.retriever.document_prefix
 
         # Question prefix
+        self.with_retrieval = with_retrieval
         if config.qa.answer_mode == "direct":
-            prompt_file = config.prompt.direct_prompt_file
+            prompt_file = (
+                config.prompt.direct_prompt_file
+                if self.with_retrieval
+                else config.prompt.no_context_direct_prompt_file
+            )
             self.question_prefix = config.qa.direct_question_prefix
         else:
-            prompt_file = config.prompt.cot_prompt_file
+            prompt_file = (
+                config.prompt.cot_prompt_file
+                if self.with_retrieval
+                else config.prompt.no_context_cot_prompt_file
+            )
             self.question_prefix = config.qa.cot_question_prefix
 
         # Answer extraction
@@ -333,11 +349,15 @@ class QAModel:
         retrieved_paras: List[str],
         partial_answer: Optional[str] = None,
     ) -> str:
-        context = retrieved_to_context(
-            retrieved_titles,
-            retrieved_paras,
-            self.max_para_word_count,
-            self.document_prefix,
+        context = (
+            retrieved_to_context(
+                retrieved_titles,
+                retrieved_paras,
+                self.max_para_word_count,
+                self.document_prefix,
+            )
+            if self.with_retrieval
+            else None
         )
         prompt = create_and_fit_prompt(
             tokenizer_name=self.model_name,

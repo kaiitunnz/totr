@@ -180,7 +180,7 @@ def retrieved_to_context(
 
 def create_prompt(
     examples: List[str],
-    context: str,
+    context: Optional[str],
     question: str,
     partial_answer: Optional[str] = None,
     question_prefix: Optional[str] = None,
@@ -190,7 +190,10 @@ def create_prompt(
         question = question_prefix + question
     example_prompt = example_delimiter.join(examples).strip()
     answer = f"A: {partial_answer}" if partial_answer is not None else "A:"
-    test_example_str = context + "\n\n" + f"Q: {question}" + "\n" + answer
+    if context is None:
+        test_example_str = f"Q: {question}" + "\n" + answer
+    else:
+        test_example_str = context + "\n\n" + f"Q: {question}" + "\n" + answer
     prompt = example_delimiter.join([example_prompt, test_example_str]).strip()
     return prompt
 
@@ -198,7 +201,7 @@ def create_prompt(
 def apply_chat_template(
     tokenizer: PreTrainedTokenizerBase,
     examples: List[str],
-    context: str,
+    context: Optional[str],
     question: str,
     partial_answer: Optional[str],
     question_prefix: Optional[str],
@@ -206,7 +209,10 @@ def apply_chat_template(
 ) -> str:
     if question_prefix is not None:
         question = question_prefix + question
-    question_prompt = context + "\n\n" + f"Q: {question}"
+    if context is None:
+        question_prompt = f"Q: {question}"
+    else:
+        question_prompt = context + "\n\n" + f"Q: {question}"
     user_prompt = example_delimiter.join(examples + [question_prompt])
     assistant_prompt = f"A: {partial_answer}" if partial_answer is not None else "A:"
 
@@ -233,7 +239,7 @@ def create_and_fit_prompt(
     tokenizer_name: str,
     is_chat: bool,
     examples: List[str],
-    context: str,
+    context: Optional[str],
     question: str,
     partial_answer: Optional[str],
     question_prefix: Optional[str],
