@@ -90,7 +90,11 @@ async def run_hotpotqa(
         return item, answer
 
     metrics: Dict[str, float] = {"em": 0, "f1": 0, "prec": 0, "recall": 0}
-    data = load_hotpotqa(Path(dataset_root_dir, "hotpotqa", "test_subsampled.jsonl"))
+    dataset_dir = Path(dataset_root_dir, "hotpotqa")
+    if result_handler.test:
+        data = load_hotpotqa(dataset_dir / "test_subsampled.jsonl")
+    else:
+        data = load_hotpotqa(dataset_dir / "dev_subsampled.jsonl")
     n = len(data)
 
     # Check existing predictions
