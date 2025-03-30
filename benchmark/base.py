@@ -15,6 +15,7 @@ class ResultHandler:
         system_name: str,
         bench_name: str,
         result_dir: Optional[Path] = None,
+        test: bool = False,
         save_results: bool = True,
         overwrite: bool = False,
     ) -> None:
@@ -22,7 +23,8 @@ class ResultHandler:
             raise ValueError("result_dir must not be None if save_results is True")
 
         self.system_name = system_name
-        self.bench_name = bench_name
+        self.test = test
+        self.bench_name = bench_name if test else bench_name + "_dev"
         self.save_results = save_results
         self.overwrite = overwrite
 
