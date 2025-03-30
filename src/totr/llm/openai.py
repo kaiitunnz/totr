@@ -49,6 +49,7 @@ class OpenAILLM(BaseLLM):
         for choice in response.choices:
             logprobs = choice.logprobs
             assert logprobs is not None
+            assert logprobs.token_logprobs is not None
             res_messages.append((choice.text, logprobs.token_logprobs))
         return res_messages
 
@@ -88,6 +89,7 @@ class OpenAILLM(BaseLLM):
         for choice in response.choices:
             logprobs = choice.logprobs
             assert logprobs is not None
+            assert logprobs.token_logprobs is not None
             res_messages.append((choice.text, logprobs.token_logprobs))
         return res_messages
 
