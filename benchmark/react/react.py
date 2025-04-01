@@ -11,30 +11,9 @@ from totr.retriever import RetrieverRegistry
 from totr.utils.prompt import read_prompt_file, retrieved_to_context
 from totr.utils.retriever import is_para_closely_matching, remove_wh_words
 from totr.utils.transformers import seed_everything
+from totr.llm.base import Message
 
 from .config import ReActFullConfig
-
-
-def create_prompt(
-    example_prompt: str,
-    observation: str,
-    question: str,
-    step: int,
-    partial_answer: Optional[str] = None,
-    question_prefix: Optional[str] = None,
-) -> str:
-    answer = f"\n{partial_answer}" if partial_answer else ""
-    test_example_str = (
-        f"Question: {question}"
-        + answer
-        + f"\nObservation {step}:\n{observation}"
-        + "\n"
-        + f"Thought {step}:"
-    )
-    prompt = "\n\n\n".join([example_prompt, test_example_str]).strip()
-    if question_prefix is not None:
-        prompt = question_prefix + prompt
-    return prompt
 
 
 class REACTRHelper:
@@ -93,13 +72,11 @@ class REACTRHelper:
 
     async def generate(
         self,
-        question: str,
-        partial_answer: str,
+        chat_history: List[Message],
         retrieved_titles: List[str],
         retrieved_paras: List[str],
-        step: int,
-        is_main_branch: bool = True,
-    ) -> Tuple[str, str, bool]:
+        step: int
+    ) -> Tuple[str, bool]:
         observation = retrieved_to_context(
             retrieved_titles,
             retrieved_paras,
@@ -107,45 +84,22 @@ class REACTRHelper:
             self.document_prefix,
         )
 
-        prompt = create_prompt(
-            self.example_prompt,
-            observation,
-            question,
-            step,
-            partial_answer=partial_answer,
-            question_prefix=self.question_prefix,
+        chat_history.append(
+            Message(role="user", content=f"Observation {step}:\n{observation}")
         )
-        prompt = prompt.rstrip()
-        # print(f"Prompt before context window: {prompt}")
-        # prompt = fit_prompt_in_context_window(
-        #     prompt=prompt,
-        #     tokenizer_name=self.model_name,
-        #     context_window=self.context_window_size,
-        #     estimated_generation_length=self.max_tokens,
-        #     remove_method="last",
-        #     shuffle=False,
-        #     last_is_test_example=True,
-        # )
-        # print(f"Prompt after context window: {prompt}")
+
         gen_config: Optional[GenerationConfig]
-        # if is_main_branch and self.retriever_gen_config is not None:
-        #     # Use greedy decoding on main branch
-        #     gen_config = replace(
-        #         self.retriever_gen_config, temperature=None, do_sample=False
-        #     )
-        # else:
-        #     gen_config = self.retriever_gen_config
         gen_config = self.retriever_gen_config
-        outputs = await self.llm.complete_async(prompt, gen_config)
+        outputs = await self.llm.chat_async(chat_history, gen_config)
 
         try:
-            thought, action = outputs[0].strip().split(f"\nAction {step}: ")
+            thought, action = outputs[0].content.strip().split(f"\nAction {step}: ")
         except Exception:
             print("No actions returned", outputs)
             # n_badcalls += 1
             # n_calls += 1
-            thought = outputs[0].strip().split("\n")[0]
-            action = await self.generate_action(prompt, thought, step)
+            thought = outputs[0].content.strip().split("\n")[0]
+            action = await self.generate_action(chat_history, thought, step)
 
         query, done, isvalid = self.get_action(action)
 
@@ -153,14 +107,14 @@ class REACTRHelper:
         if not isvalid:
             # raise Exception(f"Invalid action: {action}")
             print(f"Invalid action: {action}")
-            return partial_answer, "", True
+            return "", True
 
-        partial_answer = (
-            partial_answer.strip()
-            + f"\nObservation {step}:\n{observation}\nThought {step}: {thought}\nAction {step}: {action}\n"
+        # print(f"{thought}")
+        # print(f"Action {step}: {action}")
+        chat_history.append(
+            Message(role="assistant", content=f"{thought}\nAction {step}: {action}")
         )
-        # print(f"Partial answer: {partial_answer}")
-        return partial_answer, query, done
+        return query, done
 
     async def retrieve_one_step(
         self, query: str, retrieved_titles: List[str], retrieved_paras: List[str]
@@ -230,12 +184,12 @@ class REACTRHelper:
                 isvalid = False
         return query, done, isvalid
 
-    async def generate_action(self, prompt: str, thought: str, step: int) -> str:
+    async def generate_action(self, chat_history: List[Message], thought: str, step: int) -> str:
         gen_config = replace(self.retriever_gen_config, stop=["\n"])
-        output = await self.llm.complete_async(
-            prompt + f"\nThought {step}: {thought}\nAction {step}:", gen_config
+        outputs = await self.llm.chat_async(
+            chat_history + [Message(role="assistant" , content=f"{thought}\nAction {step}:")], gen_config
         )
-        action = output[0].strip()
+        action = outputs[0].content.strip()
         return action
 
     def select_retrieved(
@@ -267,10 +221,15 @@ class ReAct:
 
     async def answer(self, question: str) -> str:
         query = question
-        partial_answer = ""
         step = 1
         done = False
         final_answer = None
+        chat_history = []
+        sys_chat = self.helper.example_prompt.strip()
+        if self.helper.question_prefix is not None:
+            sys_chat = self.helper.question_prefix + sys_chat
+        chat_history.append(Message(role="system", content=sys_chat))
+        chat_history.append(Message(role="user", content=f"Question: {question}"))
         retrieved_titles: List[str]
         retrieved_paras: List[str]
         while not done and step <= self.helper.max_step:
@@ -281,12 +240,12 @@ class ReAct:
             )
 
             # 2. Generate a thought
-            partial_answer, query, done = await self.helper.generate(
-                question, partial_answer, retrieved_titles, retrieved_paras, step=step
+            query, done = await self.helper.generate(
+                chat_history, retrieved_titles, retrieved_paras, step=step
             )
             # print(query)
             step += 1
-        # print(partial_answer)
         final_answer = query
+        # print(chat_history)
 
         return final_answer
