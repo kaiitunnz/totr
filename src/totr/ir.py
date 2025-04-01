@@ -3,6 +3,7 @@ from dataclasses import replace
 from typing import List, Optional, Tuple
 
 import spacy
+import spacy.lang
 
 from .config import Config
 from .config.generation import GenerationConfig
@@ -15,6 +16,8 @@ from .utils.retriever import (
     remove_wh_words,
 )
 from .utils.transformers import seed_everything
+
+sent_tokenizer = spacy.load("en_core_web_sm")
 
 
 class IRHelper:
@@ -43,7 +46,6 @@ class IRHelper:
         self.max_para_word_count = config.retriever.max_para_word_count
         self.max_gen_sent_count = config.retriever.max_gen_sent_count
         self.document_prefix = config.retriever.document_prefix
-        self.spacy = spacy.load("en_core_web_sm")
 
         # Retrieval
         self.question_prefix = config.qa.cot_question_prefix
@@ -178,15 +180,6 @@ class IRHelper:
         )
         return sum(logprobs) / len(logprobs)  # Normalize log probabilities
 
-    def _post_process_answer(self, answer: str) -> str:
-        answer = answer.strip()
-        matched = re.match(r"(.*?)(?:$|(?:  )|\n)", answer)
-        if matched is not None:
-            answer = matched.group(0)
-        if self.remove_full_stop and answer.endswith("."):
-            answer = answer[:-1]
-        return answer
-
     async def get_answer(
         self,
         question: str,
@@ -203,7 +196,9 @@ class IRHelper:
             retrieved_paras,
             is_main_branch=True,
         )
-        answer = self._post_process_answer(output)
+        answer = _post_process_answer(
+            output, self.remove_full_stop, self.answer_split_regex
+        )
         return answer
 
     async def retrieve_one_step(
@@ -254,7 +249,7 @@ class IRHelper:
                 retrieved_paras.append(paragraph_text)
 
     def get_first_sentence(self, text: str) -> Optional[str]:
-        new_sentences = [sent.text for sent in self.spacy(text).sents]
+        new_sentences = [sent.text for sent in sent_tokenizer(text).sents]
         if len(new_sentences) == 0:
             return None
         return new_sentences[0]
@@ -266,7 +261,9 @@ class IRHelper:
         if not matched:
             return None
         answer = matched.group(1)
-        answer = self._post_process_answer(answer)
+        answer = _post_process_answer(
+            answer, self.remove_full_stop, self.answer_split_regex
+        )
         return answer
 
     def get_next_query(self, question: str, generated_sentences: List[str]) -> str:
@@ -332,6 +329,7 @@ class QAModel:
         answer_regex = config.qa.answer_regex
         self.answer_regex = None if answer_regex is None else re.compile(answer_regex)
         self.remove_full_stop = config.qa.remove_full_stop
+        self.answer_split_regex = re.compile(config.retriever.answer_split_regex)
 
         # Full prompt
         self.examples = read_prompt_file(
@@ -381,16 +379,9 @@ class QAModel:
         if not matched:
             return None
         answer = matched.group(1)
-        return self._post_process_answer(answer)
-
-    def _post_process_answer(self, answer: str) -> str:
-        answer = answer.strip()
-        matched = re.match(r"(.*?)(?:$|(?:  )|\n)", answer)
-        if matched is not None:
-            answer = matched.group(0).strip()
-        if self.remove_full_stop and answer.endswith("."):
-            answer = answer[:-1]
-        return answer
+        return _post_process_answer(
+            answer, self.remove_full_stop, self.answer_split_regex
+        )
 
     async def answer(
         self, question: str, retrieved_titles: List[str], retrieved_paras: List[str]
@@ -404,5 +395,23 @@ class QAModel:
                 retrieved_paras,
                 output.rstrip() + " So the answer is:",
             )
-            answer = self._post_process_answer(output)
+            answer = _post_process_answer(
+                output, self.remove_full_stop, self.answer_split_regex
+            )
         return answer
+
+
+def _post_process_answer(
+    answer: str, remove_full_stop: bool, answer_split_regex: re.Pattern
+) -> str:
+    answer = answer.strip()
+    # Extract the last part after the answer split regex
+    answer = answer_split_regex.split(answer)[-1].strip()
+    # Extract the first sentence
+    sents = list(sent_tokenizer(answer).sents)
+    if len(sents) > 0:
+        answer = sents[0].text
+    # Remove the trailing full stop
+    if remove_full_stop and answer.endswith("."):
+        answer = answer[:-1]
+    return answer

@@ -5,7 +5,7 @@
     "api_key": "EMPTY",
     "model": "meta-llama/Llama-3.1-8B-Instruct",
     "overriding_context_window": null,
-    "is_chat": true
+    "is_chat": false
   },
   "generation": {
     "temperature": 0,
@@ -24,7 +24,7 @@
     "max_para_word_count": 350,
     "document_prefix": "Wikipedia Title:",
     "answer_regex": ".* answer is:? (.*?)(?:$|(?:  )|\n)",
-    "answer_split_regex": "(?:So )?the answer is"
+    "answer_split_regex": "(?:So )?the answer is:?"
   },
   "qa": {
     "answer_mode": "cot",

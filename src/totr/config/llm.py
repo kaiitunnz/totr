@@ -12,6 +12,7 @@ CONTEXT_WINDOW_SIZE_MAP: Dict[str, int] = {
     "meta-llama/Llama-3.1-8B": 131072,
     "meta-llama/Meta-Llama-3.1-8B-Instruct": 131072,
     "meta-llama/Llama-3.1-8B-Instruct": 131072,
+    "meta-llama/Llama-3.2-1B-Instruct": 131072,
     "meta-llama/Llama-3.2-3B": 131072,
     "meta-llama/Llama-3.2-3B-Instruct": 131072,
     "Qwen/Qwen2.5-3B": 32768,

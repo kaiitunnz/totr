@@ -13,7 +13,7 @@ class ToTRConfig:
     max_depth: int = 10
     retriever_gen_config_dict: Optional[Dict] = None
     retriever_gen_config: GenerationConfig = field(init=False)
-    similarity_threshold: float = 0.5
+    similarity_threshold: float = 1.0
 
     def __post_init__(self) -> None:
         if self.retriever_gen_config_dict is None:

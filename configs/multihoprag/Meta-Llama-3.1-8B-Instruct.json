@@ -23,7 +23,7 @@
     "max_para_word_count": 350,
     "document_prefix": "Article Title:",
     "answer_regex": ".* answer is:? (.*?)(?:$|(?:  )|\n)",
-    "answer_split_regex": "(?:So )?the answer is"
+    "answer_split_regex": "(?:So )?the answer is:?"
   },
   "qa": {
     "answer_mode": "cot",

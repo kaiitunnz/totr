@@ -222,7 +222,8 @@ def apply_chat_template(
             "content": (
                 "You are a question answerer. You answer the given question "
                 'and always end your response with "So the answer is:" followed by '
-                "your final answer without additional explanation."
+                "your final answer without additional explanation. If there is not "
+                'enough information, answer "NONE".'
             ),
         },
         {"role": "user", "content": user_prompt},

@@ -23,7 +23,7 @@
     "max_para_word_count": 350,
     "document_prefix": "Wikipedia Title:",
     "answer_regex": ".* answer is:? (.*?)(?:$|(?:  )|\n)",
-    "answer_split_regex": "(?:So )?the answer is"
+    "answer_split_regex": "(?:So )?the answer is:?"
   },
   "qa": {
     "answer_mode": "direct",
@@ -45,7 +45,7 @@
   "totr": {
     "retriever_gen_config_dict": {
       "max_tokens": 200,
-      "temperature": 0.2
+      "temperature": 0.5
     }
   },
   "scr": {

@@ -59,20 +59,25 @@ def remove_reasoning_sentences(sentences: List[str]) -> List[str]:
 def rerank_answers(
     answers: List[str], retrieved_counts: List[int], threshold_factor: float
 ) -> List[int]:
-    if len(answers) == 0:
+    num_answers = len(answers)
+    if num_answers == 0:
         return []
-    if len(answers) == 1:
+    if num_answers == 1:
         return [0]
 
     vectorizer = CountVectorizer(binary=True, token_pattern=r"(?u)\b\w+\b")
-    X = vectorizer.fit_transform(answers)
-    similarities_ = (X @ X.T) / X.shape[-1]  # type: ignore
+    try:
+        X = vectorizer.fit_transform(answers)
+        similarities_ = (X @ X.T) / X.shape[-1]  # type: ignore
+    except ValueError:
+        similarities_ = np.zeros((num_answers, num_answers))
+
     similarities: np.ndarray
     if isinstance(similarities_, spmatrix):
         similarities = np.array(similarities_.todense())
     else:
         similarities = similarities_
-    similarities = similarities - np.eye(similarities.shape[0])
+    np.fill_diagonal(similarities, 0)
     similarities = similarities.sum(axis=0) / (similarities.shape[0] - 1)
 
     # Sort by similarity in desc and the number of retrieved documents in asc
