@@ -7,11 +7,11 @@ import spacy
 
 from totr.config.generation import GenerationConfig
 from totr.llm import LLMRegistry
+from totr.llm.base import Message
 from totr.retriever import RetrieverRegistry
 from totr.utils.prompt import read_prompt_file, retrieved_to_context
 from totr.utils.retriever import is_para_closely_matching, remove_wh_words
 from totr.utils.transformers import seed_everything
-from totr.llm.base import Message
 
 from .config import ReActFullConfig
 
@@ -52,7 +52,6 @@ class REACTRHelper:
         self.answer_regex = None if answer_regex is None else re.compile(answer_regex)
 
         # Full prompt
-        # self.example_prompt = ""
         self.example_prompt = "\n\n\n".join(
             read_prompt_file(
                 fpath=Path(
@@ -75,7 +74,7 @@ class REACTRHelper:
         chat_history: List[Message],
         retrieved_titles: List[str],
         retrieved_paras: List[str],
-        step: int
+        step: int,
     ) -> Tuple[str, bool]:
         observation = retrieved_to_context(
             retrieved_titles,
@@ -184,10 +183,14 @@ class REACTRHelper:
                 isvalid = False
         return query, done, isvalid
 
-    async def generate_action(self, chat_history: List[Message], thought: str, step: int) -> str:
+    async def generate_action(
+        self, chat_history: List[Message], thought: str, step: int
+    ) -> str:
         gen_config = replace(self.retriever_gen_config, stop=["\n"])
         outputs = await self.llm.chat_async(
-            chat_history + [Message(role="assistant" , content=f"{thought}\nAction {step}:")], gen_config
+            chat_history
+            + [Message(role="assistant", content=f"{thought}\nAction {step}:")],
+            gen_config,
         )
         action = outputs[0].content.strip()
         return action
