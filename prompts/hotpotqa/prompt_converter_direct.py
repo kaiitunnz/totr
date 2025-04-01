@@ -37,6 +37,8 @@ def convert_file(input_file, output_file, system_prompt=None, direct=False):
         q_match = re.search(r"Q:(.*?)(?=A:|$)", content_text, re.DOTALL)
         a_match = re.search(r"A:(.*?)$", content_text, re.DOTALL)
 
+        assert q_match is not None and a_match is not None, f"Content: {content_text}"
+
         question = q_match.group(1).strip()
         full_answer = a_match.group(1).strip()
 
