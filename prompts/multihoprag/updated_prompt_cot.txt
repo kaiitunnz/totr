@@ -1,0 +1,180 @@
+# Context
+# Article Title: The FTX trial is bigger than Sam Bankman-Fried
+Before his fall, Bankman-Fried made himself out to be the Good Boy of crypto — the trustworthy face of a sometimes-shady industry. He was also very interested in publicity, sitting for many interviews both before and after the fall of FTX. The quick rise of FTX as an industry force was at least in part due to Bankman-Fried’s appetite for attention. Here are the hits:
+
+# Article Title: SBF’s trial starts soon, but how did he — and FTX — get here?
+The highly anticipated criminal trial for Sam Bankman-Fried, former CEO of bankrupt crypto exchange FTX, started Tuesday to determine whether he’s guilty of seven counts of fraud and conspiracy. And as one former federal prosecutor put it: “The odds seem to be stacked against him at this point.”
+
+# Article Title: Sam Altman backs teens’ startup, Google unveils the Pixel 8 and TikTok tests an ad-free tier
+Inside the SBF trial: Rebecca and Jacquelyn report on the second day of the SBF and FTX trial. The prosecution painted Bankman-Fried as someone who knowingly committed fraud to achieve great wealth, power and influence, while the defense countered that the FTX founder acted in good faith, never meant to commit fraud or steal and basically got in over his head.
+
+Q: Answer the following question. Who is the individual associated with the cryptocurrency industry facing a criminal trial on fraud and conspiracy charges, as reported by both The Verge and TechCrunch, and is accused by prosecutors of committing fraud for personal gain?
+A: The articles identify Sam Bankman-Fried as the former CEO of FTX facing criminal trial on seven counts of fraud and conspiracy charges. Multiple sources report prosecutors accusing him of knowingly committing fraud to achieve wealth and influence, while his defense claimed he acted in good faith but got "in over his head." So the answer is: Sam Bankman-Fried.
+
+
+# Context
+# Article Title: Donald Trump defrauded banks with 'fantasy' to build his real estate empire, judge rules in a major repudiation against the former president
+Among the allegations were that Trump claimed his Trump Tower apartment in Manhattan — a three-story penthouse replete with gold-plated fixtures — was nearly three times its actual size and valued the property at $327 million. No apartment in New York City has ever sold for close to that amount, James said.
+
+# Article Title: The $777 million surprise: Donald Trump is getting richer
+Space inflation wasn’t the only issue. Between 2014 and 2015, Trump increased the value of the apartment to $US327 million from $US200 million. The prosecution argues that was to mask a drop in the value of one of his other properties. “A discrepancy of this order of magnitude, by a real estate developer sizing up his own living space of decades, can only be considered fraud,” Judge Arthur Engoron wrote in a September ruling. ‘The company has never been stronger and never been better.’ Eric Trump Bloomberg values the property using recent Trump Tower sales, as well as those of comparable Manhattan penthouses. While some splashy residences in much newer buildings on so-called Billionaires Row have listed for well in excess of $US100 million, they typically boast higher ceilings, more up-to-date finishes, contemporary layouts, outdoor space and better views. A better comparison would be a 9450-square-foot penthouse in Olympic Tower, five blocks south on Fifth Avenue, which has been on and off the market for $US35 million since 2016. Then there’s Carl Icahn’s 14,000-square-foot penthouse at Museum Tower on West 53rd Street. It was listed for $US35 million in 2019 before he attempted to split the space and sell it as two separate apartments. Both were eventually delisted.
+
+Q: Answer the following question. Which individual is implicated in both inflating the value of a Manhattan apartment to a figure not yet achieved in New York City's real estate history, according to 'Fortune', and is also accused of adjusting this apartment's valuation to compensate for a loss in another asset's worth, as reported by 'The Age'?
+A: The articles discuss Trump's alleged fraudulent valuation of his Trump Tower apartment at $327 million, noting it was nearly three times its actual size. Both Fortune and The Age mention this specific valuation amount and Judge Engoron's ruling that a "discrepancy of this order of magnitude... can only be considered fraud." So the answer is: Donald Trump.
+
+
+# Context
+# Article Title: OpenAI's ex-chairman accuses board of going rogue in firing Altman: 'Sam and I are shocked and saddened by what the board did'
+Altman’s exit “is indeed shocking as he has been the face of” generative AI technology, said Gartner analyst Arun Chandrasekaran.
+
+# Article Title: WTF is going on at OpenAI? We have theories
+Based on the board’s language and the way these giant tech companies work, this is the prevailing theory floating around right now. “Not consistently candid” is a very diplomatic way of saying Altman lied.
+
+Q: Answer the following question. Who is the figure associated with generative AI technology whose departure from OpenAI was considered shocking according to Fortune, and is also the subject of a prevailing theory suggesting a lack of full truthfulness with the board as reported by TechCrunch?
+A: The articles describe Sam Altman's unexpected departure from OpenAI, with Fortune quoting an analyst calling it "shocking" as Altman had been "the face of" generative AI technology. TechCrunch notes the board's description of him as "not consistently candid" was "a very diplomatic way of saying Altman lied." So the answer is: Sam Altman.
+
+
+# Context
+# Article Title: Here’s how Rainforest, a budding Stripe rival, aims to win over software companies
+It’s not every day that we’re pitched companies that feel like they are taking on bigger players in a really meaningful way. This past week, I wrote about Rainforest, an Atlanta-based startup that is taking on incumbents such as Fiserv and FIS, as well as trying to take market share from other fintechs such as Stripe with its offering. Rainforest works with software companies to help them embed financial services and payments into their platforms. In an interview with TechCrunch, CEO and co-founder Joshua Silver respectfully disagreed with a16z general partner Angela Strange about her 2019 statement that every company would become a fintech. In his view, most software companies don’t actually want to be fintechs and deal with all the regulatory and compliance issues that go with that. They really just want to be able to accept payments and generate more revenue from being able to do so.
+
+# Article Title: How the conspiracy-fueled Epoch Times went mainstream and made millions
+The aggressive online and real-life marketing campaigns paid off. The group reported $76 million in subscription revenue in 2021, compared to nearly $7 million in 2019. A former employee of a regional Epoch Times operation who asked not to be identified because he feared retribution said that in order to send the papers to the most likely customers, they bought lists of addresses from data brokers, specifically for conservatives aged 60 and over. And many of the new subscribers are seniors, according to an employee’s account shared at a Falun Gong conference.
+
+Q: Answer the following question. Do the TechCrunch article on software companies and the Hacker News article on The Epoch Times both report an increase in revenue related to payment and subscription models, respectively?
+A: Both articles show revenue growth - Rainforest is described as gaining market share in payments processing, while The Epoch Times increased subscription revenue from $7 million to $76 million between 2019-2021. Though different businesses, both report increased revenue related to payment and subscription models. So the answer is: Yes.
+
+
+# Context
+# Article Title: 2023 Kentucky online sports betting sites: Best legal sportsbooks, promos, bonuses, mobile apps, how to bet
+5. Caesars Sportsbook: Similar to MGM, the rewards program is what Caesars is most known for in that customers can redeem their wagering credits for use at Caesars properties. New customers can get up to $1000 in bonus bets if they lose their first bet. The sportsbook offers an extensive betting menu and specializes in specific boosts related to your home state teams.
+
+# Article Title: NBA Rookie of the Year Odds - Wembanyama the early favorite
+As one of the most recognizable names in the gambling industry, BetMGM knows how to attract and keep customers with competitive odds for all bet types, including futures bets and the NBA Rookie of the Year. BetMGM offers many deposit and withdrawal options and 24/7 customer service, and generous sports betting bonuses and promotions. Caesars Sportsbook: Caesars knows its way around sports betting when you use its app and online sportsbook. It offers favorable odds for almost every bet type, including NBA ROTY betting, and offers a nice variety of deposit and withdrawal options. Additionally, Caesars has a competitive welcome bonus for new players and runs NBA betting promos for existing players.
+
+# Article Title: Vermont Sportsbook Promos and Sports Betting Launch News
+Caesars Sportsbook has become one of the most popular online sportsbooks in the US in several states, and it should prove a favorite in Vermont as well. We expect Caesars to offer the same offer in VT is has elsewhere, with new sign-ups eligible to receive up to a $1,000 Bonus Bet if their first bet loses.
+
+Q: Answer the following question. Which online betting platform provides a welcome bonus of up to $1000 in bonus bets for new customers' first losses, runs NBA betting promotions, and is anticipated to extend the same sign-up offer to new users in Vermont, as reported by both CBSSports.com and Sporting News?
+A: Multiple sources consistently describe Caesars Sportsbook as offering new customers up to $1,000 in bonus bets if they lose their first bet. The articles mention this specific offer will extend to Vermont and note they run NBA betting promotions while allowing customers to redeem wagering credits at Caesars properties. So the answer is: Caesars Sportsbook.
+
+
+# Context
+# Article Title: Is Sam Bankman-Fried a bad ‘man’ or a good ‘boy’? Lawyers swap opening statements before first witnesses take the stand
+But “all of that, all of it, was built on lies,” Rehn declared to the jury. “Behind the curtains, he was not what he appeared to be.” What followed was a roughly 30-minute story that repeatedly emphasized how Bankman-Fried allegedly stole customer funds to facilitate his jet-setting lifestyle, donate millions to political candidates, and finance risky bets.
+
+# Article Title: Sam Altman backs teens’ startup, Google unveils the Pixel 8 and TikTok tests an ad-free tier
+Inside the SBF trial: Rebecca and Jacquelyn report on the second day of the SBF and FTX trial. The prosecution painted Bankman-Fried as someone who knowingly committed fraud to achieve great wealth, power and influence, while the defense countered that the FTX founder acted in good faith, never meant to commit fraud or steal and basically got in over his head.
+
+Q: Answer the following question. Who is the individual alleged to have built a thriving crypto exchange on falsehoods and is accused by the prosecution of committing fraud for personal gain, as reported by both Fortune and TechCrunch?
+A: Both Fortune and TechCrunch articles report how prosecutors portrayed Bankman-Fried as knowingly committing fraud for personal gain. Fortune specifically describes him as having "built on lies" and allegedly stealing "customer funds to facilitate his jet-setting lifestyle" and "donate millions to political candidates." So the answer is: Sam Bankman-Fried.
+
+
+# Context
+# Article Title: Twitch’s money guy talks about the revenue split controversy and its monetization long game
+Last year, the company announced that it would end the 70/30 subscription revenue split deal that it had offered select streamers in favor of prioritizing ad revenue. In June, Twitch launched the Partner Plus program, a new monetization tier that would grant eligible creators a 70/30 subscription revenue split on the first $100,000 they make per year. The program further strained its relationship with its community, because the requirements to qualify excluded the vast majority of streamers. Streamers need at least 350 monthly paid subscriptions, and gift subs and monthly subs that come with an Amazon Prime account don’t count.
+
+# Article Title: Beeper Mini is back in operation after Apple’s attempt to shut it down
+It has also decided to make Beeper Mini free for the time being, given how “chaotic” things have been over the past few days. “As soon as things stabilize (we hope they will), we’ll look at turning on subscriptions again,” the blog post reads.
+
+Q: Answer the following question. Does the TechCrunch article on Twitch's subscription revenue split policy indicate a different monetization strategy compared to the TechCrunch article on Beeper's plans for Beeper Mini subscriptions?
+A: The articles show different approaches - Twitch is implementing a more restrictive 70/30 revenue split with high qualification requirements, while Beeper Mini is temporarily making their service completely free due to "chaotic" circumstances before planning to reinstate subscriptions later. These represent contrasting monetization approaches. So the answer is: Yes.
+
+
+# Context
+# Article Title: Alcoholism, Ayahuasca and the Enlightenment of an N.F.L. Player
+He is the second-leading tackler on his team but hasn’t made as many big plays as he would like. What he has done, according to former Bills defensive coordinator Les Frazier, now an analyst for NFL Network, is enable his defense to be the best it can by lifting others through versatility, sacrifice, toughness and communication. Poyer wears his “C” well.
+
+# Article Title: NFL power rankings: Lions, 49ers level up; Texans jump Bengals, Bills; Jets, Patriots sink to bottom for Week 11
+The Ravens' offense is just fine with the running and passing of Lamar Jackson, but he still can't afford to make big mistakes, which he did vs. the Browns. The defense needs to pick up the pieces, too, stat, ahead of facing the Bengals on a short week.
+
+Q: Answer the following question. Does 'The New York Times' article attribute the success of the Buffalo Bills' defense to the contributions of Jordan Poyer, while the 'Sporting News' article suggests that the Baltimore Ravens' defense needs to improve before their game against the Cincinnati Bengals?
+A: The NYT article highlights Jordan Poyer's positive contributions to the Bills' defense through "versatility, sacrifice, toughness and communication," while Sporting News notes the Ravens' defense "needs to pick up the pieces" before facing the Bengals. This shows one defense being praised while the other needs improvement. So the answer is: Yes.
+
+
+# Context
+# Article Title: WTF is going on at OpenAI? We have theories
+Despite being the hottest tech company in the world right now and everyone talking about ChatGPT, OpenAI isn’t exactly a sound business. It’s shoveling money into the furnace as fast as it can by serving, by all accounts, a fantastically expensive product at bargain-bin prices.
+
+# Article Title: How the OpenAI fiasco could bolster Meta and the ‘open AI’ movement
+It has been a whirlwind four days for OpenAI, the generative AI poster child behind the smash hit ChatGPT.
+
+# Article Title: One year later, ChatGPT is still alive and kicking
+Indeed, ChatGPT became priority number one at OpenAI — not simply a one-off product but a development platform to build upon. And, as often happens in a competition-driven marketplace, it shifted the focus at other AI firms and research labs, too.
+
+# Article Title: ChatGPT: Everything you need to know about the AI-powered chatbot
+OpenAI announced that GPT-4 with vision will become available alongside the upcoming launch of GPT-4 Turbo API. But some researchers found that the model remains flawed in several significant and problematic ways.
+
+Q: Answer the following question. What is the name of the organization discussed in TechCrunch articles that, despite its financial instability, is recognized for creating ChatGPT, which is both a priority and a platform for ongoing innovations, and is planning to enhance its capabilities with the release of GPT-4 and associated APIs?
+A: All four TechCrunch articles discuss OpenAI as the creator of ChatGPT. They mention its financial instability ("shoveling money into the furnace"), its status as "the generative AI poster child," ChatGPT becoming its "priority number one" and development platform, and plans to release "GPT-4 with vision" and "GPT-4 Turbo API." So the answer is: OpenAI.
+
+
+# Context
+# Article Title: 5 things we learned so far about the Google antitrust case
+When Google’s search head Prabhakar Raghavan testified in court on October 28, he revealed that the tech giant had paid $26.3 billion in 2021 to multiple browsers, phones and platforms, from companies including Apple, Samsung and Mozilla, The Verge reports.
+
+# Article Title: Apple defends Google Search deal in court: ‘There wasn’t a valid alternative’
+That question — whether Apple picked Google because it’s the most lucrative choice or the best product — was a key part of Cue’s testimony and, in fact, a key part of the DOJ’s entire case against Google. The Justice Department is focused on the deals Google makes — with Apple but also with Samsung and Mozilla and many others — to ensure it is the default search engine on practically every platform.
+
+# Article Title: News publisher files class action antitrust suit against Google, citing AI’s harms to their bottom line
+A new class action lawsuit filed this week in the U.S. District Court in D.C. accuses Google and parent company Alphabet of anticompetitive behavior in violation of U.S. antitrust law, the Sherman Act, and others, on behalf of news publishers. The case, filed by Arkansas-based publisher Helena World Chronicle, argues that Google “siphons off” news publishers’ content, their readers and ad revenue through anticompetitive means. It also specifically cites new AI technologies like Google’s Search Generative Experience (SGE) and Bard AI chatbot as worsening the problem.
+
+Q: Answer the following question. Which company, as reported by both TechCrunch and The Verge, has spent billions to maintain its default search engine status on various platforms and is also accused of harming news publishers’ revenue through its business practices?
+A: Multiple articles report Google spent billions ($26.3 billion in 2021) to maintain its position as the default search engine on platforms including Apple devices. Google is also facing antitrust litigation, with a news publisher claiming it "siphons off" content, readers and ad revenue through anticompetitive practices, including through its AI technologies. So the answer is: Google.
+
+
+# Context
+# Article Title: ‘Biggest win of my career’: De Minaur, Popyrin power Australia into Davis Cup final
+It will be Australia’s 49th appearance in the Davis Cup final, as they seek the trophy for the 29th t28-time champions Australia, in a 49th final, seek a first win in the World Cup of men’s tennis in 20 years. “We’re a very solid squad, a lot of depth in every single position, and if we can get ourselves to a deciding doubles, we’ve got an unbelievable pairing as well,” de Minaur said. “So we singles guys have just got do our best to try and get a win and let the doubles guys do the job. “Hopefully we can go one better this year,” he added, recalling the 2-0 defeat by Canada in 2022. De Minaur had been the hero on Wednesday, pulling out an extraordinary comeback win over Jiri Lehecka with Australia on the verge of defeat in their quarter-final with the Czech Republic.
+
+# Article Title: Where to watch England vs South Africa: Live stream, TV channel, lineups, odds for 2023 Rugby World Cup semifinal
+Both sides' journeys have seen twists, turns, and bumps in the road, but it's led them both to within 80 minutes of a Rugby World Cup final. England will no doubt be looking to echo the spirit of 2019, when they beat the All Blacks 19-7 to reach the final, but in South Africa, they face a side who have taken their game to new heights just to reach the semis.
+
+Q: Answer the following question. Does 'The Age' article suggest that Australia's Davis Cup team is aiming for an improvement in their performance compared to the previous year, while the 'Sporting News' article indicates that the South Africa national rugby team has already achieved an improvement to reach the Rugby World Cup semi-finals?
+A: The Age article quotes de Minaur saying Australia hopes to "go one better this year" after their 2022 Davis Cup final loss to Canada, while Sporting News describes South Africa's rugby team as having "taken their game to new heights" to reach the semifinals. Both mention past performance and current improvement efforts. So the answer is: Yes.
+
+
+# Context
+# Article Title: Sam Altman backs teens’ startup, Google unveils the Pixel 8 and TikTok tests an ad-free tier
+Turmoil at Flexport: Dave Clark, the former Amazon executive who was ousted as CEO of Flexport just a year into the job, fired back at its founder and board, calling recent reporting on the logistics company “deeply concerning.” Clark made the comments Monday in a lengthy post on social media site X following a report from CNBC that provided new information about his last days at Flexport, a freight forwarding and customs brokerage startup valued at $8 billion.
+
+# Article Title: Cruise hits the brakes on driverless, UAW makes progress and more EV backpedaling
+Lest you forget, Flexport founder Ryan Petersen just took back the CEO title after his hand-picked successor was pushed out. Petersen’s big message has been getting the company’s financial house back in order and has criticized former CEO Dave Clark of overspending, specifically around hiring and expanding too quickly. Petersen has spent the past month cutting costs, including laying off about 20% of its workers, or about 600 people.
+
+Q: Answer the following question. After the TechCrunch report on October 7, 2023, concerning Dave Clark's comments on Flexport, and the subsequent TechCrunch article on October 30, 2023, regarding Ryan Petersen's actions at Flexport, was there a change in the nature of the events reported?
+A: The earlier article describes Dave Clark responding to "deeply concerning" reports about his ousting from Flexport, while the later article details founder Ryan Petersen taking back the CEO role, criticizing Clark for "overspending" and implementing cost-cutting measures including laying off 20% of workers. This shows a significant development in the situation. So the answer is: Yes.
+
+
+# Context
+Q: Answer the following question. What is the first letter of the name of the company that, according to an article from The Financial Times, received the most European patents in 2021, and is also mentioned in a Bloomberg article as having faced a significant legal challenge at the European Patent Office over one of its key patents?
+A: The question asks about a company mentioned in Financial Times and Bloomberg articles regarding European patents, but neither publication nor any information about patents appears in the provided context. With no relevant information in the given context, it's impossible to determine the answer. So the answer is: Insufficient information.
+
+
+# Context
+# Article Title: The Crown: What is fact and what is fiction on season 6?
+After learning of Diana’s death from his father at the royal residence of Balmoral in Scotland, William (Rufus Kampa) is left heartbroken with grief and angry at his family’s response to it. At one point, Charles is informed that the prince is not in his room and that “no one can find him”, prompting Charles and Prince Harry to look for him and a subsequent hunt across the grounds for the young royal. He is not located, but later walks back to the house on his own accord, drenched in rain. “14 hours, that poor boy was gone,” the Queen later says.
+
+# Article Title: Fans react to most ‘heartbreaking’ scene in The Crown
+On 16 November, Netflix dropped the first four episodes of The Crown’s final season, followed by the last six episodes on 14 December. The latest installment takes place between the late 1990s to mid-2000s, and includes the lead-up to Princess Diana’s fatal Paris car crash in 1997.
+
+Q: Answer the following question. Does 'The Independent - Life and Style' article suggesting Prince William's emotional state regarding Princess Diana's death align with the same publication's depiction of the events leading up to her death in 'The Crown season six'?
+A: Both articles from The Independent discuss the depiction of events surrounding Princess Diana's death in Netflix's The Crown. One describes Prince William's emotional response to his mother's death including being missing for "14 hours," while the other confirms the show covers "the lead-up to Princess Diana's fatal Paris car crash in 1997." So the answer is: Yes.
+
+
+# Context
+# Article Title: Amazon’s iRobot purchase sucks up formal competition concerns in EU
+We continue to work through the process with the European Commission and are focused on addressing its questions and any identified concerns at this stage. iRobot, which faces intense competition from other vacuum cleaner suppliers, offers practical and inventive products. We believe Amazon can offer a company like iRobot the resources to accelerate innovation and invest in critical features while lowering prices for consumers.
+
+# Article Title: European consumer groups band together to fight Meta’s self-serving ad-free sub — branding it ‘unfair’ and ‘illegal’
+The CPC has brought more coordinated action on consumer protection concerns in the EU in recent years, bringing multiple consumer groups together to tackle common concerns — helped by one or more national consumer protection authority which gets appointed to drive the effort. The process also loops in the European Commission to help facilitate dialogue, assess issues and bring pressure to bear on unfair practices.
+
+# Article Title: EU says incoming rules for general purpose AIs can evolve over time
+Asked about resourcing for the AI Office, a Commission official said it will be decided in the future by the EU’s executive taking “an appropriate and official decision”. “The idea is that we can create a dedicated budget line for the Office and that we will be able also to recruit the national experts from Member States if we wish to on top of contractual agents and on top of permanent staff. And some of these staff will also be deployed within the European Commission,” they added.
+
+# Article Title: Elon Musk’s X faces first DSA probe in EU over illegal content risks, moderation, transparency and deceptive UX design
+The opening of a formal DSA investigation on X comes hard on the heels of a complaint against X’s adtech by privacy rights group, noyb — although today’s formal proceeding is unlikely to be directly linked as the Commission has been probing the platform for months via a flurry of requests for information. Its earlier actions were focused on concerns about the spread of illegal content and disinformation related to the Israel-Hamas war.
+
+Q: Answer the following question. Which entity is currently engaged with Amazon to address competition concerns, facilitating dialogue with consumer groups against Meta, deploying staff within its AI Office for future regulations, and has previously focused on illegal content and disinformation issues related to the Israel-Hamas war, as reported by TechCrunch?
+A: Multiple TechCrunch articles mention the European Commission's regulatory activities: addressing competition concerns with Amazon's iRobot purchase, facilitating dialogue between consumer groups and Meta, planning staff deployment for its AI Office, and investigating X regarding illegal content related to the Israel-Hamas war. So the answer is: European Commission.
+
+
