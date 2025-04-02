@@ -75,6 +75,7 @@ class REACTRHelper:
         retrieved_titles: List[str],
         retrieved_paras: List[str],
         step: int,
+        num_retries: int = 5,
     ) -> Tuple[str, bool]:
         observation = retrieved_to_context(
             retrieved_titles,
@@ -87,33 +88,38 @@ class REACTRHelper:
             Message(role="user", content=f"Observation {step}:\n{observation}")
         )
 
-        gen_config: Optional[GenerationConfig]
-        gen_config = self.retriever_gen_config
-        outputs = await self.llm.chat_async(chat_history, gen_config)
+        for _ in range(num_retries):
+            outputs = await self.llm.chat_async(chat_history, self.retriever_gen_config)
+            content = outputs[0].content.strip()
+            thought_action = re.split(r"\nAction \d+: ", content, maxsplit=1)
+            if len(thought_action) == 1:
+                if not thought_action[0].startswith("Thought"):
+                    print("Missing thought:", outputs)
+                    continue
+                else:
+                    print("Missing action:", outputs)
+                    thought = thought_action[0]
+                    action = await self.generate_action(chat_history, thought, step)
+            else:
+                thought, action = thought_action
+                action = action.split("\n")[0]
 
-        try:
-            thought, action = outputs[0].content.strip().split(f"\nAction {step}: ")
-        except Exception:
-            print("No actions returned", outputs)
-            # n_badcalls += 1
-            # n_calls += 1
-            thought = outputs[0].content.strip().split("\n")[0]
-            action = await self.generate_action(chat_history, thought, step)
+            query, done, isvalid = self.get_action(action)
 
-        query, done, isvalid = self.get_action(action)
+            if not isvalid:
+                print(f"Invalid action: {action}")
+                continue
 
-        #! Should I implement retry?
-        if not isvalid:
-            # raise Exception(f"Invalid action: {action}")
-            print(f"Invalid action: {action}")
+            # print(f"{thought}")
+            # print(f"Action {step}: {action}")
+            chat_history.append(
+                Message(role="assistant", content=f"{thought}\nAction {step}: {action}")
+            )
+            return query, done
+        else:
+            print("Maximum retries reached!")
+            # self._dump_chat_history(chat_history)
             return "", True
-
-        # print(f"{thought}")
-        # print(f"Action {step}: {action}")
-        chat_history.append(
-            Message(role="assistant", content=f"{thought}\nAction {step}: {action}")
-        )
-        return query, done
 
     async def retrieve_one_step(
         self, query: str, retrieved_titles: List[str], retrieved_paras: List[str]
@@ -216,6 +222,12 @@ class REACTRHelper:
                 continue
             break
         return merged_titles, merged_paras
+
+    def _dump_chat_history(self, chat_history: List[Message]) -> None:
+        print("Chat history:")
+        for message in chat_history:
+            print("-" * 10 + message.role.upper() + "-" * 10)
+            print(message.content)
 
 
 class ReAct:
