@@ -255,7 +255,7 @@ class ToTRRetriever:
                         new_candidates.append((new_node, query))
 
             # If no new candidates were generated at this depth, stop.
-            if not new_candidates:
+            if not new_candidates and main_branch_leaf is None:
                 break
 
             new_candidates.sort(key=lambda x: x[0].get_confidence(), reverse=True)
