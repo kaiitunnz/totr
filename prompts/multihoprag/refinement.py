@@ -68,9 +68,9 @@ def process_article(title: str, fact: str, corpus: List[Dict]) -> Dict:
 
 def main():
     # Configuration
-    corpus_file = 'corpus.json'  # Your corpus file with full articles
-    input_file = 'multihop_direct.txt'    # Your input file with Q/A entries
-    output_file = 'data_with_original_paragraphs.txt'
+    corpus_file = 'corpus.json'
+    input_file = 'multihop_direct.txt' 
+    output_file = 'output.txt' # need to change
     
     # Load the corpus
     print("Loading corpus...")
@@ -149,14 +149,9 @@ def main():
                 for title, fact in articles:
                     result = process_article(title, fact, corpus)
                     processed_articles.append(result)
-                
-                # Write output for this entry
                 entry_output = ""
-                
-                # Always add the Context section before articles, regardless of metadata
                 entry_output += "# Context\n"
                 
-                # Write all articles
                 for article in processed_articles:
                     entry_output += f"# Article Title: {article['Title']}\n"
                     if article['OriginalParagraph']:
@@ -170,7 +165,6 @@ def main():
                 if answer:
                     entry_output += f"A: {answer}\n"
                 
-                # Add separator between entries
                 entry_output += "\n\n"
                 
                 # Write to file
