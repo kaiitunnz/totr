@@ -6,6 +6,8 @@ from typing import Iterable, Tuple
 from base import QAMixin, ResultHandler
 from baseline.baseline import BaseRAG
 from bench_tasks.hotpotqa import run_hotpotqa
+from bench_tasks.multihoprag import run_multihoprag
+from bench_tasks.musique import run_musique
 from ircot import IRCoT
 from react.config import ReActFullConfig
 from react.react import ReAct
@@ -50,13 +52,13 @@ async def evaluate_hotpotqa(
         )
         # 3. IRCoT
         yield f"ircot_{config.identifier}", IRCoT(config)
-        # 4. SCR
-        yield f"scr_{config.identifier}", SCR(config, seed=seed)
-        # 5. ReAct
+        # 4. ReAct
         react_config = ReActFullConfig.from_json(
             base_config_path.joinpath("hotpotqa", model_name.split("/")[-1] + ".json")
         )
         yield f"react_{react_config.identifier}", ReAct(react_config)
+        # 5. SCR
+        yield f"scr_{config.identifier}", SCR(config, seed=seed)
         # 6. ToTR
         yield f"totr_{config.identifier}", ToTR(config, seed=seed)
 
@@ -80,6 +82,126 @@ async def evaluate_hotpotqa(
             print(">> Results already exist. Skipped.")
             continue
         await run_hotpotqa(system, dataset_dir, result_handler, batch_size, verbose)
+        print(f">> Results: {result_handler.metrics}")
+
+
+async def evaluate_multihoprag(
+    model_name: str,
+    dataset_dir: Path,
+    result_dir: Path,
+    test: bool,
+    verbose: bool,
+    overwrite: bool,
+    seed: int,
+) -> None:
+    def systems(model_name: str) -> Iterable[Tuple[str, QAMixin]]:
+        base_config_path = Path("configs").resolve()
+        config = Config.from_json(
+            base_config_path.joinpath(
+                "multihoprag", model_name.split("/")[-1] + ".json"
+            )
+        )
+        # 1. No RAG
+        yield f"norag_{config.identifier}", BaseRAG(
+            config, with_retrieval=False, seed=seed
+        )
+        # 2. One-shot RAG
+        yield f"oneshotrag_{config.identifier}", BaseRAG(
+            config, with_retrieval=True, seed=seed
+        )
+        # 3. IRCoT
+        yield f"ircot_{config.identifier}", IRCoT(config)
+        # 4. ReAct
+        react_config = ReActFullConfig.from_json(
+            base_config_path.joinpath(
+                "multihoprag", model_name.split("/")[-1] + ".json"
+            )
+        )
+        yield f"react_{react_config.identifier}", ReAct(react_config)
+        # 5. SCR
+        yield f"scr_{config.identifier}", SCR(config, seed=seed)
+        # 6. ToTR
+        yield f"totr_{config.identifier}", ToTR(config, seed=seed)
+
+    bench_name = "multihoprag"
+    batch_sizes = {BaseRAG: 16, IRCoT: 8, SCR: 4, ReAct: 4, ToTR: 1}
+
+    print("Evaluating systems on Multihop-RAG...")
+    for system_name, system in systems(model_name):
+        print(f">> Evaluating {system_name}...")
+        batch_size = batch_sizes[type(system)]
+        try:
+            result_handler = ResultHandler(
+                system_name,
+                bench_name,
+                result_dir,
+                test=test,
+                save_results=True,
+                overwrite=overwrite,
+            )
+        except FileExistsError:
+            print(">> Results already exist. Skipped.")
+            continue
+        await run_multihoprag(system, dataset_dir, result_handler, batch_size, verbose)
+        print(f">> Results: {result_handler.metrics}")
+
+
+async def evaluate_musique(
+    model_name: str,
+    dataset_dir: Path,
+    result_dir: Path,
+    test: bool,
+    verbose: bool,
+    overwrite: bool,
+    seed: int,
+) -> None:
+    def systems(model_name: str) -> Iterable[Tuple[str, QAMixin]]:
+        base_config_path = Path("configs").resolve()
+        config = Config.from_json(
+            base_config_path.joinpath(
+                "multihoprag", model_name.split("/")[-1] + ".json"
+            )
+        )
+        # 1. No RAG
+        yield f"norag_{config.identifier}", BaseRAG(
+            config, with_retrieval=False, seed=seed
+        )
+        # 2. One-shot RAG
+        yield f"oneshotrag_{config.identifier}", BaseRAG(
+            config, with_retrieval=True, seed=seed
+        )
+        # 3. IRCoT
+        yield f"ircot_{config.identifier}", IRCoT(config)
+        # 4. ReAct
+        react_config = ReActFullConfig.from_json(
+            base_config_path.joinpath("musique", model_name.split("/")[-1] + ".json")
+        )
+        yield f"react_{react_config.identifier}", ReAct(react_config)
+        # 5. SCR
+        yield f"scr_{config.identifier}", SCR(config, seed=seed)
+        # 6. ToTR
+        yield f"totr_{config.identifier}", ToTR(config, seed=seed)
+
+    bench_name = "musique"
+    batch_sizes = {BaseRAG: 16, IRCoT: 8, SCR: 4, ReAct: 4, ToTR: 1}
+
+    print("Evaluating systems on MuSiQue...")
+    for system_name, system in systems(model_name):
+        print(f">> Evaluating {system_name}...")
+        batch_size = batch_sizes[type(system)]
+        try:
+            result_handler = ResultHandler(
+                system_name,
+                bench_name,
+                result_dir,
+                test=test,
+                save_results=True,
+                overwrite=overwrite,
+            )
+        except FileExistsError:
+            print(">> Results already exist. Skipped.")
+            continue
+        await run_musique(system, dataset_dir, result_handler, batch_size, verbose)
         print(f">> Results: {result_handler.metrics}")
 
 
@@ -107,6 +229,16 @@ async def main(
     for model_name in model_names:
         # 1. HotpotQA
         await evaluate_hotpotqa(
+            model_name, dataset_dir, result_dir, test, verbose, overwrite, seed
+        )
+
+        # 2. Multihop-RAG
+        await evaluate_multihoprag(
+            model_name, dataset_dir, result_dir, test, verbose, overwrite, seed
+        )
+
+        # 3. MuSiQue
+        await evaluate_musique(
             model_name, dataset_dir, result_dir, test, verbose, overwrite, seed
         )
 

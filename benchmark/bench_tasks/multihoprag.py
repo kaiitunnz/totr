@@ -1,21 +1,21 @@
 import asyncio
+import json
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Union
 
-import jsonlines
 import tqdm
 from base import QAMixin, ResultHandler
 
 from .metrics import update_metrics
 
 
-def load_hotpotqa(path: Union[str, Path]) -> List[Dict[str, Any]]:
-    with jsonlines.open(path) as reader:
-        data = [item for item in reader]
+def load_multihoprag(path: Union[str, Path]) -> List[Dict[str, Any]]:
+    with open(path) as f:
+        data = json.load(f)
     return data
 
 
-async def run_hotpotqa(
+async def run_multihoprag(
     qa_system: QAMixin,
     dataset_root_dir: Union[str, Path],
     result_handler: ResultHandler,
@@ -23,21 +23,21 @@ async def run_hotpotqa(
     verbose: bool = True,
 ) -> None:
     async def answer_func(item: Dict[str, Any]) -> Tuple[Dict[str, Any], str]:
-        answer = await qa_system.answer(item["question_text"])
+        answer = await qa_system.answer(item["query"])
         return item, answer
 
     metrics: Dict[str, float] = {"em": 0, "f1": 0, "prec": 0, "recall": 0}
-    dataset_dir = Path(dataset_root_dir, "hotpotqa")
+    dataset_dir = Path(dataset_root_dir, "multihoprag")
     if result_handler.test:
-        data = load_hotpotqa(dataset_dir / "hotpotqa_test.jsonl")
+        data = load_multihoprag(dataset_dir / "multihoprag_test.json")
     else:
-        data = load_hotpotqa(dataset_dir / "hotpotqa_dev.jsonl")
+        data = load_multihoprag(dataset_dir / "multihoprag_dev.json")
     n = len(data)
 
     # Check existing predictions
-    data_dict = {d["question_id"]: d for d in data}
+    data_dict = {d["query_id"]: d for d in data}
     for pred in result_handler.predictions:
-        del data_dict[pred["question_id"]]
+        del data_dict[pred["query_id"]]
         update_metrics(metrics, pred["prediction"], pred["ground_truth"])
     data = list(data_dict.values())
 
@@ -48,12 +48,12 @@ async def run_hotpotqa(
         ]
         for task in tasks:
             item, answer = await task
-            ground_truth = item["answers_objects"][0]["spans"][0]
+            ground_truth = item["answer"]
             update_metrics(metrics, answer, ground_truth)
             pbar.update(1)
             result_handler.add_prediction(
                 {
-                    "question_id": item["question_id"],
+                    "query_id": item["query_id"],
                     "prediction": answer,
                     "ground_truth": ground_truth,
                 }

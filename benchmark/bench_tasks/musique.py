@@ -1,21 +1,21 @@
 import asyncio
+import json
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Union
 
-import jsonlines
 import tqdm
 from base import QAMixin, ResultHandler
 
 from .metrics import update_metrics
 
 
-def load_hotpotqa(path: Union[str, Path]) -> List[Dict[str, Any]]:
-    with jsonlines.open(path) as reader:
-        data = [item for item in reader]
+def load_musique(path: Union[str, Path]) -> List[Dict[str, Any]]:
+    with open(path) as f:
+        data = json.load(f)
     return data
 
 
-async def run_hotpotqa(
+async def run_musique(
     qa_system: QAMixin,
     dataset_root_dir: Union[str, Path],
     result_handler: ResultHandler,
@@ -27,11 +27,11 @@ async def run_hotpotqa(
         return item, answer
 
     metrics: Dict[str, float] = {"em": 0, "f1": 0, "prec": 0, "recall": 0}
-    dataset_dir = Path(dataset_root_dir, "hotpotqa")
+    dataset_dir = Path(dataset_root_dir, "musique")
     if result_handler.test:
-        data = load_hotpotqa(dataset_dir / "hotpotqa_test.jsonl")
+        data = load_musique(dataset_dir / "musique_test.jsonl")
     else:
-        data = load_hotpotqa(dataset_dir / "hotpotqa_dev.jsonl")
+        data = load_musique(dataset_dir / "musique_dev.jsonl")
     n = len(data)
 
     # Check existing predictions

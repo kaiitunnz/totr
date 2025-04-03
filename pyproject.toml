@@ -23,6 +23,7 @@ scikit-learn = "^1.6.1"
 beautifulsoup4 = "^4.13.3"
 base58 = "^2.1.1"
 gdown = "^5.2.0"
+pandas = "^2.2.3"
 
 [tool.poetry.group.lint]
 optional = true
