@@ -1,0 +1,121 @@
+Question: When does real time with the pizza man cast member start again in 2018?
+Observation 1:
+Wikipedia Title: Pizza Man
+Pizza Man is a 1991 comedy film starring Bill Maher and Annabelle Gurwitch; written and directed by J.F. Lawton who was credited in the film as J.D. Athens. The film received a PG-13 rating by the MPAA.
+
+Wikipedia Title: Snappy Tomato Pizza
+Snappy Tomato Pizza is a pizza chain that started in Fort Mitchell, Kentucky, and has over 60 locations nationwide. Its headquarters are in Burlington, Kentucky. The chain specializes in pizza, but also serves calzones, hoagies, salads, pasta, dessert and appetizers.
+
+Wikipedia Title: It's That Man Again (film)
+It's That Man Again is a 1943 British comedy film directed by Walter Forde and starring Tommy Handley, Greta Gynt and Jack Train. It was based on the successful radio show "It's That Man Again". In the film, the mayor of a small town lends his assistance to some drama students.
+
+Wikipedia Title: Starting Time
+Starting Time is an album by jazz saxophonist Clifford Jordan which was recorded in 1961 and released on the Jazzland label.
+
+Wikipedia Title: Sicilian pizza
+Sicilian pizza is pizza prepared in a manner that originated in Sicily, Italy. Sicilian pizza is also known as "sfincione" or focaccia with toppings. In the United States, the phrase "Sicilian pizza" is often synonymous with thick-crust pizza derived from the Sicilian "sfincione" .This type of pizza became a popular dish in western Sicily by the mid-19th century and was the type of pizza usually consumed in Sicily until the 1860s. The version with tomatoes was not available prior to the 17th century. It eventually reached North America in a slightly altered form, with thicker crust and a rectangular shape.
+
+Wikipedia Title: Alleycat's Pizza
+Alleycat's Pizza, usually referred to simply as Alleycat's, is a pizzeria chain restaurant that started in Taipei, Taiwan, in 2004. From its humble origins in the tiny basement level of a building on Lishui Street, it has expanded to nine locations throughout Taipei.
+Thought 1: Based on the observation, the cast member of Pizza Men is Bill Maher. So the show the question is referrring to is Real TIme with Bill Maher. I need to find more information about the TV show.
+Action 1: Search[Real Time with Bill Maher]
+Observation 2:
+Wikipedia Title: Real Time with Bill Maher
+Real Time with Bill Maher is a talk show that airs weekly on HBO, hosted by comedian and political satirist Bill Maher. Much like his previous series "Politically Incorrect" on Comedy Central and later ABC, "Real Time" features a panel of guests who discuss current events in politics and the media. Unlike the previous show, guests are usually better versed in the subject matter: more experts such as journalists, professors, and politicians participate in the panel, and fewer actors and celebrities are included.
+
+Wikipedia Title: Mr. Bill's Real Life Adventures
+Mr. Bill's Real Life Adventures is a 1986 comedy television film written by Walter Williams and directed by Jim Drake. The film was based on the "Mr. Bill" skits from the television show "Saturday Night Live". "Mr. Bill's Real Life Adventures" premiered on the Showtime cable television network in the United States on September 11, 1986.
+
+Wikipedia Title: Real Time with Bill Maher
+Season Episodes Originally aired First aired Last aired 20 February 21, 2003 (2003 - 02 - 21) September 26, 2003 (2003 - 09 - 26) 23 January 16, 2004 (2004 - 01 - 16) November 5, 2004 (2004 - 11 - 05) 23 February 18, 2005 (2005 - 02 - 18) November 4, 2005 (2005 - 11 - 04) 24 February 17, 2006 (2006 - 02 - 17) November 17, 2006 (2006 - 11 - 17) 5 24 February 16, 2007 (2007 - 02 - 16) November 2, 2007 (2007 - 11 - 02) 6 27 January 11, 2008 (2008 - 01 - 11) November 14, 2008 (2008 - 11 - 14) 7 31 February 20, 2009 (2009 - 02 - 20) October 16, 2009 (2009 - 10 - 16) 8 25 February 19, 2010 (2010 - 02 - 19) November 12, 2010 (2010 - 11 - 12) 9 35 January 14, 2011 (2011 - 01 - 14) November 11, 2011 (2011 - 11 - 11) 10 35 January 13, 2012 (2012 - 01 - 13) November 16, 2012 (2012 - 11 - 16) 11 35 January 18, 2013 (2013 - 01 - 18) November 22, 2013 (2013 - 11 - 22) 12 35 January 17, 2014 (2014 - 01 - 17) November 21, 2014 (2014 - 11 - 21) 13 35 January 9, 2015 (2015 - 01 - 09) November 20, 2015 (2015 - 11 - 20) 14 38 January 15, 2016 (2016 - 01 - 15) November 11, 2016 (2016 - 11 - 11) 15 35 January 20, 2017 (2017 - 01 - 20) November 17, 2017 (2017 - 11 - 17) 16 TBA January 19, 2018 (2018 - 01 - 19) TBA
+
+Wikipedia Title: Kim Maher
+Kim Ly Maher (born September 5, 1971 in Ho Chi Minh City, Vietnam) is an American softball player and Olympic champion.
+
+Wikipedia Title: Maher Zain
+Maher Zain (Arabic: ماهر زين‎; born 16 July 1981) is a Swedish R&B singer, songwriter and music producer of Lebanese origin. He released his debut album Thank You Allah, an internationally successful album produced by Awakening Records, in 2009. He released his follow-up album Forgive Me in April 2012 under the same production company, and a third album One (Maher Zain album) in 2016.
+Thought 2: The question is asking when the show starts again in 2018. From the observation, I see that the 16th season of the show started on January 19, 2018. So the answer is January 19, 2018.
+Action 2: Finish[January 19, 2018]
+
+
+Question: What field of work did the person who first recognized that hydrogen was a discrete substance work in?
+Observation 1:
+Wikipedia Title: Hydrogen
+Hydrogen gas was first artificially produced in the early 16th century, via the mixing of metals with acids. In 1766–81, Henry Cavendish was the first to recognize that hydrogen gas was a discrete substance, and that it produces water when burned, a property which later gave it its name: in Greek, hydrogen means "water-former".
+
+Wikipedia Title: Hydrogen
+In 1671, Robert Boyle discovered and described the reaction between iron filings and dilute acids, which results in the production of hydrogen gas. In 1766, Henry Cavendish was the first to recognize hydrogen gas as a discrete substance, by naming the gas from a metal-acid reaction "flammable air". He speculated that "flammable air" was in fact identical to the hypothetical substance called "phlogiston" and further finding in 1781 that the gas produces water when burned. He is usually given credit for its discovery as an element. In 1783, Antoine Lavoisier gave the element the name hydrogen (from the Greek ὑδρο- hydro meaning "water" and -γενής genes meaning "creator") when he and Laplace reproduced Cavendish's finding that water is produced when hydrogen is burned.
+
+Wikipedia Title: Hydrogen
+In the same year the first hydrogen-cooled turbogenerator went into service with gaseous hydrogen as a coolant in the rotor and the stator in 1937 at Dayton, Ohio, by the Dayton Power & Light Co.; because of the thermal conductivity of hydrogen gas, this is the most common type in its field today.
+
+Wikipedia Title: Hydrogen
+Hydrogen is a chemical element with chemical symbol H and atomic number 1. With an atomic weight of 7000100794000000000♠1.00794 u, hydrogen is the lightest element on the periodic table. Its monatomic form (H) is the most abundant chemical substance in the Universe, constituting roughly 75% of all baryonic mass.[note 1] Non-remnant stars are mainly composed of hydrogen in its plasma state. The most common isotope of hydrogen, termed protium (name rarely used, symbol 1H), has one proton and no neutrons.
+
+Wikipedia Title: Working Lunch
+Working Lunch is a television programme broadcast on BBC Two which covers business, personal finance and consumer news, broadcast between 1994 and 2010. The programme was first aired on 19 September 1994. It had a quirky, relaxed style, especially when compared to other BBC business shows such as "World Business Report". In April 2010, the BBC announced that the programme was being cancelled at the end of July 2010. "GMT" with George Alagiah took its place in the schedule at 12:30 on BBC Two.
+
+Wikipedia Title: Work Channel
+Work Channel is a channel in the North Coast region of the Canadian province of British Columbia. It lies to the northeast of the Tspimpsean Peninsula. It was named about 1837 by officers of the Hudson's Bay Company after John Work. It was first charted in 1793 by James Johnstone and Robert Barrie, two of George Vancouver's officers during his 1791-95 expedition.
+Thought 1: The question is asking about the field of work of the person who first recognized that hydrogen was a discrete substance. From the observation, I see that the person who first recognized hydrogen as a discrete substance is Henry Cavendish. I need to find more information about Henry Cavendish's field of work.
+Action 1: Search[Henry Cavendish]
+Observation 2:
+Wikipedia Title: Henry Cavendish
+Henry Cavendish was born on 10 October 1731 in Nice, where his family was living at the time. His mother was Lady Anne de Grey, fourth daughter of Henry Grey, 1st Duke of Kent, and his father was Lord Charles Cavendish, the third son of William Cavendish, 2nd Duke of Devonshire. The family traced its lineage across eight centuries to Norman times, and was closely connected to many aristocratic families of Great Britain. Henry's mother died in 1733, three months after the birth of her second son, Frederick, and shortly before Henry's second birthday, leaving Lord Charles Cavendish to bring up his two sons. Cavendish was styles as "The Honourable Henry Cavendish".From the age of 11 Henry attended Newcome's School, a private school near London. At the age of 18 (on 24 November 1748) he entered the University of Cambridge in St Peter's College, now known as Peterhouse, but left three years later on 23 February 1751 without taking a degree (at the time, a common practice). He then lived with his father in London, where he soon had his own laboratory.
+
+Wikipedia Title: Henry Cavendish
+Cavendish died in 1810 (as one of the wealthiest men in Britain) and was buried, along with many of his ancestors, in the church that is now Derby Cathedral. The road he used to live on in Derby has been named after him. The University of Cambridge's Cavendish Laboratory was endowed by one of Cavendish's later relatives, William Cavendish, 7th Duke of Devonshire (Chancellor of the University from 1861 to 1891).
+
+Wikipedia Title: Cavendish Professor of Physics
+The Cavendish Professorship is one of the senior faculty positions in physics at the University of Cambridge. It was founded on 9 February 1871 alongside the famous Cavendish Laboratory, which was completed three years later. William Cavendish, 7th Duke of Devonshire endowed both the professorship and laboratory in honor of his relative, chemist and physicist Henry Cavendish.
+
+Wikipedia Title: Cavendish experiment
+The Cavendish experiment, performed in 1797–1798 by British scientist Henry Cavendish, was the first experiment to measure the force of gravity between masses in the laboratory and the first to yield accurate values for the gravitational constant. Because of the unit conventions then in use, the gravitational constant does not appear explicitly in Cavendish's work. Instead, the result was originally expressed as the specific gravity of the Earth, or equivalently the mass of the Earth. His experiment gave the first accurate values for these geophysical constants.
+
+Wikipedia Title: Thomas Cavendish
+Sir Thomas Cavendish (19 September 1560 – May 1592) was an English explorer and a privateer known as "The Navigator" because he was the first who deliberately tried to emulate Sir Francis Drake and raid the Spanish towns and ships in the Pacific and return by circumnavigating the globe. While members of Magellan's, Loaisa's, Drake's, and Loyola's expeditions had preceded Cavendish in circumnavigating the globe, it had not been their intent at the outset. His first trip and successful circumnavigation made him rich from captured Spanish gold, silk and treasure from the Pacific and the Philippines. His richest prize was the captured 600 ton sailing ship the Manila Galleon "Santa Ana" (also called "Santa Anna"). He was knighted by Queen Elizabeth I of England after his return. He later set out for a second raiding and circumnavigation trip but was not as fortunate and died at sea at the age of 31.
+Thought 2: The observation mentions that Henry Cavendish attended the University of Cambridge and later lived with his father in London, where he had his own laboratory. I also see that the Cavendish Professorship of Physics is named after him. This suggests that Henry Cavendish was a physicist.
+Action 2: Finish[Physics]
+
+
+Question: The city where WOCA is located is in which part of Florida?
+Observation 1:
+Wikipedia Title: WOCA
+WOCA is a commercial radio station in Ocala, Florida, broadcasting to the Ocala area on 1370 AM. WOCA broadcasts a variety of syndicated and conservative-leaning programs, including "The Glenn Beck Program" and "The Clark Howard Show" each weekday, and Fox Sports Radio on weekends. The station also produces shows for a number of local commentators. WOCA signed on on November 19, 1957 as WHYS. In 1959, the call letters were changed to WKOS. In 1965, the station adopted a Top 40 format as WWKE. The station then switched to the current calls, WOCA in 1983.
+
+Wikipedia Title: Orange City, Florida
+Orange City is a city in Volusia County, Florida, United States. As of the 2010 United States Census, the city had a population of 10,599. It is a part of the Deltona–Daytona Beach–Ormond Beach metropolitan area, which was home to 590,289 people in 2010.
+
+Wikipedia Title: Little Lake City, Florida
+Little Lake City is an unincorporated community in Gilchrist County, Florida, United States. It is located on the Suwannee River, approximately northwest of Bell.
+
+Wikipedia Title: Pinellas County, Florida
+Pinellas County is a county located in the state of Florida. As of the 2010 census, the population was 916,542. The county is part of the Tampa -- St. Petersburg -- Clearwater, Florida Metropolitan Statistical Area. Clearwater is the county seat, and St. Petersburg is the largest city.
+
+Wikipedia Title: Location, Location, Location
+Location, Location, Location is a Channel 4 property programme, presented by Kirstie Allsopp and Phil Spencer and produced by IWC Media, part of the RDF Media Group. The reality show follows Allsopp and Spencer as they try to find the perfect home for a different set of buyers each week. It first aired in May 2000.
+
+Wikipedia Title: Ocala, Florida
+Ocala (/ oʊ ˈkælə / oh - KAL - ə) is a city located in Northern Florida. As of the 2013 census, its population, estimated by the United States Census Bureau, was 57,468, making it the 45th most populated city in Florida.
+Thought 1: The question is asking about the location of WOCA, which is a radio station in Florida. From the observation, I see that WOCA is located in Ocala, Florida. I need to find more information about Ocala, Florida to determine which part of Florida it is in.
+Action 1: Search[Ocala, Florida]
+Observation 2:
+Wikipedia Title: Ocala, Florida
+Ocala (/ oʊ ˈkælə / oh - KAL - ə) is a city located in Northern Florida. As of the 2013 census, its population, estimated by the United States Census Bureau, was 57,468, making it the 45th most populated city in Florida.
+
+Wikipedia Title: Florida State Road 500
+State Road 500 (SR 500) is a major state highway running through Florida as a mostly unsigned route under several U.S. Highways. From Chiefland to Williston it is U.S. Highway 27 Alternate. From Williston to Ocala, it is U.S. Highway 27. From Ocala to Kissimmee, it is U.S. Highway 441. From Kissimmee to Indialantic it is U.S. Highway 192.
+
+Wikipedia Title: East Lake Weir, Florida
+East Lake Weir is an unincorporated community in eastern Marion County, Florida, United States, on the east shore of Lake Weir. The community is part of the Ocala Metropolitan Statistical Area.
+
+Wikipedia Title: WMOP
+WMOP is a commercial radio station in Ocala, Florida, broadcasting to the Gainesville-Ocala, Florida area on 900 AM. WMOP is the FOX Sports Radio affiliate for Ocala; additionally, it produces local content which is also broadcast on Gainesville station WGGG, owned by the same company and co-marketed together with WMOP as "Florida Sports Talk Radio". WMOP originally signed on in 1953. The current sports format began in 1996.
+
+Wikipedia Title: Chris Meffert
+Born in Ocala, Florida, Meffert graduated from Ocala High School. He then received his bachelor's degree from Florida State University and his law degree from the Florida State University College of Law. He served as an assistant attorney general of Florida and then practiced law. In 1977, Meffert served as Mayor of Ocala, Florida and was a Democrat. From 1980 to 1988, he served in the Florida House of Representatives. Meffert worked as a lobbyist and then was appointed executive director of the Florida State Boxing Commission. Meffert died in Salt Springs, Florida in 2014. He had recently been diagnosed with amyotrophic lateral sclerosis (ALS).
+
+Wikipedia Title: WGGG
+WGGG is a commercial radio station in Gainesville, Florida, broadcasting to the Gainesville-Ocala, Florida area on 1230 AM. WGGG is the NBC Sports Radio affiliate for Gainesville; additionally, it broadcasts local content provided by Ocala station WMOP, owned by the same company and co-marketed together with WGGG as "Florida Sports Talk".
+Thought 2: The observation mentions that Ocala, Florida is located in Northern Florida. So the answer is Northern Florida.
+Action 2: Finish[Northern Florida]
