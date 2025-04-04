@@ -1,8 +1,8 @@
 import asyncio
-import json
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Union
 
+import jsonlines
 import tqdm
 from base import QAMixin, ResultHandler
 
@@ -10,8 +10,8 @@ from .metrics import update_metrics
 
 
 def load_musique(path: Union[str, Path]) -> List[Dict[str, Any]]:
-    with open(path) as f:
-        data = json.load(f)
+    with jsonlines.open(path) as reader:
+        data = [item for item in reader]
     return data
 
 

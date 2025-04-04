@@ -158,9 +158,7 @@ async def evaluate_musique(
     def systems(model_name: str) -> Iterable[Tuple[str, QAMixin]]:
         base_config_path = Path("configs").resolve()
         config = Config.from_json(
-            base_config_path.joinpath(
-                "multihoprag", model_name.split("/")[-1] + ".json"
-            )
+            base_config_path.joinpath("musique", model_name.split("/")[-1] + ".json")
         )
         # 1. No RAG
         yield f"norag_{config.identifier}", BaseRAG(
