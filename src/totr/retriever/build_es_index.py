@@ -235,7 +235,7 @@ def make_multihoprag_documents(
     metadata = metadata or {"idx": 1}
     assert "idx" in metadata
 
-    corpus_file = raw_data_dir.joinpath("MultihopRAG", "corpus.json")
+    corpus_file = raw_data_dir.joinpath("multihoprag", "corpus.json")
     used_full_ids = set()
 
     with open(corpus_file, "r") as f:
