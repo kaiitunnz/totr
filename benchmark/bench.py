@@ -66,7 +66,7 @@ async def evaluate_hotpotqa(
         yield f"oracle_{config.identifier}", QAModel(config, with_retrieval=True)
 
     bench_name = "hotpotqa"
-    batch_sizes = {BaseRAG: 16, IRCoT: 8, SCR: 4, ReAct: 4, ToTR: 1}
+    batch_sizes = {BaseRAG: 16, IRCoT: 8, SCR: 4, ReAct: 4, ToTR: 1, QAModel: 16}
 
     print("Evaluating systems on HotpotQA...")
     for system_name, system in systems(model_name):
@@ -134,7 +134,7 @@ async def evaluate_multihoprag(
         yield f"oracle_{config.identifier}", QAModel(config, with_retrieval=True)
 
     bench_name = "multihoprag"
-    batch_sizes = {BaseRAG: 16, IRCoT: 8, SCR: 4, ReAct: 4, ToTR: 1}
+    batch_sizes = {BaseRAG: 16, IRCoT: 8, SCR: 4, ReAct: 4, ToTR: 1, QAModel: 16}
 
     print("Evaluating systems on Multihop-RAG...")
     for system_name, system in systems(model_name):
@@ -200,7 +200,7 @@ async def evaluate_musique(
         yield f"oracle_{config.identifier}", QAModel(config, with_retrieval=True)
 
     bench_name = "musique"
-    batch_sizes = {BaseRAG: 16, IRCoT: 8, SCR: 4, ReAct: 4, ToTR: 1}
+    batch_sizes = {BaseRAG: 16, IRCoT: 8, SCR: 4, ReAct: 4, ToTR: 1, QAModel: 16}
 
     print("Evaluating systems on MuSiQue...")
     for system_name, system in systems(model_name):
