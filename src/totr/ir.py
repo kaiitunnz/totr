@@ -297,6 +297,7 @@ class IRHelper:
 
 class QAModel:
     def __init__(self, config: Config, with_retrieval: bool = True) -> None:
+        self.config = config
         # LLM
         self.model_name = config.llm.model
         self.llm = LLMRegistry.get(config.llm.engine, config)

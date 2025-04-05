@@ -1,10 +1,12 @@
 import asyncio
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Callable, Coroutine, Dict, List, Tuple, Union
 
 import jsonlines
 import tqdm
 from base import QAMixin, ResultHandler
+
+from totr.ir import QAModel
 
 from .metrics import update_metrics
 
@@ -15,16 +17,15 @@ def load_musique(path: Union[str, Path]) -> List[Dict[str, Any]]:
     return data
 
 
-async def run_musique(
-    qa_system: QAMixin,
+async def _run_musique(
+    answer_func: Callable[
+        [Dict[str, Any]], Coroutine[Any, Any, Tuple[Dict[str, Any], str]]
+    ],
     dataset_root_dir: Union[str, Path],
     result_handler: ResultHandler,
     batch_size: int = 1,
     verbose: bool = True,
 ) -> None:
-    async def answer_func(item: Dict[str, Any]) -> Tuple[Dict[str, Any], str]:
-        answer = await qa_system.answer(item["question_text"])
-        return item, answer
 
     metrics: Dict[str, float] = {"em": 0, "f1": 0, "prec": 0, "recall": 0}
     dataset_dir = Path(dataset_root_dir, "musique")
@@ -63,3 +64,42 @@ async def run_musique(
         metrics[k] /= n
 
     result_handler.set_metrics(metrics)
+
+
+async def run_musique(
+    qa_system: QAMixin,
+    dataset_root_dir: Union[str, Path],
+    result_handler: ResultHandler,
+    batch_size: int = 1,
+    verbose: bool = True,
+) -> None:
+    async def answer_func(item: Dict[str, Any]) -> Tuple[Dict[str, Any], str]:
+        answer = await qa_system.answer(item["question_text"])
+        return item, answer
+
+    await _run_musique(
+        answer_func, dataset_root_dir, result_handler, batch_size, verbose
+    )
+
+
+async def run_musique_oracle(
+    qa_model: QAModel,
+    dataset_root_dir: Union[str, Path],
+    result_handler: ResultHandler,
+    batch_size: int = 1,
+    verbose: bool = True,
+):
+    async def answer_func(item: Dict[str, Any]) -> Tuple[Dict[str, Any], str]:
+        contexts = item["contexts"]
+        titles = []
+        paragraphs = []
+        for context in contexts:
+            if context["is_supporting"]:
+                titles.append(context["title"])
+                paragraphs.append(context["paragraph_text"])
+        answer = await qa_model.answer(item["question_text"], titles, paragraphs)
+        return item, answer
+
+    await _run_musique(
+        answer_func, dataset_root_dir, result_handler, batch_size, verbose
+    )

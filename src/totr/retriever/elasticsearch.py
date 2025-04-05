@@ -298,3 +298,47 @@ class ElasticsearchRetriever(BaseRetriever):
             retrieval_["corpus_name"] = corpus_name
 
         return retrieval
+
+    async def retrieve_paragraphs_with_title(
+        self,
+        title: str,
+        corpus_name: Optional[str] = None,
+        max_retrieval_count: int = 100,
+    ) -> List[Dict]:
+        query = {
+            "size": max_retrieval_count,
+            # what records are needed in the result.
+            "_source": [
+                "id",
+                "title",
+                "paragraph_text",
+                "url",
+                "is_abstract",
+                "paragraph_index",
+            ],
+            "query": {
+                "bool": {
+                    "must": [
+                        {"match": {"title": title}},
+                    ]
+                }
+            },
+        }
+
+        result: Any = await self._helper.search(
+            self.client, index=corpus_name, body=query
+        )
+
+        title = title.strip().lower()
+        retrieval = []
+        if result.get("hits") is not None and result["hits"].get("hits") is not None:
+            retrieved = result["hits"]["hits"]
+            for item in retrieved:
+                item_title: str = item["_source"]["title"]
+                if title == item_title.strip().lower():
+                    retrieval.append(item["_source"])
+
+        for item in retrieval:
+            item["corpus_name"] = corpus_name
+
+        return retrieval

@@ -1,13 +1,13 @@
 import asyncio
 from argparse import ArgumentParser, Namespace
 from pathlib import Path
-from typing import Iterable, Tuple
+from typing import Iterable, Tuple, Union
 
 from base import QAMixin, ResultHandler
 from baseline.baseline import BaseRAG
-from bench_tasks.hotpotqa import run_hotpotqa
-from bench_tasks.multihoprag import run_multihoprag
-from bench_tasks.musique import run_musique
+from bench_tasks.hotpotqa import run_hotpotqa, run_hotpotqa_oracle
+from bench_tasks.multihoprag import run_multihoprag, run_multihoprag_oracle
+from bench_tasks.musique import run_musique, run_musique_oracle
 from ircot import IRCoT
 from react.config import ReActFullConfig
 from react.react import ReAct
@@ -15,6 +15,7 @@ from transformers.utils import logging
 
 from totr import SCR, ToTR
 from totr.config import Config
+from totr.ir import QAModel
 
 
 def parse_args() -> Namespace:
@@ -37,7 +38,7 @@ async def evaluate_hotpotqa(
     overwrite: bool,
     seed: int,
 ) -> None:
-    def systems(model_name: str) -> Iterable[Tuple[str, QAMixin]]:
+    def systems(model_name: str) -> Iterable[Tuple[str, Union[QAMixin, QAModel]]]:
         base_config_path = Path("configs").resolve()
         config = Config.from_json(
             base_config_path.joinpath("hotpotqa", model_name.split("/")[-1] + ".json")
@@ -61,6 +62,8 @@ async def evaluate_hotpotqa(
         yield f"scr_{config.identifier}", SCR(config, seed=seed)
         # 6. ToTR
         yield f"totr_{config.identifier}", ToTR(config, seed=seed)
+        # 7. Oracle
+        yield f"oracle_{config.identifier}", QAModel(config, with_retrieval=True)
 
     bench_name = "hotpotqa"
     batch_sizes = {BaseRAG: 16, IRCoT: 8, SCR: 4, ReAct: 4, ToTR: 1}
@@ -81,7 +84,12 @@ async def evaluate_hotpotqa(
         except FileExistsError:
             print(">> Results already exist. Skipped.")
             continue
-        await run_hotpotqa(system, dataset_dir, result_handler, batch_size, verbose)
+        if isinstance(system, QAModel):
+            await run_hotpotqa_oracle(
+                system, dataset_dir, result_handler, batch_size, verbose
+            )
+        else:
+            await run_hotpotqa(system, dataset_dir, result_handler, batch_size, verbose)
         print(f">> Results: {result_handler.metrics}")
 
 
@@ -94,7 +102,7 @@ async def evaluate_multihoprag(
     overwrite: bool,
     seed: int,
 ) -> None:
-    def systems(model_name: str) -> Iterable[Tuple[str, QAMixin]]:
+    def systems(model_name: str) -> Iterable[Tuple[str, Union[QAMixin, QAModel]]]:
         base_config_path = Path("configs").resolve()
         config = Config.from_json(
             base_config_path.joinpath(
@@ -122,6 +130,8 @@ async def evaluate_multihoprag(
         yield f"scr_{config.identifier}", SCR(config, seed=seed)
         # 6. ToTR
         yield f"totr_{config.identifier}", ToTR(config, seed=seed)
+        # 7. Oracle
+        yield f"oracle_{config.identifier}", QAModel(config, with_retrieval=True)
 
     bench_name = "multihoprag"
     batch_sizes = {BaseRAG: 16, IRCoT: 8, SCR: 4, ReAct: 4, ToTR: 1}
@@ -142,7 +152,14 @@ async def evaluate_multihoprag(
         except FileExistsError:
             print(">> Results already exist. Skipped.")
             continue
-        await run_multihoprag(system, dataset_dir, result_handler, batch_size, verbose)
+        if isinstance(system, QAModel):
+            await run_multihoprag_oracle(
+                system, dataset_dir, result_handler, batch_size, verbose
+            )
+        else:
+            await run_multihoprag(
+                system, dataset_dir, result_handler, batch_size, verbose
+            )
         print(f">> Results: {result_handler.metrics}")
 
 
@@ -155,7 +172,7 @@ async def evaluate_musique(
     overwrite: bool,
     seed: int,
 ) -> None:
-    def systems(model_name: str) -> Iterable[Tuple[str, QAMixin]]:
+    def systems(model_name: str) -> Iterable[Tuple[str, Union[QAMixin, QAModel]]]:
         base_config_path = Path("configs").resolve()
         config = Config.from_json(
             base_config_path.joinpath("musique", model_name.split("/")[-1] + ".json")
@@ -179,6 +196,8 @@ async def evaluate_musique(
         yield f"scr_{config.identifier}", SCR(config, seed=seed)
         # 6. ToTR
         yield f"totr_{config.identifier}", ToTR(config, seed=seed)
+        # 7. Oracle
+        yield f"oracle_{config.identifier}", QAModel(config, with_retrieval=True)
 
     bench_name = "musique"
     batch_sizes = {BaseRAG: 16, IRCoT: 8, SCR: 4, ReAct: 4, ToTR: 1}
@@ -199,7 +218,12 @@ async def evaluate_musique(
         except FileExistsError:
             print(">> Results already exist. Skipped.")
             continue
-        await run_musique(system, dataset_dir, result_handler, batch_size, verbose)
+        if isinstance(system, QAModel):
+            await run_musique_oracle(
+                system, dataset_dir, result_handler, batch_size, verbose
+            )
+        else:
+            await run_musique(system, dataset_dir, result_handler, batch_size, verbose)
         print(f">> Results: {result_handler.metrics}")
 
 
