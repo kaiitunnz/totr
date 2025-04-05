@@ -41,4 +41,9 @@ wget https://nlp.stanford.edu/projects/hotpotqa/enwiki-20171001-pages-meta-curre
 tar -xvf .temp/wikpedia-paragraphs.tar.bz2 -C raw_data/hotpotqa
 mv raw_data/hotpotqa/enwiki-20171001-pages-meta-current-withlinks-abstracts raw_data/hotpotqa/wikpedia-paragraphs
 
+echo "\n\nDownloading multihoprag corpus\n"
+mkdir -p raw_data/multihoprag
+# URL: https://drive.google.com/file/d/1ms4emp63u3od2idBB3LP6tLM602G923H/view?usp=sharing
+gdown "1ms4emp63u3od2idBB3LP6tLM602G923H&confirm=t" -O raw_data/multihoprag/corpus.json
+
 rm -rf .temp/
