@@ -102,12 +102,12 @@ async def run_multihoprag_oracle(
             title = evidence["title"]
             fact = evidence["fact"].lower()
             retrieved = await retriever.retrieve_paragraphs_with_title(
-                title, "multihoprag", max_retrieval_count=100
+                title, "multihoprag", max_retrieval_count=1000
             )
-            for item in retrieved:
-                if fact in item["paragraph_text"].lower():
+            for retrieved_item in retrieved:
+                if fact in retrieved_item["paragraph_text"].lower():
                     titles.append(title)
-                    paragraphs.append(item["paragraph_text"])
+                    paragraphs.append(retrieved_item["paragraph_text"])
                     break
             else:
                 raise ValueError("No relevant paragraphs found")
