@@ -17,7 +17,7 @@ This repository provides the implementation of Tree-of-Thought Retrieval (ToTR) 
 
 This section describes how to reproduce the results presented in the paper in detail.
 
-**Important:** Reproducing the results from scratch involves downloading the corpora used by the datasets, setting up a vector database (Elasticsearch), ingesting the corpora into the vector database, and running inference on relatively large LMs, which may take up to a few days in total. Moreover, you need to download and run the LLMs and, thus, need to make sure you have sufficient disk storage and GPU memory to store the models. If these constraints prevent you from running the code, we encourage you to download raw predictions and results and inspect them instead. You can use the following command to download the results and skip to step 7.
+**Important:** Reproducing the results from scratch involves downloading the corpora used by the datasets, setting up a vector database (Elasticsearch), ingesting the corpora into the vector database, and running inference on relatively large LMs, which may take up to a few days in total. Moreover, you need to download and run the LLMs and, thus, need to make sure you have sufficient disk storage and GPU memory to store the models. If these constraints prevent you from running the code, we encourage you to download raw predictions and results and inspect them instead. You can use the following command to download the results and skip to step 7. You may also need to install necessary dependencies first (see [Installation](#installation)).
 
 ```sh
 bash scripts/download_results.sh
