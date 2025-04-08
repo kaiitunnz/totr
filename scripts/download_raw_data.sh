@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Adapted from https://github.com/StonyBrookNLP/ircot/blob/main/download/raw_data.sh
 
 # If gdown doesn't work, you can download files from mentioned URLs manually
