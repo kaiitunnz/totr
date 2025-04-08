@@ -1,10 +1,13 @@
 <!-- omit in toc -->
+
 # Tree-of-Thought Retrieval: Enhancing Multi-Hop Question-Answering Beyond Chain-of-Thought
 
 This repository provides the implementation of Tree-of-Thought Retrieval (ToTR) and Self-Consistency Retrieval (SCR), two novel frameworks designed to enhance retrieval-augmented generation for knowledge-intensive multi-hop question answering tasks. By exploring diverse reasoning paths, these methods aim to improve retrieval coverage and robustness, addressing limitations in existing approaches.
 
 <!-- omit in toc -->
+
 ## Table of Contents
+
 - [Instructions for Reproducing the Paper Results](#instructions-for-reproducing-the-paper-results)
 - [Installation](#installation)
 - [Preparing Database for RAG](#preparing-database-for-rag)
